@@ -10,6 +10,9 @@ import UIKit
 
 class FMPhotoPresenterViewController: UIViewController {
     
+    @IBOutlet weak var selectedContainer: UIView!
+    @IBOutlet weak var selectedIndex: UILabel!
+    
     private(set) var pageViewController: UIPageViewController!
     private var currentPhoto: FMPhotoAsset?
     private var dataSource: FMPhotosDataSource
@@ -19,6 +22,12 @@ class FMPhotoPresenterViewController: UIViewController {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        self.selectedContainer.layer.cornerRadius = self.selectedContainer.frame.size.width / 2
+        self.selectedContainer.isHidden = true
     }
     
     public init(photos: [FMPhotoAsset], initialPhotoIndex: Int) {
