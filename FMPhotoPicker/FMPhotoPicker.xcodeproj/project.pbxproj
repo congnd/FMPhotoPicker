@@ -1,0 +1,509 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CE0C5FB5201ABD460040A03A /* FMPhotoPresenterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0C5FB4201ABD460040A03A /* FMPhotoPresenterViewController.swift */; };
+		CE0C5FB7201ABD660040A03A /* FMPhotoPresenterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE0C5FB6201ABD660040A03A /* FMPhotoPresenterViewController.xib */; };
+		CE0C5FB9201AC4870040A03A /* FMZoomInAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0C5FB8201AC4870040A03A /* FMZoomInAnimationController.swift */; };
+		CE0C5FBD201AE09F0040A03A /* FMZoomOutAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0C5FBC201AE09F0040A03A /* FMZoomOutAnimationController.swift */; };
+		CE1D3C5520197F5300154980 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE1D3C5420197F5300154980 /* Assets.xcassets */; };
+		CE1D3C592019C25700154980 /* FMPhotoAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1D3C582019C25700154980 /* FMPhotoAsset.swift */; };
+		CE238A07201EB38000CEBCB5 /* FMScalingImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE238A06201EB38000CEBCB5 /* FMScalingImageView.swift */; };
+		CE238A09201EB68500CEBCB5 /* FMPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE238A08201EB68500CEBCB5 /* FMPhotoViewController.swift */; };
+		CEE311B72022E29700ABBE0C /* FMPhotosDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE311B62022E29700ABBE0C /* FMPhotosDataSource.swift */; };
+		CEE50D1320196DF9005AE708 /* FMPhotoPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEE50D0920196DF9005AE708 /* FMPhotoPicker.framework */; };
+		CEE50D1820196DF9005AE708 /* FMPhotoPickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE50D1720196DF9005AE708 /* FMPhotoPickerTests.swift */; };
+		CEE50D1A20196DF9005AE708 /* FMPhotoPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = CEE50D0C20196DF9005AE708 /* FMPhotoPicker.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CEE50D2920196E45005AE708 /* FMPhotoPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE50D2420196E44005AE708 /* FMPhotoPickerViewController.swift */; };
+		CEE50D2A20196E45005AE708 /* FMPhotoPickerImageCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE50D2520196E45005AE708 /* FMPhotoPickerImageCollectionViewLayout.swift */; };
+		CEE50D2B20196E45005AE708 /* FMPhotoPickerImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE50D2620196E45005AE708 /* FMPhotoPickerImageCollectionViewCell.swift */; };
+		CEE50D2C20196E45005AE708 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE50D2720196E45005AE708 /* Helper.swift */; };
+		CEE50D6920197958005AE708 /* FMPhotoPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEE50D6820197958005AE708 /* FMPhotoPickerViewController.xib */; };
+		CEE50D6B20197A61005AE708 /* FMPhotoPickerImageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEE50D6A20197A61005AE708 /* FMPhotoPickerImageCollectionViewCell.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CEE50D1420196DF9005AE708 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CEE50D0020196DF9005AE708 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CEE50D0820196DF9005AE708;
+			remoteInfo = FMPhotoPicker;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		CE0C5FB4201ABD460040A03A /* FMPhotoPresenterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMPhotoPresenterViewController.swift; sourceTree = "<group>"; };
+		CE0C5FB6201ABD660040A03A /* FMPhotoPresenterViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FMPhotoPresenterViewController.xib; sourceTree = "<group>"; };
+		CE0C5FB8201AC4870040A03A /* FMZoomInAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMZoomInAnimationController.swift; sourceTree = "<group>"; };
+		CE0C5FBC201AE09F0040A03A /* FMZoomOutAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMZoomOutAnimationController.swift; sourceTree = "<group>"; };
+		CE1D3C5420197F5300154980 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CE1D3C582019C25700154980 /* FMPhotoAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMPhotoAsset.swift; sourceTree = "<group>"; };
+		CE238A06201EB38000CEBCB5 /* FMScalingImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMScalingImageView.swift; sourceTree = "<group>"; };
+		CE238A08201EB68500CEBCB5 /* FMPhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMPhotoViewController.swift; sourceTree = "<group>"; };
+		CEE311B62022E29700ABBE0C /* FMPhotosDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMPhotosDataSource.swift; sourceTree = "<group>"; };
+		CEE50D0920196DF9005AE708 /* FMPhotoPicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FMPhotoPicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CEE50D0C20196DF9005AE708 /* FMPhotoPicker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FMPhotoPicker.h; sourceTree = "<group>"; };
+		CEE50D0D20196DF9005AE708 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CEE50D1220196DF9005AE708 /* FMPhotoPickerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FMPhotoPickerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CEE50D1720196DF9005AE708 /* FMPhotoPickerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMPhotoPickerTests.swift; sourceTree = "<group>"; };
+		CEE50D1920196DF9005AE708 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CEE50D2420196E44005AE708 /* FMPhotoPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FMPhotoPickerViewController.swift; sourceTree = "<group>"; };
+		CEE50D2520196E45005AE708 /* FMPhotoPickerImageCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FMPhotoPickerImageCollectionViewLayout.swift; sourceTree = "<group>"; };
+		CEE50D2620196E45005AE708 /* FMPhotoPickerImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FMPhotoPickerImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		CEE50D2720196E45005AE708 /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
+		CEE50D6820197958005AE708 /* FMPhotoPickerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FMPhotoPickerViewController.xib; sourceTree = "<group>"; };
+		CEE50D6A20197A61005AE708 /* FMPhotoPickerImageCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FMPhotoPickerImageCollectionViewCell.xib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CEE50D0520196DF9005AE708 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CEE50D0F20196DF9005AE708 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CEE50D1320196DF9005AE708 /* FMPhotoPicker.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CEE50CFF20196DF9005AE708 = {
+			isa = PBXGroup;
+			children = (
+				CEE50D0B20196DF9005AE708 /* FMPhotoPicker */,
+				CEE50D1620196DF9005AE708 /* FMPhotoPickerTests */,
+				CEE50D0A20196DF9005AE708 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CEE50D0A20196DF9005AE708 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CEE50D0920196DF9005AE708 /* FMPhotoPicker.framework */,
+				CEE50D1220196DF9005AE708 /* FMPhotoPickerTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CEE50D0B20196DF9005AE708 /* FMPhotoPicker */ = {
+			isa = PBXGroup;
+			children = (
+				CEE50D2320196E32005AE708 /* source */,
+				CEE50D0C20196DF9005AE708 /* FMPhotoPicker.h */,
+				CEE50D0D20196DF9005AE708 /* Info.plist */,
+			);
+			path = FMPhotoPicker;
+			sourceTree = "<group>";
+		};
+		CEE50D1620196DF9005AE708 /* FMPhotoPickerTests */ = {
+			isa = PBXGroup;
+			children = (
+				CEE50D1720196DF9005AE708 /* FMPhotoPickerTests.swift */,
+				CEE50D1920196DF9005AE708 /* Info.plist */,
+			);
+			path = FMPhotoPickerTests;
+			sourceTree = "<group>";
+		};
+		CEE50D2320196E32005AE708 /* source */ = {
+			isa = PBXGroup;
+			children = (
+				CE1D3C5420197F5300154980 /* Assets.xcassets */,
+				CEE50D6A20197A61005AE708 /* FMPhotoPickerImageCollectionViewCell.xib */,
+				CEE50D6820197958005AE708 /* FMPhotoPickerViewController.xib */,
+				CE0C5FB6201ABD660040A03A /* FMPhotoPresenterViewController.xib */,
+				CEE50D2720196E45005AE708 /* Helper.swift */,
+				CE1D3C582019C25700154980 /* FMPhotoAsset.swift */,
+				CEE50D2620196E45005AE708 /* FMPhotoPickerImageCollectionViewCell.swift */,
+				CEE50D2520196E45005AE708 /* FMPhotoPickerImageCollectionViewLayout.swift */,
+				CEE50D2420196E44005AE708 /* FMPhotoPickerViewController.swift */,
+				CE0C5FB4201ABD460040A03A /* FMPhotoPresenterViewController.swift */,
+				CE238A08201EB68500CEBCB5 /* FMPhotoViewController.swift */,
+				CE0C5FB8201AC4870040A03A /* FMZoomInAnimationController.swift */,
+				CE0C5FBC201AE09F0040A03A /* FMZoomOutAnimationController.swift */,
+				CE238A06201EB38000CEBCB5 /* FMScalingImageView.swift */,
+				CEE311B62022E29700ABBE0C /* FMPhotosDataSource.swift */,
+			);
+			path = source;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		CEE50D0620196DF9005AE708 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CEE50D1A20196DF9005AE708 /* FMPhotoPicker.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		CEE50D0820196DF9005AE708 /* FMPhotoPicker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CEE50D1D20196DF9005AE708 /* Build configuration list for PBXNativeTarget "FMPhotoPicker" */;
+			buildPhases = (
+				CEE50D0420196DF9005AE708 /* Sources */,
+				CEE50D0520196DF9005AE708 /* Frameworks */,
+				CEE50D0620196DF9005AE708 /* Headers */,
+				CEE50D0720196DF9005AE708 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FMPhotoPicker;
+			productName = FMPhotoPicker;
+			productReference = CEE50D0920196DF9005AE708 /* FMPhotoPicker.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		CEE50D1120196DF9005AE708 /* FMPhotoPickerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CEE50D2020196DF9005AE708 /* Build configuration list for PBXNativeTarget "FMPhotoPickerTests" */;
+			buildPhases = (
+				CEE50D0E20196DF9005AE708 /* Sources */,
+				CEE50D0F20196DF9005AE708 /* Frameworks */,
+				CEE50D1020196DF9005AE708 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CEE50D1520196DF9005AE708 /* PBXTargetDependency */,
+			);
+			name = FMPhotoPickerTests;
+			productName = FMPhotoPickerTests;
+			productReference = CEE50D1220196DF9005AE708 /* FMPhotoPickerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CEE50D0020196DF9005AE708 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0920;
+				LastUpgradeCheck = 0920;
+				ORGANIZATIONNAME = "Tribal Media House";
+				TargetAttributes = {
+					CEE50D0820196DF9005AE708 = {
+						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 0920;
+						ProvisioningStyle = Automatic;
+					};
+					CEE50D1120196DF9005AE708 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = CEE50D0320196DF9005AE708 /* Build configuration list for PBXProject "FMPhotoPicker" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = CEE50CFF20196DF9005AE708;
+			productRefGroup = CEE50D0A20196DF9005AE708 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CEE50D0820196DF9005AE708 /* FMPhotoPicker */,
+				CEE50D1120196DF9005AE708 /* FMPhotoPickerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CEE50D0720196DF9005AE708 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CEE50D6920197958005AE708 /* FMPhotoPickerViewController.xib in Resources */,
+				CE1D3C5520197F5300154980 /* Assets.xcassets in Resources */,
+				CEE50D6B20197A61005AE708 /* FMPhotoPickerImageCollectionViewCell.xib in Resources */,
+				CE0C5FB7201ABD660040A03A /* FMPhotoPresenterViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CEE50D1020196DF9005AE708 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CEE50D0420196DF9005AE708 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE0C5FB9201AC4870040A03A /* FMZoomInAnimationController.swift in Sources */,
+				CEE50D2A20196E45005AE708 /* FMPhotoPickerImageCollectionViewLayout.swift in Sources */,
+				CE238A07201EB38000CEBCB5 /* FMScalingImageView.swift in Sources */,
+				CEE311B72022E29700ABBE0C /* FMPhotosDataSource.swift in Sources */,
+				CE0C5FBD201AE09F0040A03A /* FMZoomOutAnimationController.swift in Sources */,
+				CEE50D2920196E45005AE708 /* FMPhotoPickerViewController.swift in Sources */,
+				CE1D3C592019C25700154980 /* FMPhotoAsset.swift in Sources */,
+				CE238A09201EB68500CEBCB5 /* FMPhotoViewController.swift in Sources */,
+				CE0C5FB5201ABD460040A03A /* FMPhotoPresenterViewController.swift in Sources */,
+				CEE50D2B20196E45005AE708 /* FMPhotoPickerImageCollectionViewCell.swift in Sources */,
+				CEE50D2C20196E45005AE708 /* Helper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CEE50D0E20196DF9005AE708 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CEE50D1820196DF9005AE708 /* FMPhotoPickerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CEE50D1520196DF9005AE708 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CEE50D0820196DF9005AE708 /* FMPhotoPicker */;
+			targetProxy = CEE50D1420196DF9005AE708 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		CEE50D1B20196DF9005AE708 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		CEE50D1C20196DF9005AE708 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		CEE50D1E20196DF9005AE708 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = FMPhotoPicker/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = jp.co.tribalmedia.FMPhotoPicker;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CEE50D1F20196DF9005AE708 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = FMPhotoPicker/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = jp.co.tribalmedia.FMPhotoPicker;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		CEE50D2120196DF9005AE708 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = FMPhotoPickerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = jp.co.tribalmedia.FMPhotoPickerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CEE50D2220196DF9005AE708 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = FMPhotoPickerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = jp.co.tribalmedia.FMPhotoPickerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CEE50D0320196DF9005AE708 /* Build configuration list for PBXProject "FMPhotoPicker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CEE50D1B20196DF9005AE708 /* Debug */,
+				CEE50D1C20196DF9005AE708 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CEE50D1D20196DF9005AE708 /* Build configuration list for PBXNativeTarget "FMPhotoPicker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CEE50D1E20196DF9005AE708 /* Debug */,
+				CEE50D1F20196DF9005AE708 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CEE50D2020196DF9005AE708 /* Build configuration list for PBXNativeTarget "FMPhotoPickerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CEE50D2120196DF9005AE708 /* Debug */,
+				CEE50D2220196DF9005AE708 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CEE50D0020196DF9005AE708 /* Project object */;
+}
