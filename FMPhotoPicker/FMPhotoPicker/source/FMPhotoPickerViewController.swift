@@ -20,8 +20,10 @@ public class FMPhotoPickerViewController: UIViewController {
     
     @IBOutlet weak var controlbarConstraintTop: NSLayoutConstraint!
     
-    lazy var photoAssets = [FMPhotoAsset]()
-    private var selectedPhotoIndexes = [Int]()
+//    lazy var photoAssets = [FMPhotoAsset]()
+//    private var selectedPhotoIndexes = [Int]()
+    
+    private var dataSource: FMPhotosDataSource!
     
     private let defaultSize = CGSize(width: 1000, height: 2000)
     private var selectedCell: FMPhotoPickerImageCollectionViewCell?
@@ -48,7 +50,12 @@ public class FMPhotoPickerViewController: UIViewController {
     
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.fetchPhotos()
+        if self.dataSource == nil {
+            self.fetchPhotos()
+        } else {
+            self.imageCollectionView.reloadData()
+            self.updateControlBar()
+        }
     }
     
     // MARK: - Setup View
@@ -68,25 +75,25 @@ public class FMPhotoPickerViewController: UIViewController {
     }
     
     @IBAction func onTapNextStep(_ sender: Any) {
-        var result = [UIImage]()
-        
-        DispatchQueue.global(qos: .userInitiated).async {
-            let multiTask = DispatchGroup()
-            self.selectedPhotoIndexes.forEach() {
-                multiTask.enter()
-                _ = Helper.getPhoto(by: self.photoAssets[$0].asset, in: self.defaultSize) { image in
-                    guard let image = image else { return }
-                    result.append(image)
-                    multiTask.leave()
-                }
-            }
-            
-            multiTask.wait()
-            
-            DispatchQueue.main.async {
-                self.delegate?.fmPhotoPickerController(self, didFinishPickingPhotoWith: result)
-            }
-        }
+//        var result = [UIImage]()
+//
+//        DispatchQueue.global(qos: .userInitiated).async {
+//            let multiTask = DispatchGroup()
+//            self.selectedPhotoIndexes.forEach() {
+//                multiTask.enter()
+//                _ = Helper.getPhoto(by: self.photoAssets[$0].asset, in: self.defaultSize) { image in
+//                    guard let image = image else { return }
+//                    result.append(image)
+//                    multiTask.leave()
+//                }
+//            }
+//
+//            multiTask.wait()
+//
+//            DispatchQueue.main.async {
+//                self.delegate?.fmPhotoPickerController(self, didFinishPickingPhotoWith: result)
+//            }
+//        }
     }
     
     // MARK: - Logic
@@ -94,11 +101,13 @@ public class FMPhotoPickerViewController: UIViewController {
         Helper.attemptRequestPhotoLibAccess(dialogPresenter: self, ok: { [weak self] in
             let fetchResult = PHAsset.fetchAssets(with: self?.fetchOptions)
             
-            guard self != nil, fetchResult.count > 0 else { return }
-            
+            guard let strongSelf = self, fetchResult.count > 0 else { return }
+            var photoAssets = [FMPhotoAsset]()
             fetchResult.enumerateObjects() { asset, index, _ in
-                self!.photoAssets.append(FMPhotoAsset(asset: asset, key: "\(index)"))
+                photoAssets.append(FMPhotoAsset(asset: asset, key: "\(index)"))
             }
+            strongSelf.dataSource = FMPhotosDataSource(photoAssets: photoAssets)
+            
             self!.imageCollectionView.reloadData()
         })
     }
@@ -112,22 +121,27 @@ public class FMPhotoPickerViewController: UIViewController {
 
 extension FMPhotoPickerViewController: UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.photoAssets.count
+        if let total = self.dataSource?.numberOfPhotos {
+            return total
+        }
+        return 0
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FMPhotoPickerImageCollectionViewCell.reuseId, for: indexPath) as! FMPhotoPickerImageCollectionViewCell
-        let photoAsset = photoAssets[indexPath.item]
-        let selectedIndex = self.selectedPhotoIndexes.index(of: indexPath.item)
-        cell.loadView(photoAsset: photoAsset, selectedIndex: selectedIndex)
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FMPhotoPickerImageCollectionViewCell.reuseId, for: indexPath) as? FMPhotoPickerImageCollectionViewCell,
+            let photoAsset = self.dataSource.photo(atIndex: indexPath.item) else {
+            return UICollectionViewCell()
+        }
+        
+        cell.loadView(photoAsset: photoAsset, selectedIndex: self.dataSource.selectedIndexOfPhoto(atIndex: indexPath.item))
         cell.onTapSelect = {
-            if let selectedIndex = self.selectedPhotoIndexes.index(where: { $0 == indexPath.item }) {
-                self.selectedPhotoIndexes.remove(at: selectedIndex)
+            if let selectedIndex = self.dataSource.selectedIndexOfPhoto(atIndex: indexPath.item) {
+                self.dataSource.unsetSeclectedForPhoto(atIndex: indexPath.item)
                 cell.performSelectionAnimation(selectedIndex: nil)
                 self.reloadAffectedCellByChangingSelection(changedIndex: selectedIndex)
             } else {
-                self.selectedPhotoIndexes.append(indexPath.item)
-                cell.performSelectionAnimation(selectedIndex: self.selectedPhotoIndexes.count - 1)
+                self.dataSource.setSeletedForPhoto(atIndex: indexPath.item)
+                cell.performSelectionAnimation(selectedIndex: self.dataSource.numberOfSelectedPhoto() - 1)
             }
             self.updateControlBar()
         }
@@ -136,20 +150,18 @@ extension FMPhotoPickerViewController: UICollectionViewDataSource {
     }
     
     private func updateControlBar() {
-        if selectedPhotoIndexes.count > 0 {
+        if self.dataSource.numberOfSelectedPhoto() > 0 {
             self.numberOfSelectedPhotoContainer.isHidden = false
-            self.numberOfSelectedPhoto.text = "\(self.selectedPhotoIndexes.count)"
+            self.numberOfSelectedPhoto.text = "\(self.dataSource.numberOfSelectedPhoto())"
         } else {
             self.numberOfSelectedPhotoContainer.isHidden = true
         }
     }
     
     private func reloadAffectedCellByChangingSelection(changedIndex: Int) {
-        let affectedList = self.selectedPhotoIndexes[changedIndex...]
-        affectedList.forEach {
-            guard let cell = self.imageCollectionView.cellForItem(at: IndexPath(row: $0, section: 0)) as? FMPhotoPickerImageCollectionViewCell else { return }
-            cell.performSelectionAnimation(selectedIndex: self.selectedPhotoIndexes.index(of: $0))
-        }
+        let affectedList = self.dataSource.affectedSelectedIndexs(changedIndex: changedIndex)
+        let indexPaths = affectedList.map { return IndexPath(row: $0, section: 0) }
+        self.imageCollectionView.reloadItems(at: indexPaths)
     }
 }
 
@@ -157,7 +169,7 @@ extension FMPhotoPickerViewController: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) as? FMPhotoPickerImageCollectionViewCell else { return }
         self.selectedCell = cell
-        let vc = FMPhotoPresenterViewController(photos: self.photoAssets, initialPhotoIndex: indexPath.item)
+        let vc = FMPhotoPresenterViewController(dataSource: self.dataSource, initialPhotoIndex: indexPath.item)
         vc.transitioningDelegate = self
         self.present(vc, animated: true)
     }

@@ -8,29 +8,61 @@
 
 import Foundation
 
-public struct FMPhotosDataSource {
-    public private(set) var photos = [FMPhotoAsset]()
+class FMPhotosDataSource {
+    public private(set) var photoAssets: [FMPhotoAsset]
+    private var selectedPhotoIndexes: [Int]
+    
+    init(photoAssets: [FMPhotoAsset]) {
+        self.photoAssets = photoAssets
+        self.selectedPhotoIndexes = []
+    }
+    
+    public func setSeletedForPhoto(atIndex index: Int) {
+        if self.selectedPhotoIndexes.index(where: { $0 == index }) == nil {
+            self.selectedPhotoIndexes.append(index)
+        }
+    }
+    
+    public func unsetSeclectedForPhoto(atIndex index: Int) {
+        if let indexInSelectedIndex = self.selectedPhotoIndexes.index(where: { $0 == index }) {
+            self.selectedPhotoIndexes.remove(at: indexInSelectedIndex)
+        }
+    }
+    
+    public func selectedIndexOfPhoto(atIndex index: Int) -> Int? {
+        return self.selectedPhotoIndexes.index(where: { $0 == index })
+    }
+    
+    public func numberOfSelectedPhoto() -> Int {
+        return self.selectedPhotoIndexes.count
+    }
+    
+    public func affectedSelectedIndexs(changedIndex: Int) -> [Int] {
+        return Array(self.selectedPhotoIndexes[changedIndex...])
+    }
+
+    
     
     public var numberOfPhotos: Int {
-        return self.photos.count
+        return self.photoAssets.count
     }
     
     public func photo(atIndex index: Int) -> FMPhotoAsset? {
-        guard index < self.photos.count, index >= 0 else { return nil }
-        return photos[index]
+        guard index < self.photoAssets.count, index >= 0 else { return nil }
+        return self.photoAssets[index]
     }
     
     public func index(ofPhoto photo: FMPhotoAsset) -> Int? {
-        return self.photos.index(where: { $0 === photo })
+        return self.photoAssets.index(where: { $0 === photo })
     }
     
     public func contains(photo: FMPhotoAsset) -> Bool {
         return self.index(ofPhoto: photo) != nil
     }
     
-    public mutating func delete(photo: FMPhotoAsset) {
+    public func delete(photo: FMPhotoAsset) {
         if let index = self.index(ofPhoto: photo) {
-            photos.remove(at: index)
+            self.photoAssets.remove(at: index)
         }
     }
     

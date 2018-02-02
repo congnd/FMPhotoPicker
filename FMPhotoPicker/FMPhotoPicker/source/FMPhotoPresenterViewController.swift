@@ -12,9 +12,10 @@ class FMPhotoPresenterViewController: UIViewController {
     
     @IBOutlet weak var selectedContainer: UIView!
     @IBOutlet weak var selectedIndex: UILabel!
+    @IBOutlet weak var selectButton: UIButton!
     
     private(set) var pageViewController: UIPageViewController!
-    private var currentPhoto: FMPhotoAsset?
+    private var currentPhotoIndex: Int
     private var dataSource: FMPhotosDataSource
     private var currentPhotoViewController: FMPhotoViewController? {
         return pageViewController.viewControllers?.first as? FMPhotoViewController
@@ -24,31 +25,41 @@ class FMPhotoPresenterViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        self.selectedContainer.layer.cornerRadius = self.selectedContainer.frame.size.width / 2
-        self.selectedContainer.isHidden = true
-    }
-    
-    public init(photos: [FMPhotoAsset], initialPhotoIndex: Int) {
-        self.dataSource = FMPhotosDataSource(photos: photos)
+    public init(dataSource: FMPhotosDataSource, initialPhotoIndex: Int) {
+        self.dataSource = dataSource
+        self.currentPhotoIndex = initialPhotoIndex
         super.init(nibName: "FMPhotoPresenterViewController", bundle: Bundle(for: FMPhotoPresenterViewController.self))
-        self.initialSetup(withInitialPhoto: self.dataSource.photo(atIndex: initialPhotoIndex))
+        self.initialSetup()
     }
     
-    private func initialSetup(withInitialPhoto initialPhoto: FMPhotoAsset?) {
-        self.setupPageViewController(withInitialPhoto: initialPhoto)
+    private func initialSetup() {
+        self.setupPageViewController(withInitialPhoto: self.dataSource.photo(atIndex: self.currentPhotoIndex))
     }
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.selectedContainer.layer.cornerRadius = self.selectedContainer.frame.size.width / 2
+        
+        self.updateSelectionStatus()
+        
         self.addChildViewController(self.pageViewController)
         self.view.addSubview(pageViewController.view)
         self.view.sendSubview(toBack: pageViewController.view)
         self.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.pageViewController.didMove(toParentViewController: self)
+    }
+    
+    private func updateSelectionStatus() {
+        if let selectedIndex = self.dataSource.selectedIndexOfPhoto(atIndex: self.currentPhotoIndex) {
+            self.selectedIndex.text = "\(selectedIndex + 1)"
+            self.selectedContainer.isHidden = false
+            self.selectButton.setTitle("選択削除", for: .normal)
+        } else {
+            self.selectedContainer.isHidden = true
+            self.selectButton.setTitle("選択", for: .normal)
+        }
     }
     
     private func setupPageViewController(withInitialPhoto initialPhoto: FMPhotoAsset? = nil) {
@@ -79,6 +90,14 @@ class FMPhotoPresenterViewController: UIViewController {
     @IBAction func onTapClose(_ sender: Any) {
         self.dismiss(animated: true)
     }
+    @IBAction func onTapSelection(_ sender: Any) {
+        if self.dataSource.selectedIndexOfPhoto(atIndex: self.currentPhotoIndex) == nil {
+            self.dataSource.setSeletedForPhoto(atIndex: self.currentPhotoIndex)
+        } else {
+            self.dataSource.unsetSeclectedForPhoto(atIndex: currentPhotoIndex)
+        }
+        self.updateSelectionStatus()
+    }
 }
 
 // MARK: - UIPageViewControllerDataSource / UIPageViewControllerDelegate
@@ -101,5 +120,14 @@ extension FMPhotoPresenterViewController: UIPageViewControllerDelegate, UIPageVi
         }
         
         return self.initializaPhotoViewController(forPhoto: newPhoto)
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        guard completed,
+            let vc = pageViewController.viewControllers?.first as? FMPhotoViewController,
+            let photoIndex = self.dataSource.index(ofPhoto: vc.photo) else { return }
+        
+        self.currentPhotoIndex = photoIndex
+        self.updateSelectionStatus()
     }
 }
