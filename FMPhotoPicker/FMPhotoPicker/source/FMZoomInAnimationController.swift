@@ -20,25 +20,19 @@ class FMZoomInAnimationController: NSObject, UIViewControllerAnimatedTransitioni
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        guard let toVC = transitionContext.viewController(forKey: .to) else { return }
+        guard let toVC = transitionContext.viewController(forKey: .to),
+            let snapshot = toVC.view.snapshotView(afterScreenUpdates: true)
+            else { return }
         
         let containerView = transitionContext.containerView
         let finalFrame = transitionContext.finalFrame(for: toVC)
         
-        containerView.addSubview(toVC.view)
-        toVC.view.translatesAutoresizingMaskIntoConstraints = false
-        toVC.view.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        toVC.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
-        toVC.view.leftAnchor.constraint(equalTo:  containerView.leftAnchor).isActive = true
-        toVC.view.rightAnchor.constraint(equalTo: containerView.rightAnchor).isActive = true
-        toVC.view.layoutIfNeeded()
-        
-        guard let snapshot = toVC.view.snapshotView(afterScreenUpdates: true) else { return }
-        
         snapshot.frame = originFrame
         snapshot.layer.masksToBounds = true
         
+        containerView.addSubview(toVC.view)
         containerView.addSubview(snapshot)
+        
         toVC.view.isHidden = true
         
         let duration = transitionDuration(using: transitionContext)

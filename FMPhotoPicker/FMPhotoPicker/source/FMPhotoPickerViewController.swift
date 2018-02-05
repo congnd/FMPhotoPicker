@@ -170,6 +170,7 @@ extension FMPhotoPickerViewController: UICollectionViewDelegate {
         guard let cell = collectionView.cellForItem(at: indexPath) as? FMPhotoPickerImageCollectionViewCell else { return }
         self.selectedCell = cell
         let vc = FMPhotoPresenterViewController(dataSource: self.dataSource, initialPhotoIndex: indexPath.item)
+        vc.view.frame = self.view.frame
         vc.transitioningDelegate = self
         self.present(vc, animated: true)
     }

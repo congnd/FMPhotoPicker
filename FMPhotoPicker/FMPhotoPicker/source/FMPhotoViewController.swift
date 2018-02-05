@@ -10,11 +10,9 @@ import UIKit
 import Photos
 
 class FMPhotoViewController: UIViewController {
-    open var scalingImageView: FMScalingImageView?
+    open var scalingImageView: FMScalingImageView!
     
     open var photo: FMPhotoAsset
-    
-    private var imageView: UIImageView!
     
     private var imageRequestId: PHImageRequestID?
     
@@ -36,19 +34,33 @@ class FMPhotoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.imageView = UIImageView(frame: self.view.frame)
-        self.imageView.contentMode = .scaleAspectFit
-        self.imageView.clipsToBounds = true
-        self.view.addSubview(self.imageView)
-        
+        self.scalingImageView = FMScalingImageView(frame: self.view.frame)
+        self.scalingImageView.delegate = self
+
+        self.scalingImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.scalingImageView.clipsToBounds = true
+
+        self.view.addSubview(self.scalingImageView)
+
         self.imageRequestId = self.photo.requestThumb() { image in
-            self.imageView.image = image
+            self.scalingImageView.image = image
+            self.imageRequestId = self.photo.requestFullSizePhoto() { fullSizeImage in
+                self.scalingImageView.image = fullSizeImage
+            }
         }
     }
-    
     override func viewDidAppear(_ animated: Bool) {
-        self.imageRequestId = self.photo.requestFullSizePhoto() { fullSizeImage in
-            self.imageView.image = fullSizeImage
-        }
+        super.viewDidAppear(animated)
+    }
+    
+    open override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        scalingImageView.frame = view.bounds
+    }
+}
+
+extension FMPhotoViewController: UIScrollViewDelegate {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return self.scalingImageView.imageView
     }
 }

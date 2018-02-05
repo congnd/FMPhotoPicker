@@ -47,7 +47,7 @@ class FMPhotoPresenterViewController: UIViewController {
         self.addChildViewController(self.pageViewController)
         self.view.addSubview(pageViewController.view)
         self.view.sendSubview(toBack: pageViewController.view)
-        self.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.pageViewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.pageViewController.didMove(toParentViewController: self)
     }
     
@@ -64,6 +64,7 @@ class FMPhotoPresenterViewController: UIViewController {
     
     private func setupPageViewController(withInitialPhoto initialPhoto: FMPhotoAsset? = nil) {
         self.pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey: 16.0])
+        self.pageViewController.view.frame = self.view.frame
         self.pageViewController.view.backgroundColor = .clear
         self.pageViewController.delegate = self
         self.pageViewController.dataSource = self
