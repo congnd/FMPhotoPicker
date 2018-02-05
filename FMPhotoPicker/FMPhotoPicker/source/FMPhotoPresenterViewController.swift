@@ -21,6 +21,10 @@ class FMPhotoPresenterViewController: UIViewController {
         return pageViewController.viewControllers?.first as? FMPhotoViewController
     }
     
+    private(set) lazy var panGestureRecognizer: UIPanGestureRecognizer = {
+        return UIPanGestureRecognizer(target: self, action: #selector(FMPhotoPresenterViewController.handlePanGestureRecognizer(_:)))
+    }()
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -49,6 +53,8 @@ class FMPhotoPresenterViewController: UIViewController {
         self.view.sendSubview(toBack: pageViewController.view)
         self.pageViewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.pageViewController.didMove(toParentViewController: self)
+        
+        self.pageViewController.view.addGestureRecognizer(panGestureRecognizer)
     }
     
     private func updateSelectionStatus() {
@@ -84,7 +90,8 @@ class FMPhotoPresenterViewController: UIViewController {
     }
     
     private func initializaPhotoViewController(forPhoto photo: FMPhotoAsset) -> FMPhotoViewController {
-        return FMPhotoViewController(withPhoto: photo)
+        let photoViewController = FMPhotoViewController(withPhoto: photo)
+        return photoViewController
     }
     
     // MARK: - Target Actions
@@ -98,6 +105,16 @@ class FMPhotoPresenterViewController: UIViewController {
             self.dataSource.unsetSeclectedForPhoto(atIndex: currentPhotoIndex)
         }
         self.updateSelectionStatus()
+    }
+    
+    @objc private func handlePanGestureRecognizer(_ gestureRecognizer: UIPanGestureRecognizer) {
+        if gestureRecognizer.state == .began {
+//            interactiveDismissal = true
+            dismiss(animated: true, completion: nil)
+        } else {
+//            interactiveDismissal = false
+//            interactiveAnimator.handlePanWithPanGestureRecognizer(gestureRecognizer, viewToPan: pageViewController.view, anchorPoint: CGPoint(x: view.bounds.midX, y: view.bounds.midY))
+        }
     }
 }
 
