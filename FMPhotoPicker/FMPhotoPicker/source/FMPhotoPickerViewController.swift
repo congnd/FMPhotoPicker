@@ -30,6 +30,8 @@ public class FMPhotoPickerViewController: UIViewController {
     
     public weak var delegate: FMPhotoPickerViewControllerDelegate? = nil
     
+    private var presentedPhotoIndex: Int?
+    
     internal lazy var fetchOptions: PHFetchOptions = {
         let fetchOptions = PHFetchOptions()
         fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
@@ -170,6 +172,21 @@ extension FMPhotoPickerViewController: UICollectionViewDelegate {
         guard let cell = collectionView.cellForItem(at: indexPath) as? FMPhotoPickerImageCollectionViewCell else { return }
         self.selectedCell = cell
         let vc = FMPhotoPresenterViewController(dataSource: self.dataSource, initialPhotoIndex: indexPath.item)
+        
+        self.presentedPhotoIndex = indexPath.item
+        
+        vc.didSelectPhotoHandler = { photoIndex in
+            self.imageCollectionView.reloadItems(at: [IndexPath(row: photoIndex, section: 0)])
+            self.updateControlBar()
+        }
+        vc.didDeselectPhotoHandler = { photoIndex in
+            self.imageCollectionView.reloadItems(at: [IndexPath(row: photoIndex, section: 0)])
+            self.updateControlBar()
+        }
+        vc.didMoveToViewControllerHandler = { vc, photoIndex in
+            self.presentedPhotoIndex = photoIndex
+        }
+        
         vc.view.frame = self.view.frame
         vc.transitioningDelegate = self
         vc.modalPresentationStyle = .custom
@@ -180,16 +197,16 @@ extension FMPhotoPickerViewController: UICollectionViewDelegate {
 
 extension FMPhotoPickerViewController: UIViewControllerTransitioningDelegate {
     public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        guard let cell = self.selectedCell else { return nil }
-        return FMZoomInAnimationController(originFrame: cell.convert(cell.bounds, to: self.view))
+        let animationController = FMZoomInAnimationController()
+        animationController.getOriginFrame = self.getOriginFrameForTransition
+        return animationController
     }
     
     public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        guard let cell = self.selectedCell,
-            let photoPresenterViewController = dismissed as? FMPhotoPresenterViewController
-            else { return nil }
-        
-        return FMZoomOutAnimationController(destinationFrame: cell.convert(cell.bounds, to: self.view), interactionController: photoPresenterViewController.swipeInteractionController)
+        guard let photoPresenterViewController = dismissed as? FMPhotoPresenterViewController else { return nil }
+        let animationController = FMZoomOutAnimationController(interactionController: photoPresenterViewController.swipeInteractionController)
+        animationController.getDestFrame = self.getOriginFrameForTransition
+        return animationController
     }
     
     open func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
@@ -202,5 +219,14 @@ extension FMPhotoPickerViewController: UIViewControllerTransitioningDelegate {
         
         interactionController.animator = animator
         return interactionController
+    }
+    
+    func getOriginFrameForTransition() -> CGRect {
+        guard let presentedPhotoIndex = self.presentedPhotoIndex,
+            let cell = self.imageCollectionView.cellForItem(at: IndexPath(row: presentedPhotoIndex, section: 0))
+            else {
+                return CGRect(x: 0, y: self.view.frame.height, width: self.view.frame.size.width, height: self.view.frame.size.width)
+        }
+        return cell.convert(cell.bounds, to: self.view)
     }
 }

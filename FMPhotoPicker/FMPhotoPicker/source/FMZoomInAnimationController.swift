@@ -9,11 +9,7 @@
 import UIKit
 
 class FMZoomInAnimationController: NSObject, UIViewControllerAnimatedTransitioning {
-    private let originFrame: CGRect
-    
-    init(originFrame: CGRect) {
-        self.originFrame = originFrame
-    }
+    var getOriginFrame: (() -> CGRect)!
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.5
@@ -31,7 +27,7 @@ class FMZoomInAnimationController: NSObject, UIViewControllerAnimatedTransitioni
         let bgView = UIView(frame: containerView.frame)
         containerView.addSubview(bgView)
         containerView.addSubview(snapshot)
-        snapshot.frame = self.realDestinationFrame(scaledFrame: originFrame, realSize: snapshot.frame.size)
+        snapshot.frame = self.realDestinationFrame(scaledFrame: self.getOriginFrame(), realSize: snapshot.frame.size)
         
         containerView.addSubview(toVC.view)
         containerView.addSubview(snapshot)

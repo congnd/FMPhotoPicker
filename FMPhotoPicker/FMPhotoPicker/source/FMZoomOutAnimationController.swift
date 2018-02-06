@@ -11,11 +11,11 @@ import UIKit
 class FMZoomOutAnimationController: NSObject, UIViewControllerAnimatedTransitioning {
     var interactionInProgress = false
     
-    private let destinationFrame: CGRect
+    var getDestFrame: (() -> CGRect)!
+    
     let interactionController: FMPhotoInteractionAnimator?
     
-    init(destinationFrame: CGRect, interactionController: FMPhotoInteractionAnimator?) {
-        self.destinationFrame = destinationFrame
+    init(interactionController: FMPhotoInteractionAnimator?) {
         self.interactionController = interactionController
     }
     
@@ -51,7 +51,7 @@ class FMZoomOutAnimationController: NSObject, UIViewControllerAnimatedTransition
             options: .calculationModeCubic,
             animations: {
                 UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.9) {
-                    snapshot.frame = self.realDestinationFrame(scaledFrame: self.destinationFrame, realSize: snapshot.frame.size)
+                    snapshot.frame = self.realDestinationFrame(scaledFrame: self.getDestFrame(), realSize: snapshot.frame.size)
                 }
                 
                 UIView.addKeyframe(withRelativeStartTime: 0.9, relativeDuration: 0.1) {
