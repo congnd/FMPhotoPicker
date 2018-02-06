@@ -172,6 +172,8 @@ extension FMPhotoPickerViewController: UICollectionViewDelegate {
         let vc = FMPhotoPresenterViewController(dataSource: self.dataSource, initialPhotoIndex: indexPath.item)
         vc.view.frame = self.view.frame
         vc.transitioningDelegate = self
+        vc.modalPresentationStyle = .custom
+        vc.modalPresentationCapturesStatusBarAppearance = true
         self.present(vc, animated: true)
     }
 }
@@ -183,7 +185,22 @@ extension FMPhotoPickerViewController: UIViewControllerTransitioningDelegate {
     }
     
     public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        guard let cell = self.selectedCell else { return nil }
-        return FMZoomOutAnimationController(destinationFrame: cell.convert(cell.bounds, to: self.view))
+        guard let cell = self.selectedCell,
+            let photoPresenterViewController = dismissed as? FMPhotoPresenterViewController
+            else { return nil }
+        
+        return FMZoomOutAnimationController(destinationFrame: cell.convert(cell.bounds, to: self.view), interactionController: photoPresenterViewController.swipeInteractionController)
+    }
+    
+    open func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        guard let animator = animator as? FMZoomOutAnimationController,
+            let interactionController = animator.interactionController,
+            interactionController.interactionInProgress
+            else {
+                return nil
+        }
+        
+        interactionController.animator = animator
+        return interactionController
     }
 }

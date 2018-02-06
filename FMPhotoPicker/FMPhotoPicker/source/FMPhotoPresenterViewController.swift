@@ -14,16 +14,16 @@ class FMPhotoPresenterViewController: UIViewController {
     @IBOutlet weak var selectedIndex: UILabel!
     @IBOutlet weak var selectButton: UIButton!
     
+    private var interactiveDismissal: Bool = false
+    
+    var swipeInteractionController: FMPhotoInteractionAnimator?
+    
     private(set) var pageViewController: UIPageViewController!
     private var currentPhotoIndex: Int
     private var dataSource: FMPhotosDataSource
     private var currentPhotoViewController: FMPhotoViewController? {
         return pageViewController.viewControllers?.first as? FMPhotoViewController
     }
-    
-    private(set) lazy var panGestureRecognizer: UIPanGestureRecognizer = {
-        return UIPanGestureRecognizer(target: self, action: #selector(FMPhotoPresenterViewController.handlePanGestureRecognizer(_:)))
-    }()
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -54,7 +54,7 @@ class FMPhotoPresenterViewController: UIViewController {
         self.pageViewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.pageViewController.didMove(toParentViewController: self)
         
-        self.pageViewController.view.addGestureRecognizer(panGestureRecognizer)
+        swipeInteractionController = FMPhotoInteractionAnimator(viewController: self)
     }
     
     private func updateSelectionStatus() {
@@ -105,16 +105,6 @@ class FMPhotoPresenterViewController: UIViewController {
             self.dataSource.unsetSeclectedForPhoto(atIndex: currentPhotoIndex)
         }
         self.updateSelectionStatus()
-    }
-    
-    @objc private func handlePanGestureRecognizer(_ gestureRecognizer: UIPanGestureRecognizer) {
-        if gestureRecognizer.state == .began {
-//            interactiveDismissal = true
-            dismiss(animated: true, completion: nil)
-        } else {
-//            interactiveDismissal = false
-//            interactiveAnimator.handlePanWithPanGestureRecognizer(gestureRecognizer, viewToPan: pageViewController.view, anchorPoint: CGPoint(x: view.bounds.midX, y: view.bounds.midY))
-        }
     }
 }
 
