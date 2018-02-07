@@ -95,6 +95,7 @@ class FMPhotoPresenterViewController: UIViewController {
     
     private func initializaPhotoViewController(forPhoto photo: FMPhotoAsset) -> FMPhotoViewController {
         let photoViewController = FMPhotoViewController(withPhoto: photo)
+        photoViewController.dataSource = self.dataSource
         return photoViewController
     }
     
@@ -139,10 +140,15 @@ extension FMPhotoPresenterViewController: UIPageViewControllerDelegate, UIPageVi
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         guard completed,
             let vc = pageViewController.viewControllers?.first as? FMPhotoViewController,
-            let photoIndex = self.dataSource.index(ofPhoto: vc.photo) else { return }
+            let photoIndex = self.dataSource.index(ofPhoto: vc.photo)
+            else { return }
         
         self.currentPhotoIndex = photoIndex
         self.updateSelectionStatus()
         self.didMoveToViewControllerHandler?(vc, photoIndex)
+        previousViewControllers.forEach { vc in
+            guard let photoViewController = vc as? FMPhotoViewController else { return }
+            photoViewController.photo.cancelAllRequest()
+        }
     }
 }

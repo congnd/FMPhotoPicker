@@ -15,16 +15,19 @@ class Helper: NSObject {
         let options = PHImageRequestOptions()
         options.deliveryMode = .highQualityFormat
         options.resizeMode = .fast
-        options.isSynchronous = true
+        options.isSynchronous = false
         options.isNetworkAccessAllowed = true
         
-        return manager.requestImageData(for: asset, options: options) { data, _, _, _ in
+        let pId = manager.requestImageData(for: asset, options: options) { data, _, _, info in
             guard let data = data,
-                let image = UIImage(data: data) else {
+                let image = UIImage(data: data)
+                else {
                 return complete(nil)
             }
             complete(image)
         }
+//        manager.cancelImageRequest(pId)
+        return pId
     }
     
     static func getPhoto(by photoAsset: PHAsset, in desireSize: CGSize, complete: @escaping (UIImage?) -> Void) -> PHImageRequestID {    
@@ -38,9 +41,11 @@ class Helper: NSObject {
         let newSize = CGSize(width: desireSize.width,
                              height: desireSize.height)
         
-        return manager.requestImage(for: photoAsset, targetSize: newSize, contentMode: .aspectFill, options: options, resultHandler: { result, _ in
+        let pId = manager.requestImage(for: photoAsset, targetSize: newSize, contentMode: .aspectFill, options: options, resultHandler: { result, _ in
             complete(result)
         })
+//        manager.cancelImageRequest(pId)
+        return pId
     }
     
     static func attemptRequestPhotoLibAccess(dialogPresenter: UIViewController, ok: @escaping () -> Void) {

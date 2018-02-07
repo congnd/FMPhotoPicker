@@ -12,39 +12,56 @@ import Photos
 public class FMPhotoAsset {
     var asset: PHAsset
     var key: String
-//    var isSelected = false
+
     var thumb: UIImage?
-    var fullSizePhoto: UIImage?
-    var selectIndex = 0
+    var thumbRequestId: PHImageRequestID?
+    
+    private var fullSizePhoto: UIImage?
+    private var fullSizePhotoRequestId: PHImageRequestID?
     
     init(asset: PHAsset, key: String) {
         self.asset = asset
         self.key = "1"
     }
     
-    func requestThumb(_ complete: @escaping (UIImage?) -> Void) -> PHImageRequestID? {
+    func requestThumb(_ complete: @escaping (UIImage?) -> Void) {
         if let thumb = self.thumb {
             complete(thumb)
-            return nil
         } else {
-            let requestId = Helper.getPhoto(by: self.asset, in: CGSize(width: 300, height: 300)) { image in
+            self.thumbRequestId = Helper.getPhoto(by: self.asset, in: CGSize(width: 150, height: 150)) { image in
+                self.thumbRequestId = nil
                 self.thumb = image
                 complete(image)
             }
-            return requestId
         }
     }
     
-    func requestFullSizePhoto(complete: @escaping (UIImage?) -> Void) -> PHImageRequestID? {
+    func requestFullSizePhoto(complete: @escaping (UIImage?) -> Void) {
         if let fullSizePhoto = self.fullSizePhoto {
             complete(fullSizePhoto)
-            return nil
         } else {
-            let requestId = Helper.getFullSizePhoto(by: self.asset) { image in
+            self.fullSizePhotoRequestId = Helper.getFullSizePhoto(by: self.asset) { image in
+                self.fullSizePhotoRequestId = nil
                 self.fullSizePhoto = image
                 complete(self.fullSizePhoto)
             }
-            return requestId
+        }
+    }
+    
+    public func cancelAllRequest() {
+        self.cancelThumbRequest()
+        self.cancelFullSizePhotoRequest()
+    }
+    
+    public func cancelThumbRequest() {
+        if let thumbRequestId = self.thumbRequestId {
+            PHImageManager.default().cancelImageRequest(thumbRequestId)
+        }
+    }
+    
+    public func cancelFullSizePhotoRequest() {
+        if let fullSizePhotoRequestId = self.fullSizePhotoRequestId {
+            PHImageManager.default().cancelImageRequest(fullSizePhotoRequestId)
         }
     }
 }

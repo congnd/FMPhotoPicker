@@ -21,8 +21,6 @@ class FMPhotoPickerImageCollectionViewCell: UICollectionViewCell {
     
     private var photoAsset: FMPhotoAsset?
     
-    private var imageRequestID: PHImageRequestID?
-    
     public var onTapSelect = {}
     
     override func awakeFromNib() {
@@ -36,19 +34,15 @@ class FMPhotoPickerImageCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
 
         self.imageView.image = nil
-
-        let manager = PHImageManager.default()
-        guard let imageRequestID = self.imageRequestID else { return }
-        manager.cancelImageRequest(imageRequestID)
-        self.imageRequestID = nil
+        
+        self.photoAsset?.cancelAllRequest()
     }
     
     public func loadView(photoAsset: FMPhotoAsset, selectedIndex: Int?) {
         self.photoAsset = photoAsset
 
-        self.imageRequestID = photoAsset.requestThumb() { image in
+        photoAsset.requestThumb() { image in
             self.imageView.image = image
-            self.imageRequestID = nil
         }
         
         self.performSelectionAnimation(selectedIndex: selectedIndex)

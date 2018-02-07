@@ -14,7 +14,7 @@ class FMPhotoViewController: UIViewController {
     
     open var photo: FMPhotoAsset
     
-    private var imageRequestId: PHImageRequestID?
+    public var dataSource: FMPhotosDataSource!
     
     lazy private(set) var doubleTapGestureRecognizer: UITapGestureRecognizer = {
         let gesture = UITapGestureRecognizer(target: self, action: #selector(FMPhotoViewController.handleDoubleTapWithGestureRecognizer(_:)))
@@ -32,9 +32,7 @@ class FMPhotoViewController: UIViewController {
     }
     
     deinit {
-        if let imageRequestId = self.imageRequestId {
-           PHImageManager.default().cancelImageRequest(imageRequestId)
-        }
+        self.photo.cancelAllRequest()
     }
     
     override func viewDidLoad() {
@@ -48,17 +46,22 @@ class FMPhotoViewController: UIViewController {
 
         self.view.addSubview(self.scalingImageView)
 
-        self.imageRequestId = self.photo.requestThumb() { image in
+        self.photo.requestThumb() { image in
             self.scalingImageView.image = image
-            self.imageRequestId = self.photo.requestFullSizePhoto() { fullSizeImage in
-                self.scalingImageView.image = fullSizeImage
-            }
         }
         
         view.addGestureRecognizer(doubleTapGestureRecognizer)
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        self.photo.requestFullSizePhoto() { fullSizeImage in
+            self.scalingImageView.image = fullSizeImage
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.photo.cancelAllRequest()
     }
     
     open override func viewWillLayoutSubviews() {
