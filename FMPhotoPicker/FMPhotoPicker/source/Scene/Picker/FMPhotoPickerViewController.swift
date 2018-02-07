@@ -18,15 +18,7 @@ public class FMPhotoPickerViewController: UIViewController {
     @IBOutlet weak var numberOfSelectedPhotoContainer: UIView!
     @IBOutlet weak var numberOfSelectedPhoto: UILabel!
     
-    @IBOutlet weak var controlbarConstraintTop: NSLayoutConstraint!
-    
-//    lazy var photoAssets = [FMPhotoAsset]()
-//    private var selectedPhotoIndexes = [Int]()
-    
     private var dataSource: FMPhotosDataSource!
-    
-    private let defaultSize = CGSize(width: 1000, height: 2000)
-    private var selectedCell: FMPhotoPickerImageCollectionViewCell?
     
     public weak var delegate: FMPhotoPickerViewControllerDelegate? = nil
     
@@ -115,12 +107,6 @@ public class FMPhotoPickerViewController: UIViewController {
     }
 }
 
-//extension FMPhotoPickerViewController: UIGestureRecognizerDelegate {
-//    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-//        return true
-//    }
-//}
-
 extension FMPhotoPickerViewController: UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let total = self.dataSource?.numberOfPhotos {
@@ -170,7 +156,6 @@ extension FMPhotoPickerViewController: UICollectionViewDataSource {
 extension FMPhotoPickerViewController: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) as? FMPhotoPickerImageCollectionViewCell else { return }
-        self.selectedCell = cell
         let vc = FMPhotoPresenterViewController(dataSource: self.dataSource, initialPhotoIndex: indexPath.item)
         
         self.presentedPhotoIndex = indexPath.item
