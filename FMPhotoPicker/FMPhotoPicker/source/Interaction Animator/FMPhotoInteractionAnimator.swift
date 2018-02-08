@@ -62,6 +62,7 @@ class FMPhotoInteractionAnimator: NSObject, UIViewControllerInteractiveTransitio
         fromView.backgroundColor = fromView.backgroundColor?.withAlphaComponent(backgroundAlpha)
         
         if gestureRecognizer.state == .ended {
+            interactionInProgress = false
             finishPanWithPanGestureRecognizer(gestureRecognizer, verticalDelta: verticalDelta,viewToPan: viewToPan, anchorPoint: anchorPoint)
         }
     }
