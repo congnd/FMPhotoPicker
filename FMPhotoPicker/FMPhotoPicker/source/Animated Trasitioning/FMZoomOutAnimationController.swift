@@ -64,6 +64,14 @@ class FMZoomOutAnimationController: NSObject, UIViewControllerAnimatedTransition
                 if transitionContext.transitionWasCancelled {
                     toVC.view.removeFromSuperview()
                 }
+                
+                if transitionContext.isInteractive {
+                    if transitionContext.transitionWasCancelled {
+                        transitionContext.cancelInteractiveTransition()
+                    } else {
+                        transitionContext.finishInteractiveTransition()
+                    }
+                }
                 transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
         })
     }

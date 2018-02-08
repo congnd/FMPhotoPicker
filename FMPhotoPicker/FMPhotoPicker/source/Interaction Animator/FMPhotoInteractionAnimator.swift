@@ -115,12 +115,8 @@ class FMPhotoInteractionAnimator: NSObject, UIViewControllerInteractiveTransitio
                     self.transitionContext?.finishInteractiveTransition()
                 } else {
                     self.transitionContext?.cancelInteractiveTransition()
-//                    if !self.isRadar20070670Fixed() {
-//                        self.fixCancellationStatusBarAppearanceBug()
-//                    }
                 }
                 
-//                self.viewToHideWhenBeginningTransition?.alpha = 1.0
                 self.transitionContext?.completeTransition(isDismissing && !(self.transitionContext?.transitionWasCancelled ?? false))
                 self.transitionContext = nil
             })
@@ -128,10 +124,6 @@ class FMPhotoInteractionAnimator: NSObject, UIViewControllerInteractiveTransitio
     }
     
     private func backgroundAlphaForPanningWithVerticalDelta(_ delta: CGFloat) -> CGFloat {
-        guard let fromView = transitionContext?.view(forKey: UITransitionContextViewKey.from) else {
-            return 0.0
-        }
-        
         return 1 - max(min(abs(delta) / 400, 1.0), 0.2)
     }
 }

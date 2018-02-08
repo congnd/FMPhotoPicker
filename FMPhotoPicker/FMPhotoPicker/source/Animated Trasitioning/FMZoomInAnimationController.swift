@@ -61,6 +61,14 @@ class FMZoomInAnimationController: NSObject, UIViewControllerAnimatedTransitioni
                                     toVC.view.isHidden = false
                                     snapshot.removeFromSuperview()
                                     bgView.removeFromSuperview()
+                                    
+                                    if transitionContext.isInteractive {
+                                        if transitionContext.transitionWasCancelled {
+                                            transitionContext.cancelInteractiveTransition()
+                                        } else {
+                                            transitionContext.finishInteractiveTransition()
+                                        }
+                                    }
                                     transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
         })
     }
