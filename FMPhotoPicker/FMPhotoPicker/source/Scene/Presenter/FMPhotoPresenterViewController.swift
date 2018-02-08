@@ -59,6 +59,7 @@ class FMPhotoPresenterViewController: UIViewController {
         self.pageViewController.didMove(toParentViewController: self)
         
         swipeInteractionController = FMPhotoInteractionAnimator(viewController: self)
+        self.view.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
     }
     
     private func updateSelectionStatus() {

@@ -125,7 +125,7 @@ class FMPhotoInteractionAnimator: NSObject, UIViewControllerInteractiveTransitio
     }
     
     private func backgroundAlphaForPanningWithVerticalDelta(_ delta: CGFloat) -> CGFloat {
-        return 1 - max(min(abs(delta) / 400, 1.0), 0.2)
+        return 1 - min(abs(delta) / 400, 1.0)
     }
 }
 

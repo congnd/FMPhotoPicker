@@ -35,7 +35,7 @@ class FMZoomInAnimationController: NSObject, UIViewControllerAnimatedTransitioni
         toVC.view.isHidden = true
         
         snapshot.alpha = 0
-        bgView.backgroundColor = .white
+        bgView.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
         bgView.alpha = 0
         
         let duration = transitionDuration(using: transitionContext)
