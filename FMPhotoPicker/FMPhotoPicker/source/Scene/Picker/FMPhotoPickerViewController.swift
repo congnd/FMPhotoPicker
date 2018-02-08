@@ -77,25 +77,25 @@ public class FMPhotoPickerViewController: UIViewController {
     }
     
     @IBAction func onTapNextStep(_ sender: Any) {
-//        var result = [UIImage]()
-//
-//        DispatchQueue.global(qos: .userInitiated).async {
-//            let multiTask = DispatchGroup()
-//            self.selectedPhotoIndexes.forEach() {
-//                multiTask.enter()
-//                _ = Helper.getPhoto(by: self.photoAssets[$0].asset, in: self.defaultSize) { image in
-//                    guard let image = image else { return }
-//                    result.append(image)
-//                    multiTask.leave()
-//                }
-//            }
-//
-//            multiTask.wait()
-//
-//            DispatchQueue.main.async {
-//                self.delegate?.fmPhotoPickerController(self, didFinishPickingPhotoWith: result)
-//            }
-//        }
+        var dict = [Int:UIImage]()
+
+        DispatchQueue.global(qos: .userInitiated).async {
+            let multiTask = DispatchGroup()
+            for (index, element) in self.dataSource.getSelectedPhotos().enumerated() {
+                multiTask.enter()
+                element.requestFullSizePhoto() {
+                    guard let image = $0 else { return }
+                    dict[index] = image
+                    multiTask.leave()
+                }
+            }
+            multiTask.wait()
+            
+            let result = dict.sorted(by: { $0.key < $1.key }).map { $0.value }
+            DispatchQueue.main.async {
+                self.delegate?.fmPhotoPickerController(self, didFinishPickingPhotoWith: result)
+            }
+        }
     }
     
     // MARK: - Logic

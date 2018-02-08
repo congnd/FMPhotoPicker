@@ -41,7 +41,15 @@ class FMPhotosDataSource {
         return Array(self.selectedPhotoIndexes[changedIndex...])
     }
 
-    
+    public func getSelectedPhotos() -> [FMPhotoAsset] {
+        var result = [FMPhotoAsset]()
+        self.selectedPhotoIndexes.forEach {
+            if let photo = self.photo(atIndex: $0) {
+                result.append(photo)
+            }
+        }
+        return result
+    }
     
     public var numberOfPhotos: Int {
         return self.photoAssets.count
