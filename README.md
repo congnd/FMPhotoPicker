@@ -1,7 +1,7 @@
 # FMPhotoPicker
 
 
-## Instalation
+## Installation
 
 Insert the following line in your Carthfile:
 ```
