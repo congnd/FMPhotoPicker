@@ -55,7 +55,9 @@ class FMPhotoViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.photo.requestFullSizePhoto() { fullSizeImage in
-            self.scalingImageView.image = fullSizeImage
+            if let fullSizeImage = fullSizeImage {
+                self.scalingImageView.image = fullSizeImage
+            }
         }
     }
     

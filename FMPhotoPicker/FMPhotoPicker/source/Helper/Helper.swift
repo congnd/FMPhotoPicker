@@ -13,7 +13,7 @@ class Helper: NSObject {
     static func getFullSizePhoto(by asset: PHAsset, complete: @escaping (UIImage?) -> Void) -> PHImageRequestID {
         let manager = PHImageManager.default()
         let options = PHImageRequestOptions()
-        options.deliveryMode = .highQualityFormat
+        options.deliveryMode = .opportunistic
         options.resizeMode = .fast
         options.isSynchronous = false
         options.isNetworkAccessAllowed = true

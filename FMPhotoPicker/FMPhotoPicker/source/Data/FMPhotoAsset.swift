@@ -19,6 +19,13 @@ public class FMPhotoAsset {
     private var fullSizePhoto: UIImage?
     private var fullSizePhotoRequestId: PHImageRequestID?
     
+    /**
+     Indicates whether the request for the full size image was canceled.
+     A workaround for this issue:
+     https://stackoverflow.com/questions/48657304/phimagemanagers-cancelimagerequest-does-not-work-as-expected?noredirect=1#comment84332723_48657304
+     */
+    private var canceledFullSizeRequest = false
+    
     init(asset: PHAsset, key: String) {
         self.asset = asset
         self.key = "1"
@@ -42,8 +49,13 @@ public class FMPhotoAsset {
         } else {
             self.fullSizePhotoRequestId = Helper.getFullSizePhoto(by: self.asset) { image in
                 self.fullSizePhotoRequestId = nil
-                self.fullSizePhoto = image
-                complete(self.fullSizePhoto)
+//                self.fullSizePhoto = image
+                if self.canceledFullSizeRequest {
+                    self.canceledFullSizeRequest = false
+                    complete(nil)
+                } else {
+                    complete(image)
+                }
             }
         }
     }
@@ -62,6 +74,7 @@ public class FMPhotoAsset {
     public func cancelFullSizePhotoRequest() {
         if let fullSizePhotoRequestId = self.fullSizePhotoRequestId {
             PHImageManager.default().cancelImageRequest(fullSizePhotoRequestId)
+            self.canceledFullSizeRequest = true
         }
     }
 }
