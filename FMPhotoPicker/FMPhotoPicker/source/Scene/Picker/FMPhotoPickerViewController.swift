@@ -18,7 +18,15 @@ public class FMPhotoPickerViewController: UIViewController {
     @IBOutlet weak var numberOfSelectedPhotoContainer: UIView!
     @IBOutlet weak var numberOfSelectedPhoto: UILabel!
     
-    private var dataSource: FMPhotosDataSource!
+    private lazy var batchSelector: FMPhotoPickerBatchSelector = {
+        return FMPhotoPickerBatchSelector(viewController: self, collectionView: self.imageCollectionView, dataSource: self.dataSource)
+    }()
+    
+    private var dataSource: FMPhotosDataSource! {
+        didSet {
+            self.batchSelector.enable()
+        }
+    }
     
     public weak var delegate: FMPhotoPickerViewControllerDelegate? = nil
     
@@ -137,7 +145,7 @@ extension FMPhotoPickerViewController: UICollectionViewDataSource {
         return cell
     }
     
-    private func updateControlBar() {
+    public func updateControlBar() {
         if self.dataSource.numberOfSelectedPhoto() > 0 {
             self.numberOfSelectedPhotoContainer.isHidden = false
             self.numberOfSelectedPhoto.text = "\(self.dataSource.numberOfSelectedPhoto())"
