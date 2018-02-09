@@ -11,7 +11,6 @@ import Photos
 
 public class FMPhotoAsset {
     var asset: PHAsset
-    var key: String
 
     var thumb: UIImage?
     var thumbRequestId: PHImageRequestID?
@@ -26,9 +25,8 @@ public class FMPhotoAsset {
      */
     private var canceledFullSizeRequest = false
     
-    init(asset: PHAsset, key: String) {
+    init(asset: PHAsset) {
         self.asset = asset
-        self.key = "1"
     }
     
     func requestThumb(_ complete: @escaping (UIImage?) -> Void) {

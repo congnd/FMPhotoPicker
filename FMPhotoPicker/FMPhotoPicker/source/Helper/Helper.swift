@@ -48,48 +48,51 @@ class Helper: NSObject {
         return pId
     }
     
-    static func attemptRequestPhotoLibAccess(dialogPresenter: UIViewController, ok: @escaping () -> Void) {
-        if PHPhotoLibrary.authorizationStatus() == .authorized {
-            ok()
-        } else {
-            let requestCameraAccessRight: () -> Void = {
-                let comletionHandler: (PHAuthorizationStatus) -> Void = { status in
-                    DispatchQueue.main.async {
-                        if status == .authorized {
-                            ok()
-                        } else {
-                            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
-                        }
-                    }
+    static func getAssets() -> [PHAsset] {
+        let fetchOptions = PHFetchOptions()
+        fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        
+        let fetchResult = PHAsset.fetchAssets(with: fetchOptions)
+        
+        guard fetchResult.count > 0 else { return [] }
+        
+        var photoAssets = [PHAsset]()
+        fetchResult.enumerateObjects() { asset, index, _ in
+            photoAssets.append(asset)
+        }
+        
+        return photoAssets
+    }
+    
+    static func canAccessPhotoLib() -> Bool {
+        return PHPhotoLibrary.authorizationStatus() == .authorized
+    }
+    
+    static func openIphoneSetting() {
+        UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+    }
+    
+    static func requestAuthorizationForPhotoAccess(authorized: @escaping () -> Void, rejected: @escaping () -> Void) {
+        PHPhotoLibrary.requestAuthorization { status in
+            DispatchQueue.main.async {
+                if status == .authorized {
+                    authorized()
+                } else {
+                    rejected()
                 }
-                
-                // attempt to request access
-                PHPhotoLibrary.requestAuthorization(comletionHandler)
             }
-            self.showDialog(in: dialogPresenter,
-                            title: "FMPhotoPicker",
-                            message: "Give me permission",
-                            ok: requestCameraAccessRight,
-                            cancel: {})
         }
     }
     
     static func showDialog(in viewController: UIViewController,
-                           title: String,
-                           message: String,
-                           ok: (() -> Void)?,
-                           cancel: (() -> Void)?) {
+                           ok: (() -> Void)? = nil,
+                           cancel: (() -> Void)? = nil,
+                           title: String = "FMPhotoPicker",
+                           message: String = "FMPhotoPicker want to access Photo Library") {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
-        if ok != nil {
-            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
-                ok!()
-                
-            }))
-        }
-        if cancel != nil {
-            alertController.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: { _ in cancel!() }))
-        }
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in ok?() }))
+        alertController.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: { _ in cancel?() }))
 
         viewController.present(alertController, animated: true)
     }

@@ -32,12 +32,6 @@ public class FMPhotoPickerViewController: UIViewController {
     
     private var presentedPhotoIndex: Int?
     
-    internal lazy var fetchOptions: PHFetchOptions = {
-        let fetchOptions = PHFetchOptions()
-        fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-        return fetchOptions
-    }()
-    
     override public func loadView() {
         if let view = UINib(nibName: "FMPhotoPickerViewController", bundle: Bundle(for: self.classForCoder)).instantiate(withOwner: self, options: nil).first as? UIView {
             self.view = view
@@ -53,7 +47,7 @@ public class FMPhotoPickerViewController: UIViewController {
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if self.dataSource == nil {
-            self.fetchPhotos()
+            self.requestAndFetchAssets()
         } else {
             self.imageCollectionView.reloadData()
             self.updateControlBar()
@@ -99,19 +93,22 @@ public class FMPhotoPickerViewController: UIViewController {
     }
     
     // MARK: - Logic
+    private func requestAndFetchAssets() {
+        if Helper.canAccessPhotoLib() {
+            self.fetchPhotos()
+        } else {
+            Helper.showDialog(in: self, ok: {
+                Helper.requestAuthorizationForPhotoAccess(authorized: self.fetchPhotos, rejected: Helper.openIphoneSetting)
+            })
+        }
+    }
+    
     private func fetchPhotos() {
-        Helper.attemptRequestPhotoLibAccess(dialogPresenter: self, ok: { [weak self] in
-            let fetchResult = PHAsset.fetchAssets(with: self?.fetchOptions)
-            
-            guard let strongSelf = self, fetchResult.count > 0 else { return }
-            var photoAssets = [FMPhotoAsset]()
-            fetchResult.enumerateObjects() { asset, index, _ in
-                photoAssets.append(FMPhotoAsset(asset: asset, key: "\(index)"))
-            }
-            strongSelf.dataSource = FMPhotosDataSource(photoAssets: photoAssets)
-            
-            self!.imageCollectionView.reloadData()
-        })
+        let photoAssets = Helper.getAssets()
+        let fmPhotoAssets = photoAssets.map { FMPhotoAsset(asset: $0) }
+        self.dataSource = FMPhotosDataSource(photoAssets: fmPhotoAssets)
+        
+        self.imageCollectionView.reloadData()
     }
 }
 
