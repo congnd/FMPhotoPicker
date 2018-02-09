@@ -154,6 +154,11 @@ extension FMPhotoPickerViewController: UICollectionViewDataSource {
         }
     }
     
+    /**
+     Reload all photocells that behind the deselected photocell
+     - parameters:
+        - changedIndex: The index of the deselected photocell in the selected list
+     */
     private func reloadAffectedCellByChangingSelection(changedIndex: Int) {
         let affectedList = self.dataSource.affectedSelectedIndexs(changedIndex: changedIndex)
         let indexPaths = affectedList.map { return IndexPath(row: $0, section: 0) }
@@ -168,12 +173,17 @@ extension FMPhotoPickerViewController: UICollectionViewDelegate {
         self.presentedPhotoIndex = indexPath.item
         
         vc.didSelectPhotoHandler = { photoIndex in
+            self.dataSource.setSeletedForPhoto(atIndex: photoIndex)
             self.imageCollectionView.reloadItems(at: [IndexPath(row: photoIndex, section: 0)])
             self.updateControlBar()
         }
         vc.didDeselectPhotoHandler = { photoIndex in
-            self.imageCollectionView.reloadItems(at: [IndexPath(row: photoIndex, section: 0)])
-            self.updateControlBar()
+            if let selectedIndex = self.dataSource.selectedIndexOfPhoto(atIndex: photoIndex) {
+                self.dataSource.unsetSeclectedForPhoto(atIndex: photoIndex)
+                self.reloadAffectedCellByChangingSelection(changedIndex: selectedIndex)
+                self.imageCollectionView.reloadItems(at: [IndexPath(row: photoIndex, section: 0)])
+                self.updateControlBar()
+            }
         }
         vc.didMoveToViewControllerHandler = { vc, photoIndex in
             self.presentedPhotoIndex = photoIndex

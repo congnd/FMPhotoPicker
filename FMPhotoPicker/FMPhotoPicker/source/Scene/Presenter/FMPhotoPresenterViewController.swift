@@ -121,10 +121,8 @@ class FMPhotoPresenterViewController: UIViewController {
     }
     @IBAction func onTapSelection(_ sender: Any) {
         if self.dataSource.selectedIndexOfPhoto(atIndex: self.currentPhotoIndex) == nil {
-            self.dataSource.setSeletedForPhoto(atIndex: self.currentPhotoIndex)
             self.didSelectPhotoHandler?(self.currentPhotoIndex)
         } else {
-            self.dataSource.unsetSeclectedForPhoto(atIndex: currentPhotoIndex)
             self.didDeselectPhotoHandler?(currentPhotoIndex)
         }
         self.updateInfoBar()
