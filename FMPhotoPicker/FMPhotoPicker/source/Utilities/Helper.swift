@@ -48,10 +48,10 @@ class Helper: NSObject {
         return pId
     }
     
-    static func getAssets() -> [PHAsset] {
+    static func getAssets(allowMediaTypes: [FMMediaType]) -> [PHAsset] {
         let fetchOptions = PHFetchOptions()
         fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-        fetchOptions.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
+        fetchOptions.predicate = NSPredicate(format: "mediaType IN %@", allowMediaTypes.map( { $0.value() }))
         
         let fetchResult = PHAsset.fetchAssets(with: fetchOptions)
         

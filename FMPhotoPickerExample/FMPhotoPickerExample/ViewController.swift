@@ -26,7 +26,13 @@ class ViewController: UIViewController, FMPhotoPickerViewControllerDelegate {
     }
 
     @IBAction func open(_ sender: Any) {
-        let config = FMPhotoPickerConfig()
+        // init with default options
+//        let config = FMPhotoPickerConfig()
+        
+        // init with custom options
+        let config = FMPhotoPickerConfig(mediaTypes: [.video],
+                                         maxImageSelections: 10,
+                                         maxVideoSelections: 10)
         
         let vc = FMPhotoPickerViewController(config: config)
         vc.delegate = self

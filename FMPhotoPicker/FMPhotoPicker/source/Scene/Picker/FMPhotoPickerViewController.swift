@@ -109,7 +109,7 @@ public class FMPhotoPickerViewController: UIViewController {
     }
     
     private func fetchPhotos() {
-        let photoAssets = Helper.getAssets()
+        let photoAssets = Helper.getAssets(allowMediaTypes: self.config.mediaTypes)
         let fmPhotoAssets = photoAssets.map { FMPhotoAsset(asset: $0) }
         self.dataSource = FMPhotosDataSource(photoAssets: fmPhotoAssets)
         

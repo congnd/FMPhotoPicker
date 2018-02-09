@@ -7,10 +7,20 @@
 //
 
 import Foundation
+import Photos
 
 public enum FMMediaType: Int {
     case image = 1
     case video = 2
+    
+    public func value() -> Int {
+        switch self {
+        case .image:
+            return PHAssetMediaType.image.rawValue
+        case .video:
+            return PHAssetMediaType.video.rawValue
+        }
+    }
 }
 
 public struct FMPhotoPickerConfig {
