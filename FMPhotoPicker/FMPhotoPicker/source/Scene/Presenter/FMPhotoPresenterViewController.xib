@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FMPhotoPresenterViewController" customModule="FMPhotoPicker" customModuleProvider="target">
             <connections>
+                <outlet property="photoTitle" destination="InV-Qk-6JZ" id="c1D-9s-YXa"/>
                 <outlet property="selectButton" destination="fok-2X-Dem" id="iIn-Ut-yVk"/>
                 <outlet property="selectedContainer" destination="o05-8f-eoM" id="E4p-u5-K5W"/>
                 <outlet property="selectedIndex" destination="T1c-ye-Rne" id="4Km-NI-to0"/>

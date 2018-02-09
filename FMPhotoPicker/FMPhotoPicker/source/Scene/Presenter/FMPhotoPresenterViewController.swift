@@ -10,6 +10,7 @@ import UIKit
 
 class FMPhotoPresenterViewController: UIViewController {
     
+    @IBOutlet weak var photoTitle: UILabel!
     @IBOutlet weak var selectedContainer: UIView!
     @IBOutlet weak var selectedIndex: UILabel!
     @IBOutlet weak var selectButton: UIButton!
@@ -28,6 +29,13 @@ class FMPhotoPresenterViewController: UIViewController {
     private var currentPhotoViewController: FMPhotoViewController? {
         return pageViewController.viewControllers?.first as? FMPhotoViewController
     }
+    
+    private lazy var formatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy年M月d日"
+        formatter.calendar = Calendar(identifier: .gregorian)
+        return formatter
+    }()
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -50,7 +58,7 @@ class FMPhotoPresenterViewController: UIViewController {
         
         self.selectedContainer.layer.cornerRadius = self.selectedContainer.frame.size.width / 2
         
-        self.updateSelectionStatus()
+        self.updateInfoBar()
         
         self.addChildViewController(self.pageViewController)
         self.view.addSubview(pageViewController.view)
@@ -62,7 +70,8 @@ class FMPhotoPresenterViewController: UIViewController {
         self.view.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
     }
     
-    private func updateSelectionStatus() {
+    private func updateInfoBar() {
+        // Update selection status
         if let selectedIndex = self.dataSource.selectedIndexOfPhoto(atIndex: self.currentPhotoIndex) {
             self.selectedIndex.text = "\(selectedIndex + 1)"
             self.selectedContainer.isHidden = false
@@ -70,6 +79,12 @@ class FMPhotoPresenterViewController: UIViewController {
         } else {
             self.selectedContainer.isHidden = true
             self.selectButton.setTitle("選択", for: .normal)
+        }
+        
+        // Update photo title
+        if let photoAsset = self.dataSource.photo(atIndex: self.currentPhotoIndex),
+            let creationDate = photoAsset.asset.creationDate {
+            self.photoTitle.text = self.formatter.string(from: creationDate)
         }
     }
     
@@ -91,7 +106,7 @@ class FMPhotoPresenterViewController: UIViewController {
         let photoViewController = initializaPhotoViewController(forPhoto: photo)
         self.pageViewController.setViewControllers([photoViewController], direction: .forward, animated: true, completion: nil)
         
-        // TODO: update photo info
+        self.updateInfoBar()
     }
     
     private func initializaPhotoViewController(forPhoto photo: FMPhotoAsset) -> FMPhotoViewController {
@@ -112,7 +127,7 @@ class FMPhotoPresenterViewController: UIViewController {
             self.dataSource.unsetSeclectedForPhoto(atIndex: currentPhotoIndex)
             self.didDeselectPhotoHandler?(currentPhotoIndex)
         }
-        self.updateSelectionStatus()
+        self.updateInfoBar()
     }
 }
 
@@ -145,7 +160,7 @@ extension FMPhotoPresenterViewController: UIPageViewControllerDelegate, UIPageVi
             else { return }
         
         self.currentPhotoIndex = photoIndex
-        self.updateSelectionStatus()
+        self.updateInfoBar()
         self.didMoveToViewControllerHandler?(vc, photoIndex)
         previousViewControllers.forEach { vc in
             guard let photoViewController = vc as? FMPhotoViewController else { return }
