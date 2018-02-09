@@ -26,9 +26,14 @@ class ViewController: UIViewController, FMPhotoPickerViewControllerDelegate {
     }
 
     @IBAction func open(_ sender: Any) {
-        let vc = FMPhotoPickerViewController()
+        let config = FMPhotoPickerConfig()
+        
+        let vc = FMPhotoPickerViewController(config: config)
         vc.delegate = self
         self.present(vc, animated: true)
+        
+
+        
     }
     
 }

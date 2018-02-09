@@ -18,6 +18,17 @@ public class FMPhotoPickerViewController: UIViewController {
     @IBOutlet weak var numberOfSelectedPhotoContainer: UIView!
     @IBOutlet weak var numberOfSelectedPhoto: UILabel!
     
+    private let config: FMPhotoPickerConfig
+    
+    public init(config: FMPhotoPickerConfig) {
+        self.config = config
+        super.init(nibName: "FMPhotoPickerViewController", bundle: Bundle(for: type(of: self)))
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     private lazy var batchSelector: FMPhotoPickerBatchSelector = {
         return FMPhotoPickerBatchSelector(viewController: self, collectionView: self.imageCollectionView, dataSource: self.dataSource)
     }()
@@ -31,12 +42,6 @@ public class FMPhotoPickerViewController: UIViewController {
     public weak var delegate: FMPhotoPickerViewControllerDelegate? = nil
     
     private var presentedPhotoIndex: Int?
-    
-    override public func loadView() {
-        if let view = UINib(nibName: "FMPhotoPickerViewController", bundle: Bundle(for: self.classForCoder)).instantiate(withOwner: self, options: nil).first as? UIView {
-            self.view = view
-        }
-    }
     
     // MARK: - Life cycle
     override public func viewDidLoad() {

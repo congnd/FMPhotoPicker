@@ -15,6 +15,7 @@
                 <outlet property="imageCollectionView" destination="OL2-Hq-SBY" id="OEv-0k-kpd"/>
                 <outlet property="numberOfSelectedPhoto" destination="WUE-Oy-OeG" id="HpE-Xa-SeM"/>
                 <outlet property="numberOfSelectedPhotoContainer" destination="Sev-Wd-rWB" id="D5a-HJ-83x"/>
+                <outlet property="view" destination="iN0-l3-epB" id="8uH-TI-1jl"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>

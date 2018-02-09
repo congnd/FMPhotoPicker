@@ -51,6 +51,7 @@ class Helper: NSObject {
     static func getAssets() -> [PHAsset] {
         let fetchOptions = PHFetchOptions()
         fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        fetchOptions.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
         
         let fetchResult = PHAsset.fetchAssets(with: fetchOptions)
         
