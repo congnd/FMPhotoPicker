@@ -30,7 +30,7 @@ class ViewController: UIViewController, FMPhotoPickerViewControllerDelegate {
 //        let config = FMPhotoPickerConfig()
         
         // init with custom options
-        let config = FMPhotoPickerConfig(mediaTypes: [.video],
+        let config = FMPhotoPickerConfig(mediaTypes: [.image],
                                          maxImageSelections: 10,
                                          maxVideoSelections: 10)
         

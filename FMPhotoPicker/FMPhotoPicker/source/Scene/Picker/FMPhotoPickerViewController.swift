@@ -76,6 +76,8 @@ public class FMPhotoPickerViewController: UIViewController {
     }
     
     @IBAction func onTapNextStep(_ sender: Any) {
+        FMLoadingView.shared.show()
+        
         var dict = [Int:UIImage]()
 
         DispatchQueue.global(qos: .userInitiated).async {
@@ -92,6 +94,7 @@ public class FMPhotoPickerViewController: UIViewController {
             
             let result = dict.sorted(by: { $0.key < $1.key }).map { $0.value }
             DispatchQueue.main.async {
+                FMLoadingView.shared.hide()
                 self.delegate?.fmPhotoPickerController(self, didFinishPickingPhotoWith: result)
             }
         }
