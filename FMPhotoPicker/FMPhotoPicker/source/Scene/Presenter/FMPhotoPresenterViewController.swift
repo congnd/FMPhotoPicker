@@ -75,10 +75,16 @@ class FMPhotoPresenterViewController: UIViewController {
         if let selectedIndex = self.dataSource.selectedIndexOfPhoto(atIndex: self.currentPhotoIndex) {
             self.selectedIndex.text = "\(selectedIndex + 1)"
             self.selectedContainer.isHidden = false
-            self.selectButton.setTitle("選択削除", for: .normal)
+            UIView.performWithoutAnimation {
+                self.selectButton.setTitle("選択削除", for: .normal)
+                self.selectButton.layoutIfNeeded()
+            }
         } else {
             self.selectedContainer.isHidden = true
-            self.selectButton.setTitle("選択", for: .normal)
+            UIView.performWithoutAnimation {
+                self.selectButton.setTitle("選択", for: .normal)
+                self.selectButton.layoutIfNeeded()
+            }
         }
         
         // Update photo title
