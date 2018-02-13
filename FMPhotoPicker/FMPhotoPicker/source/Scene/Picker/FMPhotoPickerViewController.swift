@@ -141,8 +141,7 @@ extension FMPhotoPickerViewController: UICollectionViewDataSource {
                 cell.performSelectionAnimation(selectedIndex: nil)
                 self.reloadAffectedCellByChangingSelection(changedIndex: selectedIndex)
             } else {
-                self.dataSource.setSeletedForPhoto(atIndex: indexPath.item)
-                cell.performSelectionAnimation(selectedIndex: self.dataSource.numberOfSelectedPhoto() - 1)
+                self.tryToAddPhotoToSelectedList(photoIndex: indexPath.item)
             }
             self.updateControlBar()
         }
@@ -169,6 +168,39 @@ extension FMPhotoPickerViewController: UICollectionViewDataSource {
         let indexPaths = affectedList.map { return IndexPath(row: $0, section: 0) }
         self.imageCollectionView.reloadItems(at: indexPaths)
     }
+    
+    /**
+     Try to insert the photo at specify index to selectd list.
+     If the current number of select image/video does not exceed the maximum number specified in the Config,
+     the photo will be added to selected list. Otherwise, a warning dialog will be displayed and NOTHING will be added.
+     */
+    public func tryToAddPhotoToSelectedList(photoIndex index: Int) {
+        guard let phMediaType = self.dataSource.mediaTypeForPhoto(atIndex: index),
+            let fmMediaType = FMMediaType(withPHAssetMediaType: phMediaType) else { return }
+        var canBeAdded = true
+        switch fmMediaType {
+        case .image:
+            if self.dataSource.countSelectedPhoto(byType: .image) >= self.config.maxImageSelections {
+                canBeAdded = false
+                let warning = FMWarningView.shared
+                warning.message = "画像は最大\(self.config.maxImageSelections)個まで選択できます。"
+                warning.showAndAutoHide()
+            }
+        case .video:
+            if self.dataSource.countSelectedPhoto(byType: .video) >= self.config.maxVideoSelections {
+                canBeAdded = false
+                let warning = FMWarningView.shared
+                warning.message = "動画は最大\(self.config.maxVideoSelections)個まで選択できます。"
+                warning.showAndAutoHide()
+            }
+        }
+        
+        if canBeAdded {
+            self.dataSource.setSeletedForPhoto(atIndex: index)
+            self.imageCollectionView.reloadItems(at: [IndexPath(row: index, section: 0)])
+            self.updateControlBar()
+        }
+    }
 }
 
 extension FMPhotoPickerViewController: UICollectionViewDelegate {
@@ -178,9 +210,7 @@ extension FMPhotoPickerViewController: UICollectionViewDelegate {
         self.presentedPhotoIndex = indexPath.item
         
         vc.didSelectPhotoHandler = { photoIndex in
-            self.dataSource.setSeletedForPhoto(atIndex: photoIndex)
-            self.imageCollectionView.reloadItems(at: [IndexPath(row: photoIndex, section: 0)])
-            self.updateControlBar()
+            self.tryToAddPhotoToSelectedList(photoIndex: photoIndex)
         }
         vc.didDeselectPhotoHandler = { photoIndex in
             if let selectedIndex = self.dataSource.selectedIndexOfPhoto(atIndex: photoIndex) {

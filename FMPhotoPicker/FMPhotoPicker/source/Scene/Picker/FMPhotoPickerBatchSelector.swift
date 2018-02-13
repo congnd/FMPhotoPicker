@@ -73,7 +73,7 @@ class FMPhotoPickerBatchSelector: NSObject {
                     self.dataSource.unsetSeclectedForPhoto(atIndex: cellIndexPathOfBeganTap.item)
                 } else {
                     self.selectionTrending = .set
-                    self.dataSource.setSeletedForPhoto(atIndex: cellIndexPathOfBeganTap.item)
+                    self.viewController.tryToAddPhotoToSelectedList(photoIndex: cellIndexPathOfBeganTap.item)
                 }
                 self.collectionView.reloadItems(at: [cellIndexPathOfBeganTap])
             }
@@ -141,7 +141,7 @@ class FMPhotoPickerBatchSelector: NSObject {
     private func changeSelectionState(of panSelections: [PanSelection], by trend: SelectionTrending) {
         panSelections.forEach { panSelection in
             if trend == .set {
-                self.dataSource.setSeletedForPhoto(atIndex: panSelection.indexPath.item)
+                self.viewController.tryToAddPhotoToSelectedList(photoIndex: panSelection.indexPath.item)
             } else {
                 self.dataSource.unsetSeclectedForPhoto(atIndex: panSelection.indexPath.item)
             }

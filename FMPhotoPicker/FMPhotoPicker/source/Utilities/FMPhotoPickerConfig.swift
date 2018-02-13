@@ -9,9 +9,9 @@
 import Foundation
 import Photos
 
-public enum FMMediaType: Int {
-    case image = 1
-    case video = 2
+public enum FMMediaType {
+    case image
+    case video
     
     public func value() -> Int {
         switch self {
@@ -19,6 +19,17 @@ public enum FMMediaType: Int {
             return PHAssetMediaType.image.rawValue
         case .video:
             return PHAssetMediaType.video.rawValue
+        }
+    }
+    
+    init?(withPHAssetMediaType type: PHAssetMediaType) {
+        switch type {
+        case .image:
+            self = .image
+        case .video:
+            self = .video
+        default:
+            return nil
         }
     }
 }
@@ -39,4 +50,6 @@ public struct FMPhotoPickerConfig {
         self.maxImageSelections = maxImageSelections
         self.maxVideoSelections = maxVideoSelections
     }
+    
+    
 }

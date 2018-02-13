@@ -29,6 +29,7 @@
 		CEE50D2C20196E45005AE708 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE50D2720196E45005AE708 /* Helper.swift */; };
 		CEE50D6920197958005AE708 /* FMPhotoPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEE50D6820197958005AE708 /* FMPhotoPickerViewController.xib */; };
 		CEE50D6B20197A61005AE708 /* FMPhotoPickerImageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEE50D6A20197A61005AE708 /* FMPhotoPickerImageCollectionViewCell.xib */; };
+		CEEC7E3920328C2000BBC214 /* FMWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEC7E3820328C2000BBC214 /* FMWarningView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,7 @@
 		CEE50D2720196E45005AE708 /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		CEE50D6820197958005AE708 /* FMPhotoPickerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FMPhotoPickerViewController.xib; sourceTree = "<group>"; };
 		CEE50D6A20197A61005AE708 /* FMPhotoPickerImageCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FMPhotoPickerImageCollectionViewCell.xib; sourceTree = "<group>"; };
+		CEEC7E3820328C2000BBC214 /* FMWarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMWarningView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +164,7 @@
 				CEC8EE782029413E001FD282 /* UIView+FMPhotoView.swift */,
 				CE7D2E93202D8C4500554DE0 /* FMPhotoPickerConfig.swift */,
 				CE18608C2030D38700A5D73D /* FMLoadingView.swift */,
+				CEEC7E3820328C2000BBC214 /* FMWarningView.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -334,6 +337,7 @@
 				CE238A07201EB38000CEBCB5 /* FMScalingImageView.swift in Sources */,
 				CEE311B72022E29700ABBE0C /* FMPhotosDataSource.swift in Sources */,
 				CE510905202AFD80003CBFA5 /* FMPhotoPickerBatchSelector.swift in Sources */,
+				CEEC7E3920328C2000BBC214 /* FMWarningView.swift in Sources */,
 				CE18608D2030D38700A5D73D /* FMLoadingView.swift in Sources */,
 				CE0C5FBD201AE09F0040A03A /* FMZoomOutAnimationController.swift in Sources */,
 				CE7D2E94202D8C4500554DE0 /* FMPhotoPickerConfig.swift in Sources */,

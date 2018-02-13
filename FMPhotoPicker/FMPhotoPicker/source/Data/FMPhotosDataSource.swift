@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Photos
 
 class FMPhotosDataSource {
     public private(set) var photoAssets: [FMPhotoAsset]
@@ -35,6 +36,14 @@ class FMPhotosDataSource {
     
     public func numberOfSelectedPhoto() -> Int {
         return self.selectedPhotoIndexes.count
+    }
+    
+    public func mediaTypeForPhoto(atIndex index: Int) -> PHAssetMediaType? {
+        return self.photo(atIndex: index)?.asset.mediaType
+    }
+    
+    public func countSelectedPhoto(byType: PHAssetMediaType) -> Int {
+        return self.getSelectedPhotos().filter { $0.asset.mediaType == byType }.count
     }
     
     public func affectedSelectedIndexs(changedIndex: Int) -> [Int] {
