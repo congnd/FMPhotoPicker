@@ -22,7 +22,10 @@ enum SelectionTrending {
 }
 
 struct PanSelection {
+    // The index path of the cell that was panned over
     var indexPath: IndexPath
+    
+    // The selection state before changed
     var originalSelection: Bool
 }
 

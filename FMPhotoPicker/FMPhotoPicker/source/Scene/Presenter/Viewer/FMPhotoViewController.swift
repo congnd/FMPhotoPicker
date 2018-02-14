@@ -10,18 +10,21 @@ import UIKit
 import Photos
 
 class FMPhotoViewController: UIViewController {
-    open var scalingImageView: FMScalingImageView!
+    // MARK: - Public
+    public var scalingImageView: FMScalingImageView!
     
-    open var photo: FMPhotoAsset
+    public var photo: FMPhotoAsset
     
     public var dataSource: FMPhotosDataSource!
     
+    // MARK: - Private
     lazy private(set) var doubleTapGestureRecognizer: UITapGestureRecognizer = {
         let gesture = UITapGestureRecognizer(target: self, action: #selector(FMPhotoViewController.handleDoubleTapWithGestureRecognizer(_:)))
         gesture.numberOfTapsRequired = 2
         return gesture
     }()
     
+    // MARK: - Init
     public init(withPhoto photo: FMPhotoAsset) {
         self.photo = photo
         super.init(nibName: nil, bundle: nil)
@@ -35,6 +38,7 @@ class FMPhotoViewController: UIViewController {
         self.photo.cancelAllRequest()
     }
     
+    // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -71,10 +75,20 @@ class FMPhotoViewController: UIViewController {
         scalingImageView.frame = view.bounds
     }
     
+    // MARK: - Scroll delegate
     open func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
         scrollView.panGestureRecognizer.isEnabled = true
     }
     
+    open func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+        // There is a bug, especially prevalent on iPhone 6 Plus, that causes zooming to render all other gesture recognizers ineffective.
+        // This bug is fixed by disabling the pan gesture recognizer of the scroll view when it is not needed.
+        if (scrollView.zoomScale == scrollView.minimumZoomScale) {
+            scrollView.panGestureRecognizer.isEnabled = false;
+        }
+    }
+    
+    // MARK: - Logic
     @objc private func handleDoubleTapWithGestureRecognizer(_ recognizer: UITapGestureRecognizer) {
         let pointInView = recognizer.location(in: scalingImageView.imageView)
         var newZoomScale = scalingImageView.maximumZoomScale
@@ -91,14 +105,6 @@ class FMPhotoViewController: UIViewController {
         
         let rectToZoom = CGRect(x: originX, y: originY, width: width, height: height)
         scalingImageView.zoom(to: rectToZoom, animated: true)
-    }
-    
-    open func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
-        // There is a bug, especially prevalent on iPhone 6 Plus, that causes zooming to render all other gesture recognizers ineffective.
-        // This bug is fixed by disabling the pan gesture recognizer of the scroll view when it is not needed.
-        if (scrollView.zoomScale == scrollView.minimumZoomScale) {
-            scrollView.panGestureRecognizer.isEnabled = false;
-        }
     }
 }
 

@@ -9,23 +9,30 @@
 import UIKit
 
 class FMPhotoPresenterViewController: UIViewController {
-    
+    // MARK: Outlet
     @IBOutlet weak var photoTitle: UILabel!
     @IBOutlet weak var selectedContainer: UIView!
     @IBOutlet weak var selectedIndex: UILabel!
     @IBOutlet weak var selectButton: UIButton!
     
+    // MARK: - Public
+    public var swipeInteractionController: FMPhotoInteractionAnimator?
+    
+    public var didSelectPhotoHandler: ((Int) -> Void)?
+    
+    public var didDeselectPhotoHandler: ((Int) -> Void)?
+    
+    public var didMoveToViewControllerHandler: ((FMPhotoViewController, Int) -> Void)?
+    
+    // MARK: - Private
+    private(set) var pageViewController: UIPageViewController!
+    
     private var interactiveDismissal: Bool = false
     
-    var swipeInteractionController: FMPhotoInteractionAnimator?
-    
-    var didSelectPhotoHandler: ((Int) -> Void)?
-    var didDeselectPhotoHandler: ((Int) -> Void)?
-    var didMoveToViewControllerHandler: ((FMPhotoViewController, Int) -> Void)?
-    
-    private(set) var pageViewController: UIPageViewController!
     private var currentPhotoIndex: Int
+    
     private var dataSource: FMPhotosDataSource
+    
     private var currentPhotoViewController: FMPhotoViewController? {
         return pageViewController.viewControllers?.first as? FMPhotoViewController
     }
@@ -37,6 +44,7 @@ class FMPhotoPresenterViewController: UIViewController {
         return formatter
     }()
     
+    // MARK: - Init
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -45,11 +53,21 @@ class FMPhotoPresenterViewController: UIViewController {
         self.dataSource = dataSource
         self.currentPhotoIndex = initialPhotoIndex
         super.init(nibName: "FMPhotoPresenterViewController", bundle: Bundle(for: FMPhotoPresenterViewController.self))
-        self.initialSetup()
+        self.setupPageViewController(withInitialPhoto: self.dataSource.photo(atIndex: self.currentPhotoIndex))
     }
     
-    private func initialSetup() {
-        self.setupPageViewController(withInitialPhoto: self.dataSource.photo(atIndex: self.currentPhotoIndex))
+    private func setupPageViewController(withInitialPhoto initialPhoto: FMPhotoAsset? = nil) {
+        self.pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey: 16.0])
+        self.pageViewController.view.frame = self.view.frame
+        self.pageViewController.view.backgroundColor = .clear
+        self.pageViewController.delegate = self
+        self.pageViewController.dataSource = self
+        
+        if let photo = initialPhoto {
+            self.changeToPhoto(photo: photo)
+        } else if let photo = self.dataSource.photo(atIndex: 0) {
+            self.changeToPhoto(photo: photo)
+        }
     }
     
     // MARK: - Life Cycle
@@ -70,6 +88,7 @@ class FMPhotoPresenterViewController: UIViewController {
         self.view.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
     }
     
+    // MARK: - Update Views
     private func updateInfoBar() {
         // Update selection status
         if let selectedIndex = self.dataSource.selectedIndexOfPhoto(atIndex: self.currentPhotoIndex) {
@@ -91,20 +110,6 @@ class FMPhotoPresenterViewController: UIViewController {
         if let photoAsset = self.dataSource.photo(atIndex: self.currentPhotoIndex),
             let creationDate = photoAsset.asset.creationDate {
             self.photoTitle.text = self.formatter.string(from: creationDate)
-        }
-    }
-    
-    private func setupPageViewController(withInitialPhoto initialPhoto: FMPhotoAsset? = nil) {
-        self.pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey: 16.0])
-        self.pageViewController.view.frame = self.view.frame
-        self.pageViewController.view.backgroundColor = .clear
-        self.pageViewController.delegate = self
-        self.pageViewController.dataSource = self
-        
-        if let photo = initialPhoto {
-            self.changeToPhoto(photo: photo)
-        } else if let photo = self.dataSource.photo(atIndex: 0) {
-            self.changeToPhoto(photo: photo)
         }
     }
     

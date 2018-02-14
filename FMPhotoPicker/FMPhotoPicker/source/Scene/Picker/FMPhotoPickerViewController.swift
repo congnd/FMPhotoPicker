@@ -9,26 +9,30 @@
 import UIKit
 import Photos
 
+// MARK: - Delegate protocol
 public protocol FMPhotoPickerViewControllerDelegate: class {
     func fmPhotoPickerController(_ picker: FMPhotoPickerViewController, didFinishPickingPhotoWith photos: [UIImage])
 }
 
 public class FMPhotoPickerViewController: UIViewController {
+    // MARK: - Outlet
     @IBOutlet weak var imageCollectionView: UICollectionView!
     @IBOutlet weak var numberOfSelectedPhotoContainer: UIView!
     @IBOutlet weak var numberOfSelectedPhoto: UILabel!
     
+    // MARK: - Public
+    public weak var delegate: FMPhotoPickerViewControllerDelegate? = nil
+    
+    // MARK: - Private
+    
+    // Index of photo that is currently displayed in PhotoPresenterViewController.
+    // Track this to calculate the destination frame for dismissal animation
+    // from PhotoPresenterViewController to this ViewController
+    private var presentedPhotoIndex: Int?
+
     private let config: FMPhotoPickerConfig
     
-    public init(config: FMPhotoPickerConfig) {
-        self.config = config
-        super.init(nibName: "FMPhotoPickerViewController", bundle: Bundle(for: type(of: self)))
-    }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
+    // The controller for multiple select/deselect
     private lazy var batchSelector: FMPhotoPickerBatchSelector = {
         return FMPhotoPickerBatchSelector(viewController: self, collectionView: self.imageCollectionView, dataSource: self.dataSource)
     }()
@@ -39,9 +43,16 @@ public class FMPhotoPickerViewController: UIViewController {
         }
     }
     
-    public weak var delegate: FMPhotoPickerViewControllerDelegate? = nil
+    // MARK: - Init
+    public init(config: FMPhotoPickerConfig) {
+        self.config = config
+        super.init(nibName: "FMPhotoPickerViewController", bundle: Bundle(for: type(of: self)))
+    }
     
-    private var presentedPhotoIndex: Int?
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     
     // MARK: - Life cycle
     override public func viewDidLoad() {
@@ -120,6 +131,7 @@ public class FMPhotoPickerViewController: UIViewController {
     }
 }
 
+// MARK: - UICollectionViewDataSource
 extension FMPhotoPickerViewController: UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let total = self.dataSource?.numberOfPhotos {
@@ -203,6 +215,7 @@ extension FMPhotoPickerViewController: UICollectionViewDataSource {
     }
 }
 
+// MARK: - UICollectionViewDelegate
 extension FMPhotoPickerViewController: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = FMPhotoPresenterViewController(dataSource: self.dataSource, initialPhotoIndex: indexPath.item)
@@ -232,6 +245,7 @@ extension FMPhotoPickerViewController: UICollectionViewDelegate {
     }
 }
 
+// MARK: - UIViewControllerTransitioningDelegate
 extension FMPhotoPickerViewController: UIViewControllerTransitioningDelegate {
     public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         let animationController = FMZoomInAnimationController()
