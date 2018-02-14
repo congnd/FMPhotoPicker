@@ -80,8 +80,10 @@ class FMPhotoPresenterViewController: UIViewController {
         
         if #available(iOS 11.0, *) {
             guard let window = UIApplication.shared.keyWindow else { return }
-            let topPadding = window.safeAreaInsets.top
-            self.controlBarHeightConstraint.constant = 44 + topPadding
+            if window.safeAreaInsets.top > 0 {
+                // iPhone X
+                self.controlBarHeightConstraint.constant = 88
+            }
         }
         
         self.selectedContainer.layer.cornerRadius = self.selectedContainer.frame.size.width / 2

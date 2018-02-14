@@ -20,6 +20,7 @@ public class FMPhotoPickerViewController: UIViewController {
     @IBOutlet weak var numberOfSelectedPhotoContainer: UIView!
     @IBOutlet weak var numberOfSelectedPhoto: UILabel!
     @IBOutlet weak var doneButton: UIButton!
+    @IBOutlet weak var controlBarTopConstrant: NSLayoutConstraint!
     
     // MARK: - Public
     public weak var delegate: FMPhotoPickerViewControllerDelegate? = nil
@@ -81,6 +82,14 @@ public class FMPhotoPickerViewController: UIViewController {
         self.numberOfSelectedPhotoContainer.layer.cornerRadius = self.numberOfSelectedPhotoContainer.frame.size.width / 2
         self.numberOfSelectedPhotoContainer.isHidden = true
         self.doneButton.isHidden = true
+        
+        if #available(iOS 11.0, *) {
+            guard let window = UIApplication.shared.keyWindow else { return }
+            if window.safeAreaInsets.top > 0 {
+                // iPhone X
+                self.controlBarTopConstrant.constant = 44
+            }
+        }
     }
     
     // MARK: - Target Actions
