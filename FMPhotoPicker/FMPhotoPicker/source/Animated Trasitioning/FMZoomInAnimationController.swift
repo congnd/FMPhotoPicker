@@ -12,7 +12,7 @@ class FMZoomInAnimationController: NSObject, UIViewControllerAnimatedTransitioni
     var getOriginFrame: (() -> CGRect)!
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return 0.5
+        return 0.375
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
