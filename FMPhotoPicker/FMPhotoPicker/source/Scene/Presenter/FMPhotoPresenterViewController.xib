@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FMPhotoPresenterViewController" customModule="FMPhotoPicker" customModuleProvider="target">
             <connections>
+                <outlet property="controlBarHeightConstraint" destination="um2-yh-bB5" id="qnR-4O-Rvd"/>
                 <outlet property="photoTitle" destination="InV-Qk-6JZ" id="c1D-9s-YXa"/>
                 <outlet property="selectButton" destination="fok-2X-Dem" id="iIn-Ut-yVk"/>
                 <outlet property="selectedContainer" destination="o05-8f-eoM" id="E4p-u5-K5W"/>
@@ -124,7 +125,7 @@
                 <constraint firstItem="hwJ-iD-bAE" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="5Vo-oK-3jP"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="o05-8f-eoM" secondAttribute="trailing" constant="16" id="E4e-SJ-ghN"/>
                 <constraint firstItem="o05-8f-eoM" firstAttribute="top" secondItem="hwJ-iD-bAE" secondAttribute="bottom" constant="16" id="Qo7-78-xKg"/>
-                <constraint firstItem="hwJ-iD-bAE" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="ZDI-3P-FGc"/>
+                <constraint firstItem="hwJ-iD-bAE" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="iGA-ej-V1N"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <point key="canvasLocation" x="33.5" y="54.5"/>

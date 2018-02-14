@@ -14,6 +14,7 @@ class FMPhotoPresenterViewController: UIViewController {
     @IBOutlet weak var selectedContainer: UIView!
     @IBOutlet weak var selectedIndex: UILabel!
     @IBOutlet weak var selectButton: UIButton!
+    @IBOutlet weak var controlBarHeightConstraint: NSLayoutConstraint!
     
     // MARK: - Public
     public var swipeInteractionController: FMPhotoInteractionAnimator?
@@ -76,6 +77,12 @@ class FMPhotoPresenterViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if #available(iOS 11.0, *) {
+            guard let window = UIApplication.shared.keyWindow else { return }
+            let topPadding = window.safeAreaInsets.top
+            self.controlBarHeightConstraint.constant = 44 + topPadding
+        }
         
         self.selectedContainer.layer.cornerRadius = self.selectedContainer.frame.size.width / 2
         
