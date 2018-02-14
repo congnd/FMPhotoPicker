@@ -12,6 +12,7 @@ class FMPhotoPresenterViewController: UIViewController {
     // MARK: Outlet
     @IBOutlet weak var photoTitle: UILabel!
     @IBOutlet weak var selectedContainer: UIView!
+    @IBOutlet weak var selectedIcon: UIImageView!
     @IBOutlet weak var selectedIndex: UILabel!
     @IBOutlet weak var selectButton: UIButton!
     @IBOutlet weak var controlBarHeightConstraint: NSLayoutConstraint!
@@ -108,8 +109,10 @@ class FMPhotoPresenterViewController: UIViewController {
             self.selectedContainer.isHidden = false
             if self.selectMode == .multiple {
                 self.selectedIndex.text = "\(selectedIndex + 1)"
+                self.selectedIcon.image = UIImage(named: "check_on", in: Bundle(for: self.classForCoder), compatibleWith: nil)
             } else {
                 self.selectedIndex.isHidden = true
+                self.selectedIcon.image = UIImage(named: "single_check_on", in: Bundle(for: self.classForCoder), compatibleWith: nil)
             }
 
             UIView.performWithoutAnimation {

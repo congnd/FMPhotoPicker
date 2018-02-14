@@ -16,6 +16,7 @@
                 <outlet property="photoTitle" destination="InV-Qk-6JZ" id="c1D-9s-YXa"/>
                 <outlet property="selectButton" destination="fok-2X-Dem" id="iIn-Ut-yVk"/>
                 <outlet property="selectedContainer" destination="o05-8f-eoM" id="E4p-u5-K5W"/>
+                <outlet property="selectedIcon" destination="lfY-RY-Mr8" id="Y5O-R5-c4Z"/>
                 <outlet property="selectedIndex" destination="T1c-ye-Rne" id="4Km-NI-to0"/>
                 <outlet property="view" destination="iN0-l3-epB" id="gHO-HK-ssu"/>
             </connections>
@@ -91,6 +92,9 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o05-8f-eoM">
                     <rect key="frame" x="331" y="80" width="28" height="28"/>
                     <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="check_on" translatesAutoresizingMaskIntoConstraints="NO" id="lfY-RY-Mr8">
+                            <rect key="frame" x="0.0" y="0.0" width="28" height="28"/>
+                        </imageView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HSU-Dw-S2C">
                             <rect key="frame" x="-10" y="-10" width="48" height="48"/>
                             <connections>
@@ -104,9 +108,11 @@
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
-                    <color key="backgroundColor" red="1" green="0.32586389780044556" blue="0.29645484685897827" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
+                        <constraint firstItem="lfY-RY-Mr8" firstAttribute="leading" secondItem="o05-8f-eoM" secondAttribute="leading" id="22x-49-fao"/>
                         <constraint firstAttribute="trailing" secondItem="T1c-ye-Rne" secondAttribute="trailing" id="7Rs-Pd-CMT"/>
+                        <constraint firstItem="lfY-RY-Mr8" firstAttribute="top" secondItem="o05-8f-eoM" secondAttribute="top" id="APu-bT-6ec"/>
+                        <constraint firstAttribute="trailing" secondItem="lfY-RY-Mr8" secondAttribute="trailing" id="Fla-eX-0Zr"/>
                         <constraint firstItem="T1c-ye-Rne" firstAttribute="top" secondItem="o05-8f-eoM" secondAttribute="top" id="GNO-od-2X4"/>
                         <constraint firstAttribute="bottom" secondItem="HSU-Dw-S2C" secondAttribute="bottom" constant="-10" id="Lo0-2Q-tN8"/>
                         <constraint firstItem="HSU-Dw-S2C" firstAttribute="top" secondItem="o05-8f-eoM" secondAttribute="top" constant="-10" id="MMV-eI-ps6"/>
@@ -114,6 +120,7 @@
                         <constraint firstItem="T1c-ye-Rne" firstAttribute="leading" secondItem="o05-8f-eoM" secondAttribute="leading" id="j9x-0O-cW6"/>
                         <constraint firstAttribute="bottom" secondItem="T1c-ye-Rne" secondAttribute="bottom" id="keo-7G-iNp"/>
                         <constraint firstAttribute="trailing" secondItem="HSU-Dw-S2C" secondAttribute="trailing" constant="-10" id="kgF-G7-Vuq"/>
+                        <constraint firstAttribute="bottom" secondItem="lfY-RY-Mr8" secondAttribute="bottom" id="l76-cf-6H2"/>
                         <constraint firstAttribute="width" constant="28" id="yMt-E5-JgM"/>
                         <constraint firstAttribute="height" constant="28" id="yYR-GO-uBk"/>
                     </constraints>
@@ -131,4 +138,7 @@
             <point key="canvasLocation" x="33.5" y="54.5"/>
         </view>
     </objects>
+    <resources>
+        <image name="check_on" width="28" height="28"/>
+    </resources>
 </document>

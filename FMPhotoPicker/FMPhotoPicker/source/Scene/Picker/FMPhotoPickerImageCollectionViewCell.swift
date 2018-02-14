@@ -60,11 +60,12 @@ class FMPhotoPickerImageCollectionViewCell: UICollectionViewCell {
             if self.selectMode == .multiple {
                 self.selectedIndex.isHidden = false
                 self.selectedIndex.text = "\(selectedIndex + 1)"
+                self.selectButton.setImage(UIImage(named: "check_on", in: Bundle(for: self.classForCoder), compatibleWith: nil), for: .normal)
             } else {
                 self.selectedIndex.isHidden = true
+                self.selectButton.setImage(UIImage(named: "single_check_on", in: Bundle(for: self.classForCoder), compatibleWith: nil), for: .normal)
             }
             self.cellFilterContainer.isHidden = false
-            self.selectButton.setImage(UIImage(named: "check_on", in: Bundle(for: self.classForCoder), compatibleWith: nil), for: .normal)
         } else {
             self.selectedIndex.isHidden = true
             self.cellFilterContainer.isHidden = true
