@@ -19,6 +19,7 @@ public class FMPhotoPickerViewController: UIViewController {
     @IBOutlet weak var imageCollectionView: UICollectionView!
     @IBOutlet weak var numberOfSelectedPhotoContainer: UIView!
     @IBOutlet weak var numberOfSelectedPhoto: UILabel!
+    @IBOutlet weak var doneButton: UIButton!
     
     // MARK: - Public
     public weak var delegate: FMPhotoPickerViewControllerDelegate? = nil
@@ -67,9 +68,6 @@ public class FMPhotoPickerViewController: UIViewController {
         super.viewDidAppear(animated)
         if self.dataSource == nil {
             self.requestAndFetchAssets()
-        } else {
-            self.imageCollectionView.reloadData()
-            self.updateControlBar()
         }
     }
     
@@ -82,6 +80,7 @@ public class FMPhotoPickerViewController: UIViewController {
         
         self.numberOfSelectedPhotoContainer.layer.cornerRadius = self.numberOfSelectedPhotoContainer.frame.size.width / 2
         self.numberOfSelectedPhotoContainer.isHidden = true
+        self.doneButton.isHidden = true
     }
     
     // MARK: - Target Actions
@@ -134,13 +133,14 @@ public class FMPhotoPickerViewController: UIViewController {
     }
     
     public func updateControlBar() {
-        // In single selection mode, we do not show the numberOfSelectedPhotoContainer and no needed to update view
-        if self.config.selectMode == .single { return }
-        
         if self.dataSource.numberOfSelectedPhoto() > 0 {
-            self.numberOfSelectedPhotoContainer.isHidden = false
-            self.numberOfSelectedPhoto.text = "\(self.dataSource.numberOfSelectedPhoto())"
+            self.doneButton.isHidden = false
+            if self.config.selectMode == .multiple {
+                self.numberOfSelectedPhotoContainer.isHidden = false
+                self.numberOfSelectedPhoto.text = "\(self.dataSource.numberOfSelectedPhoto())"
+            }
         } else {
+            self.doneButton.isHidden = true
             self.numberOfSelectedPhotoContainer.isHidden = true
         }
     }
@@ -233,6 +233,7 @@ extension FMPhotoPickerViewController: UICollectionViewDataSource {
             self.dataSource.setSeletedForPhoto(atIndex: index)
             indexPaths.append(IndexPath(row: index, section: 0))
             self.imageCollectionView.reloadItems(at: indexPaths)
+            self.updateControlBar()
         }
     }
 }
