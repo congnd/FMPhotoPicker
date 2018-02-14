@@ -111,7 +111,7 @@ class FMPhotoPresenterViewController: UIViewController {
             }
 
             UIView.performWithoutAnimation {
-                self.selectButton.setTitle("選択削除", for: .normal)
+                self.selectButton.setTitle("選択解除", for: .normal)
                 self.selectButton.layoutIfNeeded()
             }
         } else {
