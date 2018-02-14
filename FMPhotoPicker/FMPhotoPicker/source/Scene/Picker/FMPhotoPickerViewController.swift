@@ -39,7 +39,10 @@ public class FMPhotoPickerViewController: UIViewController {
     
     private var dataSource: FMPhotosDataSource! {
         didSet {
-            self.batchSelector.enable()
+            if self.config.selectMode == .multiple {
+                // Enable batchSelector in multiple selection mode only
+                self.batchSelector.enable()
+            }
         }
     }
     
@@ -129,6 +132,18 @@ public class FMPhotoPickerViewController: UIViewController {
         
         self.imageCollectionView.reloadData()
     }
+    
+    public func updateControlBar() {
+        // In single selection mode, we do not show the numberOfSelectedPhotoContainer and no needed to update view
+        if self.config.selectMode == .single { return }
+        
+        if self.dataSource.numberOfSelectedPhoto() > 0 {
+            self.numberOfSelectedPhotoContainer.isHidden = false
+            self.numberOfSelectedPhoto.text = "\(self.dataSource.numberOfSelectedPhoto())"
+        } else {
+            self.numberOfSelectedPhotoContainer.isHidden = true
+        }
+    }
 }
 
 // MARK: - UICollectionViewDataSource
@@ -146,7 +161,9 @@ extension FMPhotoPickerViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        cell.loadView(photoAsset: photoAsset, selectedIndex: self.dataSource.selectedIndexOfPhoto(atIndex: indexPath.item))
+        cell.loadView(photoAsset: photoAsset,
+                      selectMode: self.config.selectMode,
+                      selectedIndex: self.dataSource.selectedIndexOfPhoto(atIndex: indexPath.item))
         cell.onTapSelect = {
             if let selectedIndex = self.dataSource.selectedIndexOfPhoto(atIndex: indexPath.item) {
                 self.dataSource.unsetSeclectedForPhoto(atIndex: indexPath.item)
@@ -159,15 +176,6 @@ extension FMPhotoPickerViewController: UICollectionViewDataSource {
         }
         
         return cell
-    }
-    
-    public func updateControlBar() {
-        if self.dataSource.numberOfSelectedPhoto() > 0 {
-            self.numberOfSelectedPhotoContainer.isHidden = false
-            self.numberOfSelectedPhoto.text = "\(self.dataSource.numberOfSelectedPhoto())"
-        } else {
-            self.numberOfSelectedPhotoContainer.isHidden = true
-        }
     }
     
     /**
@@ -183,34 +191,48 @@ extension FMPhotoPickerViewController: UICollectionViewDataSource {
     
     /**
      Try to insert the photo at specify index to selectd list.
-     If the current number of select image/video does not exceed the maximum number specified in the Config,
+     In Single selection mode, it will remove all the previous selection and add new photo to the selected list.
+     In Multiple selection mode, If the current number of select image/video does not exceed the maximum number specified in the Config,
      the photo will be added to selected list. Otherwise, a warning dialog will be displayed and NOTHING will be added.
      */
     public func tryToAddPhotoToSelectedList(photoIndex index: Int) {
-        guard let phMediaType = self.dataSource.mediaTypeForPhoto(atIndex: index),
-            let fmMediaType = FMMediaType(withPHAssetMediaType: phMediaType) else { return }
-        var canBeAdded = true
-        switch fmMediaType {
-        case .image:
-            if self.dataSource.countSelectedPhoto(byType: .image) >= self.config.maxImageSelections {
-                canBeAdded = false
-                let warning = FMWarningView.shared
-                warning.message = "画像は最大\(self.config.maxImageSelections)個まで選択できます。"
-                warning.showAndAutoHide()
+        if self.config.selectMode == .multiple {
+            guard let phMediaType = self.dataSource.mediaTypeForPhoto(atIndex: index),
+                let fmMediaType = FMMediaType(withPHAssetMediaType: phMediaType) else { return }
+            var canBeAdded = true
+            switch fmMediaType {
+            case .image:
+                if self.dataSource.countSelectedPhoto(byType: .image) >= self.config.maxImage {
+                    canBeAdded = false
+                    let warning = FMWarningView.shared
+                    warning.message = "画像は最大\(self.config.maxImage)個まで選択できます。"
+                    warning.showAndAutoHide()
+                }
+            case .video:
+                if self.dataSource.countSelectedPhoto(byType: .video) >= self.config.maxVideo {
+                    canBeAdded = false
+                    let warning = FMWarningView.shared
+                    warning.message = "動画は最大\(self.config.maxVideo)個まで選択できます。"
+                    warning.showAndAutoHide()
+                }
             }
-        case .video:
-            if self.dataSource.countSelectedPhoto(byType: .video) >= self.config.maxVideoSelections {
-                canBeAdded = false
-                let warning = FMWarningView.shared
-                warning.message = "動画は最大\(self.config.maxVideoSelections)個まで選択できます。"
-                warning.showAndAutoHide()
+            
+            if canBeAdded {
+                self.dataSource.setSeletedForPhoto(atIndex: index)
+                self.imageCollectionView.reloadItems(at: [IndexPath(row: index, section: 0)])
+                self.updateControlBar()
             }
-        }
-        
-        if canBeAdded {
+        } else {  // single selection mode
+            var indexPaths = [IndexPath]()
+            self.dataSource.getSelectedPhotos().forEach { photo in
+                guard let photoIndex = self.dataSource.index(ofPhoto: photo) else { return }
+                indexPaths.append(IndexPath(row: photoIndex, section: 0))
+                self.dataSource.unsetSeclectedForPhoto(atIndex: photoIndex)
+            }
+            
             self.dataSource.setSeletedForPhoto(atIndex: index)
-            self.imageCollectionView.reloadItems(at: [IndexPath(row: index, section: 0)])
-            self.updateControlBar()
+            indexPaths.append(IndexPath(row: index, section: 0))
+            self.imageCollectionView.reloadItems(at: indexPaths)
         }
     }
 }
@@ -218,7 +240,7 @@ extension FMPhotoPickerViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 extension FMPhotoPickerViewController: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = FMPhotoPresenterViewController(dataSource: self.dataSource, initialPhotoIndex: indexPath.item)
+        let vc = FMPhotoPresenterViewController(selectMode: self.config.selectMode, dataSource: self.dataSource, initialPhotoIndex: indexPath.item)
         
         self.presentedPhotoIndex = indexPath.item
         

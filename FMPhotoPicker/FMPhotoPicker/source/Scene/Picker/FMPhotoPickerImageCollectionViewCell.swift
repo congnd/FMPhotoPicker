@@ -23,6 +23,8 @@ class FMPhotoPickerImageCollectionViewCell: UICollectionViewCell {
     
     public var onTapSelect = {}
     
+    private var selectMode: FMSelectMode!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         self.cellFilterContainer.layer.borderColor = UIColor(red: 255/255, green: 81/255, blue: 81/255, alpha: 1).cgColor
@@ -38,7 +40,9 @@ class FMPhotoPickerImageCollectionViewCell: UICollectionViewCell {
         self.photoAsset?.cancelAllRequest()
     }
     
-    public func loadView(photoAsset: FMPhotoAsset, selectedIndex: Int?) {
+    public func loadView(photoAsset: FMPhotoAsset, selectMode: FMSelectMode, selectedIndex: Int?) {
+        self.selectMode = selectMode
+        
         self.photoAsset = photoAsset
 
         photoAsset.requestThumb() { image in
@@ -53,8 +57,12 @@ class FMPhotoPickerImageCollectionViewCell: UICollectionViewCell {
     
     func performSelectionAnimation(selectedIndex: Int?) {
         if let selectedIndex = selectedIndex {
-            self.selectedIndex.text = "\(selectedIndex + 1)"
-            self.selectedIndex.isHidden = false
+            if self.selectMode == .multiple {
+                self.selectedIndex.isHidden = false
+                self.selectedIndex.text = "\(selectedIndex + 1)"
+            } else {
+                self.selectedIndex.isHidden = true
+            }
             self.cellFilterContainer.isHidden = false
             self.selectButton.setImage(UIImage(named: "check_on", in: Bundle(for: self.classForCoder), compatibleWith: nil), for: .normal)
         } else {

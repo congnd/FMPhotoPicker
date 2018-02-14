@@ -9,6 +9,11 @@
 import Foundation
 import Photos
 
+public enum FMSelectMode {
+    case multiple
+    case single
+}
+
 public enum FMMediaType {
     case image
     case video
@@ -36,20 +41,17 @@ public enum FMMediaType {
 
 public struct FMPhotoPickerConfig {
     var mediaTypes: [FMMediaType]
-    var maxImageSelections: Int
-    var maxVideoSelections: Int
+    var selectMode: FMSelectMode
+    var maxImage: Int
+    var maxVideo: Int
     
-    public init() {
-        self.mediaTypes = [.image, .video]
-        self.maxVideoSelections = 10
-        self.maxImageSelections = 10
-    }
-    
-    public init(mediaTypes: [FMMediaType], maxImageSelections: Int, maxVideoSelections: Int) {
+    public init(selectMode: FMSelectMode = .multiple,
+                mediaTypes: [FMMediaType] = [.image],
+                maxImage: Int = 10,
+                maxVideo: Int = 10) {
         self.mediaTypes = mediaTypes
-        self.maxImageSelections = maxImageSelections
-        self.maxVideoSelections = maxVideoSelections
-    }
-    
-    
+        self.maxImage = maxImage
+        self.maxVideo = maxVideo
+        self.selectMode = selectMode
+    }   
 }

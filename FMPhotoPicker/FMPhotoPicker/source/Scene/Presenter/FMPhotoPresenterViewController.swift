@@ -33,6 +33,8 @@ class FMPhotoPresenterViewController: UIViewController {
     
     private var dataSource: FMPhotosDataSource
     
+    private var selectMode: FMSelectMode!
+    
     private var currentPhotoViewController: FMPhotoViewController? {
         return pageViewController.viewControllers?.first as? FMPhotoViewController
     }
@@ -49,7 +51,8 @@ class FMPhotoPresenterViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public init(dataSource: FMPhotosDataSource, initialPhotoIndex: Int) {
+    public init(selectMode: FMSelectMode, dataSource: FMPhotosDataSource, initialPhotoIndex: Int) {
+        self.selectMode = selectMode
         self.dataSource = dataSource
         self.currentPhotoIndex = initialPhotoIndex
         super.init(nibName: "FMPhotoPresenterViewController", bundle: Bundle(for: FMPhotoPresenterViewController.self))
@@ -92,8 +95,14 @@ class FMPhotoPresenterViewController: UIViewController {
     private func updateInfoBar() {
         // Update selection status
         if let selectedIndex = self.dataSource.selectedIndexOfPhoto(atIndex: self.currentPhotoIndex) {
-            self.selectedIndex.text = "\(selectedIndex + 1)"
+            
             self.selectedContainer.isHidden = false
+            if self.selectMode == .multiple {
+                self.selectedIndex.text = "\(selectedIndex + 1)"
+            } else {
+                self.selectedIndex.isHidden = true
+            }
+
             UIView.performWithoutAnimation {
                 self.selectButton.setTitle("選択削除", for: .normal)
                 self.selectButton.layoutIfNeeded()
