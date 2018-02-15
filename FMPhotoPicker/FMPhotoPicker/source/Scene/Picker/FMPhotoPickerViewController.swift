@@ -192,7 +192,7 @@ extension FMPhotoPickerViewController: UICollectionViewDataSource {
      - parameters:
         - changedIndex: The index of the deselected photocell in the selected list
      */
-    private func reloadAffectedCellByChangingSelection(changedIndex: Int) {
+    public func reloadAffectedCellByChangingSelection(changedIndex: Int) {
         let affectedList = self.dataSource.affectedSelectedIndexs(changedIndex: changedIndex)
         let indexPaths = affectedList.map { return IndexPath(row: $0, section: 0) }
         self.imageCollectionView.reloadItems(at: indexPaths)

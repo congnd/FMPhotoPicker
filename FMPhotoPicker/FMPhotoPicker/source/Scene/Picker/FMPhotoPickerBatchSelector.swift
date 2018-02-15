@@ -69,11 +69,13 @@ class FMPhotoPickerBatchSelector: NSObject {
             self.prevIndexPath = indexPathOfBeganTap
             
             if let cellIndexPathOfBeganTap = self.indexPathOfBeganTap {
-                let originalSelection = self.dataSource.selectedIndexOfPhoto(atIndex: cellIndexPathOfBeganTap.item) == nil ? false : true
+                let selectedIndex = self.dataSource.selectedIndexOfPhoto(atIndex: cellIndexPathOfBeganTap.item)
                 
-                if originalSelection {
+                if let selectedIndex = selectedIndex {
                     self.selectionTrending = .unset
                     self.dataSource.unsetSeclectedForPhoto(atIndex: cellIndexPathOfBeganTap.item)
+                    self.viewController.reloadAffectedCellByChangingSelection(changedIndex: selectedIndex)
+                    self.viewController.updateControlBar()
                 } else {
                     self.selectionTrending = .set
                     self.viewController.tryToAddPhotoToSelectedList(photoIndex: cellIndexPathOfBeganTap.item)
@@ -131,6 +133,11 @@ class FMPhotoPickerBatchSelector: NSObject {
         self.changeSelectionState(of: panSelectionsTobeChanged, by: self.selectionTrending)
         self.reloadCells(in: panSelectionsTobeChanged)
         self.panSelections.append(contentsOf: panSelectionsTobeChanged)
+        
+        // Reload all selected photocells
+        // In fact, we do NOT need to reload all selected photocells
+        // But in most cases, the cost to find all the affected cells by current changing selection is higher than the cost to refresh all
+        self.viewController.reloadAffectedCellByChangingSelection(changedIndex: 0)
         
         self.viewController.updateControlBar()
         
