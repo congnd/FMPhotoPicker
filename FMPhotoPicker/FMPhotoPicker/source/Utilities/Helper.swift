@@ -50,7 +50,10 @@ class Helper: NSObject {
     
     static func getAssets(allowMediaTypes: [FMMediaType]) -> [PHAsset] {
         let fetchOptions = PHFetchOptions()
-        fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
+        
+        // Default sort is modificationDate
+        // fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
+        
         fetchOptions.predicate = NSPredicate(format: "mediaType IN %@", allowMediaTypes.map( { $0.value() }))
         
         let fetchResult = PHAsset.fetchAssets(with: fetchOptions)
