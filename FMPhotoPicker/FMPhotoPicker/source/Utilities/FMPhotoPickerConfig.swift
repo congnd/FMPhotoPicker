@@ -17,6 +17,7 @@ public enum FMSelectMode {
 public enum FMMediaType {
     case image
     case video
+    case unsupported
     
     public func value() -> Int {
         switch self {
@@ -24,17 +25,19 @@ public enum FMMediaType {
             return PHAssetMediaType.image.rawValue
         case .video:
             return PHAssetMediaType.video.rawValue
+        case .unsupported:
+            return PHAssetMediaType.unknown.rawValue
         }
     }
     
-    init?(withPHAssetMediaType type: PHAssetMediaType) {
+    init(withPHAssetMediaType type: PHAssetMediaType) {
         switch type {
         case .image:
             self = .image
         case .video:
             self = .video
         default:
-            return nil
+            self = .unsupported
         }
     }
 }

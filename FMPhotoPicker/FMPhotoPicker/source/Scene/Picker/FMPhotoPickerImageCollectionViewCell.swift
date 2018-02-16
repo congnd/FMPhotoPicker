@@ -18,6 +18,8 @@ class FMPhotoPickerImageCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var selectButton: UIButton!
     @IBOutlet weak var selectedIndex: UILabel!
+    @IBOutlet weak var videoInfoView: UIView!
+    @IBOutlet weak var videoLengthLabel: UILabel!
     
     private var photoAsset: FMPhotoAsset?
     
@@ -30,12 +32,14 @@ class FMPhotoPickerImageCollectionViewCell: UICollectionViewCell {
         self.cellFilterContainer.layer.borderColor = UIColor(red: 255/255, green: 81/255, blue: 81/255, alpha: 1).cgColor
         self.cellFilterContainer.layer.borderWidth = 2
         self.cellFilterContainer.isHidden = true
+        self.videoInfoView.isHidden = true
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
 
         self.imageView.image = nil
+        self.videoInfoView.isHidden = true
         
         self.photoAsset?.cancelAllRequest()
     }
@@ -47,6 +51,11 @@ class FMPhotoPickerImageCollectionViewCell: UICollectionViewCell {
 
         photoAsset.requestThumb() { image in
             self.imageView.image = image
+        }
+        
+        if photoAsset.mediaType == .video {
+            self.videoInfoView.isHidden = false
+            self.videoLengthLabel.text = photoAsset.asset.duration.stringTime
         }
         
         self.performSelectionAnimation(selectedIndex: selectedIndex)

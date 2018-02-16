@@ -11,7 +11,7 @@ import Photos
 
 public class FMPhotoAsset {
     var asset: PHAsset
-
+    var mediaType: FMMediaType
     var thumb: UIImage?
     var thumbRequestId: PHImageRequestID?
     
@@ -27,6 +27,7 @@ public class FMPhotoAsset {
     
     init(asset: PHAsset) {
         self.asset = asset
+        self.mediaType = FMMediaType(withPHAssetMediaType: asset.mediaType)
     }
     
     func requestThumb(_ complete: @escaping (UIImage?) -> Void) {

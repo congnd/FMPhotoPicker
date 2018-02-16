@@ -211,9 +211,11 @@ extension FMPhotoPickerViewController: UICollectionViewDataSource {
      */
     public func tryToAddPhotoToSelectedList(photoIndex index: Int) {
         if self.config.selectMode == .multiple {
-            guard let phMediaType = self.dataSource.mediaTypeForPhoto(atIndex: index),
-                let fmMediaType = FMMediaType(withPHAssetMediaType: phMediaType) else { return }
+            guard let phMediaType = self.dataSource.mediaTypeForPhoto(atIndex: index) else { return }
+            
+            let fmMediaType = FMMediaType(withPHAssetMediaType: phMediaType)
             var canBeAdded = true
+            
             switch fmMediaType {
             case .image:
                 if self.dataSource.countSelectedPhoto(byType: .image) >= self.config.maxImage {
@@ -229,6 +231,8 @@ extension FMPhotoPickerViewController: UICollectionViewDataSource {
                     warning.message = "動画は最大\(self.config.maxVideo)個まで選択できます。"
                     warning.showAndAutoHide()
                 }
+            case .unsupported:
+                break
             }
             
             if canBeAdded {
