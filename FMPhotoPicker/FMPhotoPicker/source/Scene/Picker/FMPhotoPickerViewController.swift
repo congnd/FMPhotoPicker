@@ -139,6 +139,9 @@ public class FMPhotoPickerViewController: UIViewController {
         self.dataSource = FMPhotosDataSource(photoAssets: fmPhotoAssets)
         
         self.imageCollectionView.reloadData()
+        self.imageCollectionView.selectItem(at: IndexPath(row: self.dataSource.numberOfPhotos - 1, section: 0),
+                                            animated: false,
+                                            scrollPosition: .bottom)
     }
     
     public func updateControlBar() {
