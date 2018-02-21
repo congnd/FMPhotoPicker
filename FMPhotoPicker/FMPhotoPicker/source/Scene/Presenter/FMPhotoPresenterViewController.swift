@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVKit
 
 class FMPhotoPresenterViewController: UIViewController {
     // MARK: Outlet
@@ -25,6 +26,8 @@ class FMPhotoPresenterViewController: UIViewController {
     public var didDeselectPhotoHandler: ((Int) -> Void)?
     
     public var didMoveToViewControllerHandler: ((FMPhotoViewController, Int) -> Void)?
+    
+    public var bottomView: FMPresenterBottomView!
     
     // MARK: - Private
     private(set) var pageViewController: UIPageViewController!
@@ -57,6 +60,7 @@ class FMPhotoPresenterViewController: UIViewController {
         self.selectMode = selectMode
         self.dataSource = dataSource
         self.currentPhotoIndex = initialPhotoIndex
+        
         super.init(nibName: "FMPhotoPresenterViewController", bundle: Bundle(for: FMPhotoPresenterViewController.self))
         self.setupPageViewController(withInitialPhoto: self.dataSource.photo(atIndex: self.currentPhotoIndex))
     }
@@ -94,11 +98,41 @@ class FMPhotoPresenterViewController: UIViewController {
         self.addChildViewController(self.pageViewController)
         self.view.addSubview(pageViewController.view)
         self.view.sendSubview(toBack: pageViewController.view)
+        
+        
+        // Init bottom view
+        self.bottomView = FMPresenterBottomView()
+        swipeInteractionController = FMPhotoInteractionAnimator(viewController: self)
+        
+        self.bottomView.touchBegan = {
+            self.swipeInteractionController?.disable()
+        }
+        self.bottomView.touchEnded = {
+            self.swipeInteractionController?.enable()
+        }
+        
+        self.view.addSubview(bottomView)
+        self.bottomView.translatesAutoresizingMaskIntoConstraints = false
+        self.bottomView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        self.bottomView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        self.bottomView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        self.bottomView.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        
         self.pageViewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.pageViewController.didMove(toParentViewController: self)
         
-        swipeInteractionController = FMPhotoInteractionAnimator(viewController: self)
         self.view.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // update bottom view for the first page that can not handled by PageViewControllerDelegate
+        self.updateBottomView()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        bottomView.updateFrames()
     }
     
     // MARK: - Update Views
@@ -144,7 +178,21 @@ class FMPhotoPresenterViewController: UIViewController {
     private func initializaPhotoViewController(forPhoto photo: FMPhotoAsset) -> FMPhotoViewController {
         let photoViewController = FMPhotoViewController(withPhoto: photo)
         photoViewController.dataSource = self.dataSource
+        
         return photoViewController
+    }
+    
+    private func updateBottomView() {
+        guard let fmAsset = dataSource.photo(atIndex: currentPhotoIndex) else { return }
+        
+        if fmAsset.mediaType == .video {
+            bottomView.show()
+            fmAsset.requestVideoFrames { cgImages in
+                self.bottomView.resetPlaybackControl(cgImages: cgImages, duration: fmAsset.asset.duration)
+            }
+        } else {
+            bottomView.hide()
+        }
     }
     
     // MARK: - Target Actions
@@ -192,6 +240,7 @@ extension FMPhotoPresenterViewController: UIPageViewControllerDelegate, UIPageVi
         self.currentPhotoIndex = photoIndex
         self.updateInfoBar()
         self.didMoveToViewControllerHandler?(vc, photoIndex)
+        self.updateBottomView()
         previousViewControllers.forEach { vc in
             guard let photoViewController = vc as? FMPhotoViewController else { return }
             photoViewController.photo.cancelAllRequest()

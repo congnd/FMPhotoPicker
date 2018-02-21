@@ -8,8 +8,56 @@
 
 import UIKit
 import Photos
+import AVFoundation
 
 class Helper: NSObject {
+    static func generateVideoFrames(from phAsset: PHAsset, numberOfFrames: Int = 9, completion: @escaping ([CGImage]) -> Void) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let multiTask = DispatchGroup()
+            var asset: AVAsset?
+            
+            multiTask.enter()
+            Helper.requestAVAsset(asset: phAsset, complete: { avAsset in
+                asset = avAsset
+                multiTask.leave()
+            })
+            multiTask.wait()
+            
+            guard let avAsset = asset else { return completion([]) }
+            
+            let durasionInSeconds = CMTimeGetSeconds(avAsset.duration)
+            
+            var times = [CMTime]()
+            for i in 0..<numberOfFrames {
+                times.append(CMTimeMakeWithSeconds(durasionInSeconds / Double(numberOfFrames) * Double(i), 1000))
+            }
+            
+            let generator = AVAssetImageGenerator(asset: avAsset)
+            generator.appliesPreferredTrackTransform = true
+            generator.maximumSize = CGSize(width: 100, height: 100)
+            
+            var cgImages = [CGImage]()
+            times.forEach {
+                guard let cgImage = try? generator.copyCGImage(at: $0, actualTime: nil) else { return }
+                cgImages.append(cgImage)
+            }
+            
+            DispatchQueue.main.async {
+                completion(cgImages)
+            }
+        }
+    }
+    
+    static func requestAVAsset(asset: PHAsset, complete: @escaping (AVAsset?) -> Void) {
+        guard asset.mediaType == .video else { return complete(nil) }
+        
+        PHImageManager().requestAVAsset(forVideo: asset, options: nil) { (asset, _, _) in
+            DispatchQueue.main.async {
+                complete(asset)
+            }
+        }
+    }
+    
     static func getFullSizePhoto(by asset: PHAsset, complete: @escaping (UIImage?) -> Void) -> PHImageRequestID {
         let manager = PHImageManager.default()
         let options = PHImageRequestOptions()

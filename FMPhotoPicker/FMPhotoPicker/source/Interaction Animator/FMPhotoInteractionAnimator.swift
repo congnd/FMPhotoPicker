@@ -13,6 +13,14 @@ class FMPhotoInteractionAnimator: NSObject, UIViewControllerInteractiveTransitio
     
     private var shouldCompleteTransition = false
     private weak var viewController: FMPhotoPresenterViewController!
+    lazy private var panGestureRecognizer: UIPanGestureRecognizer = {
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(handleGesture(_:)))
+        
+        // So important to prevent unexpected behavior when mixing GestrureRecognizer and touchesBegan
+        // especially when a touch event occur near edge of the screen where the system menu recognizer is also handing.
+        pan.cancelsTouchesInView = false
+        return pan
+    }()
     
     private var transitionContext: UIViewControllerContextTransitioning?
     var animator: UIViewControllerAnimatedTransitioning?
@@ -20,16 +28,19 @@ class FMPhotoInteractionAnimator: NSObject, UIViewControllerInteractiveTransitio
     init(viewController: FMPhotoPresenterViewController) {
         super.init()
         self.viewController = viewController
-        prepareGestureRecognizer(in: viewController.view)
+        self.viewController.view.addGestureRecognizer(self.panGestureRecognizer)
     }
     
     func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
         self.transitionContext = transitionContext
     }
     
-    private func prepareGestureRecognizer(in view: UIView) {
-        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleGesture(_:)))
-        view.addGestureRecognizer(panGestureRecognizer)
+    public func enable() {
+        self.panGestureRecognizer.isEnabled = true
+    }
+    
+    public func disable() {
+        self.panGestureRecognizer.isEnabled = false
     }
     
     @objc func handleGesture(_ gestureRecognizer: UIPanGestureRecognizer) {
@@ -60,6 +71,7 @@ class FMPhotoInteractionAnimator: NSObject, UIViewControllerInteractiveTransitio
         let verticalDelta = newCenterPoint.y - anchorPoint.y
         let backgroundAlpha = backgroundAlphaForPanningWithVerticalDelta(verticalDelta)
         fromView.backgroundColor = fromView.backgroundColor?.withAlphaComponent(backgroundAlpha)
+//        self.viewController.view.alpha = CGFloat(backgroundAlpha)
         
         if gestureRecognizer.state == .ended {
             interactionInProgress = false
@@ -110,7 +122,6 @@ class FMPhotoInteractionAnimator: NSObject, UIViewControllerInteractiveTransitio
             UIView.animate(withDuration: animationDuration, delay: 0, options: animationCurve, animations: { () -> Void in
                 viewToPan.center = finalPageViewCenterPoint
                 fromView.backgroundColor = fromView.backgroundColor?.withAlphaComponent(CGFloat(finalBackgroundAlpha))
-                
             }, completion: { finished in
                 if isDismissing {
                     self.transitionContext?.finishInteractiveTransition()

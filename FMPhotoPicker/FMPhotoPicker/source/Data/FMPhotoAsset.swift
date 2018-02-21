@@ -15,6 +15,8 @@ public class FMPhotoAsset {
     var thumb: UIImage?
     var thumbRequestId: PHImageRequestID?
     
+    var videoFrames: [CGImage]?
+    
     private var fullSizePhoto: UIImage?
     private var fullSizePhotoRequestId: PHImageRequestID?
     
@@ -28,6 +30,17 @@ public class FMPhotoAsset {
     init(asset: PHAsset) {
         self.asset = asset
         self.mediaType = FMMediaType(withPHAssetMediaType: asset.mediaType)
+    }
+    
+    func requestVideoFrames(_ complete: @escaping ([CGImage]) -> Void) {
+        if let videoFrames = self.videoFrames {
+            complete(videoFrames)
+        } else {
+            Helper.generateVideoFrames(from: self.asset) { cgImages in
+                self.videoFrames = cgImages
+                complete(cgImages)
+            }
+        }
     }
     
     func requestThumb(_ complete: @escaping (UIImage?) -> Void) {
