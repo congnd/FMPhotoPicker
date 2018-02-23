@@ -121,6 +121,7 @@ class FMVideoViewController: FMPhotoViewController {
         playIcon.isHidden = false
         playerController?.view.isHidden = true
         player?.seek(to: CMTimeMakeWithSeconds(0, 1000))
+        NotificationCenter.default.post(name: .player_pause, object: nil)
     }
     
     public func play() {
