@@ -25,11 +25,11 @@ class Helper: NSObject {
             
             guard let avAsset = asset else { return completion([]) }
             
-            let durasionInSeconds = CMTimeGetSeconds(avAsset.duration)
+            let durationInSeconds = CMTimeGetSeconds(avAsset.duration)
             
             var times = [CMTime]()
             for i in 0..<numberOfFrames {
-                times.append(CMTimeMakeWithSeconds(durasionInSeconds / Double(numberOfFrames) * Double(i), 1000))
+                times.append(CMTimeMakeWithSeconds(durationInSeconds / Double(numberOfFrames) * Double(i), 1000))
             }
             
             let generator = AVAssetImageGenerator(asset: avAsset)

@@ -8,6 +8,7 @@
 
 import UIKit
 import QuartzCore
+import AVKit
 
 class FMPlaybackProgressThumbLayer: CALayer {
     var highlighted: Bool = false {

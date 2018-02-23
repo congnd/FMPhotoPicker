@@ -6,8 +6,10 @@
 //  Copyright © 2018 Tribal Media House. All rights reserved.
 //
 
+import Foundation
 import UIKit
 import QuartzCore
+import AVKit
 
 class FMPlaybackProgressView: UIControl {
     public var touchBegan: () -> Void = {}
@@ -40,6 +42,8 @@ class FMPlaybackProgressView: UIControl {
     var thumbTintColor = UIColor.white
     var curvaceousness: CGFloat = 1.0
     var thumbIconWidth: CGFloat = 8.0
+    
+    private var shouldUpdateThumbPosition = true
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -97,10 +101,12 @@ class FMPlaybackProgressView: UIControl {
         
         // Hit test the thumb layers
         if thumbLayer.frame.contains(previousLocation) {
+            shouldUpdateThumbPosition = false
             thumbLayer.highlighted = true
+            NotificationCenter.default.post(name: .player_seek_began, object: nil)
+            return true
         }
-        
-        return thumbLayer.highlighted
+        return false
     }
     
     func boundValue(value: Double, toLowerValue lowerValue: Double, upperValue: Double) -> Double {
@@ -110,34 +116,33 @@ class FMPlaybackProgressView: UIControl {
     override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         let location = touch.location(in: self)
         
-        // 1. Determine by how much the user has dragged
-        let deltaLocation = Double(location.x - previousLocation.x)
-        let deltaValue = (maximumValue - minimumValue) * deltaLocation / Double(bounds.width - thumbWidth)
+        let nextValue = Double((location.x - ((thumbWidth - thumbIconWidth) / 2)) / (frame.width - (thumbWidth - thumbIconWidth)))
         
-        previousLocation = location
-        
-        // 2. Update the values
-        if thumbLayer.highlighted {
-            thumbValue += deltaValue
-            thumbValue = boundValue(value: thumbValue, toLowerValue: minimumValue, upperValue: maximumValue)
-        }
+        thumbValue = boundValue(value: nextValue, toLowerValue: minimumValue, upperValue: maximumValue)
         
         // 3. Update the UI
         CATransaction.begin()
         CATransaction.setDisableActions(true)
-        
         updateThumbLayer()
-        
         CATransaction.commit()
         
-        sendActions(for: .valueChanged)
+        NotificationCenter.default.post(name: .player_seek_to, object: nil, userInfo: ["percent": nextValue])
+        print(nextValue)
         return true
     }
     
     override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
         self.touchEnded()
         thumbLayer.highlighted = false
-        thumbLayer.highlighted = false
+        shouldUpdateThumbPosition = true
+        NotificationCenter.default.post(name: .player_seek_ended, object: nil)
+    }
+    
+    public func playerProgressDidChange(value: Double) {
+        if shouldUpdateThumbPosition {
+            thumbValue = value
+            updateThumbLayer()
+        }
     }
 }
 

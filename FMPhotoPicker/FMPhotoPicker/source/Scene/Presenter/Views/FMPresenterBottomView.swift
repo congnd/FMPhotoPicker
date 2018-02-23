@@ -20,6 +20,8 @@ class FMPresenterBottomView: UIView {
     public var touchEnded: () -> Void = {} {
         didSet { self.playbackControlView.touchEnded = self.touchEnded }
     }
+    
+    public var playerProgressDidChange: ((Double) -> Void)?
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -35,6 +37,10 @@ class FMPresenterBottomView: UIView {
         playbackControlView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         playbackControlView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         playbackControlView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        
+        playerProgressDidChange = { percent in
+            self.playbackControlView.playerProgressDidChange(value: percent)
+        }
     }
     
     public func resetPlaybackControl(cgImages: [CGImage], duration: TimeInterval) {

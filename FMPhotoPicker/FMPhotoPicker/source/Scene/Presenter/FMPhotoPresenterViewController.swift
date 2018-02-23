@@ -176,10 +176,18 @@ class FMPhotoPresenterViewController: UIViewController {
     }
     
     private func initializaPhotoViewController(forPhoto photo: FMPhotoAsset) -> FMPhotoViewController {
-        let photoViewController = FMPhotoViewController(withPhoto: photo)
-        photoViewController.dataSource = self.dataSource
+        if photo.mediaType == .image {
+            let imageViewController = FMImageViewController(withPhoto: photo)
+            imageViewController.dataSource = self.dataSource
         
-        return photoViewController
+            return imageViewController
+        } else {
+            let videoViewController = FMVideoViewController(withPhoto: photo)
+            videoViewController.dataSource = self.dataSource
+            videoViewController.playerProgressDidChange = bottomView.playerProgressDidChange
+            
+            return videoViewController
+        }
     }
     
     private func updateBottomView() {

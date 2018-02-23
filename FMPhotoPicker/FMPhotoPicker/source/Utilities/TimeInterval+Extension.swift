@@ -29,7 +29,7 @@ extension TimeInterval {
         } else if seconds != 0 {
             return String(format: "0:%.2d", seconds)
         } else {
-            return "0:01"
+            return "0:00"
         }
     }
 }
