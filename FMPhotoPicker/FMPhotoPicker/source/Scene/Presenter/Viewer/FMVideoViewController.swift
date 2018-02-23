@@ -25,7 +25,6 @@ class FMVideoViewController: FMPhotoViewController {
     
     private var isSeekInProgress = false
     private var chaseTime = kCMTimeZero
-    private var playerCurrentItemStatus: AVPlayerItemStatus = .unknown
     
     deinit {
         removeVideoControlObservers()
@@ -86,15 +85,11 @@ class FMVideoViewController: FMPhotoViewController {
         Helper.requestAVAsset(asset: photo.asset) { avAsset in
             // Do not run on main thread for better perf
             DispatchQueue.global(qos: .userInitiated).async {
-                guard self.shouldUpdateView,
-                    let avURLAsset = avAsset as? AVURLAsset else { return }
-                self.player = AVPlayer(url: avURLAsset.url)
+                guard self.shouldUpdateView == true,
+                    let avAsset = avAsset else { return }
                 
-                self.playerTimeObserver = self.player?.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(0.1, 1000), queue: .main, using: { time in
-                    let time = CMTimeGetSeconds(time)
-                    let progress = (time / self.photo.asset.duration)
-                    self.playerProgressDidChange?(progress)
-                })
+                let playerItem = AVPlayerItem(asset: avAsset)
+                self.player = AVPlayer(playerItem: playerItem)
                 
                 self.playerController = AVPlayerViewController()
                 self.playerController?.player = self.player
@@ -103,6 +98,8 @@ class FMVideoViewController: FMPhotoViewController {
                     self.playerController?.view.frame = self.view.frame
                     self.playerController?.showsPlaybackControls = false
                 }
+                
+                self.addPlayerTimeObserverIfNeeded()
             }
         }
     }
@@ -175,10 +172,11 @@ class FMVideoViewController: FMPhotoViewController {
     
     @objc public func controller_request_seek_to(notification: NSNotification) {
         guard let percent = notification.userInfo?["percent"] as? Double,
-            let player = self.player
+            let player = self.player,
+            let currentPlayerItem = player.currentItem
             else { return }
-        let cmTime = CMTimeMakeWithSeconds(Double(photo.asset.duration) * percent, 1000)
-        player.seek(to: cmTime, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
+        let cmTime = CMTimeMakeWithSeconds(currentPlayerItem.duration.seconds * percent, 1000)
+//        player.seek(to: cmTime, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
         seekSmoothlyToTime(newChaseTime: cmTime)
         
     }
@@ -195,6 +193,18 @@ class FMVideoViewController: FMPhotoViewController {
                                                selector:#selector(self.playerDidFinishPlaying(note:)),
                                                name: .AVPlayerItemDidPlayToEndTime,
                                                object: nil)
+        
+        addPlayerTimeObserverIfNeeded()
+    }
+    
+    private func addPlayerTimeObserverIfNeeded() {
+        if playerTimeObserver == nil {
+            self.playerTimeObserver = self.player?.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(0.1, 1000), queue: .main, using: { time in
+                let time = CMTimeGetSeconds(time)
+                let progress = (time / self.player!.currentItem!.duration.seconds)
+                self.playerProgressDidChange?(progress)
+            })
+        }
     }
     
     private func removeVideoControlObservers() {
@@ -226,10 +236,10 @@ class FMVideoViewController: FMPhotoViewController {
     }
     
     func trySeekToChaseTime() {
-        if playerCurrentItemStatus == .unknown {
+        if self.player?.currentItem?.status == .unknown {
             // wait until item becomes ready (KVO player.currentItem.status)
         }
-        else if playerCurrentItemStatus == .readyToPlay {
+        else if self.player?.currentItem?.status == .readyToPlay {
             actuallySeekToTime()
         }
     }

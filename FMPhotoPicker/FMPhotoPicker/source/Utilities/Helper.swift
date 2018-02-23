@@ -58,6 +58,47 @@ class Helper: NSObject {
         }
     }
     
+    static func requestVideoURL(forAsset asset: PHAsset, complete: @escaping (URL?) -> Void) {
+        guard asset.mediaType == .video else { return complete(nil) }
+        
+        PHImageManager().requestAVAsset(forVideo: asset, options: nil) { (asset, _, _) in
+            // AVAsset has two sub classes: AVComposition and AVAssetURL
+            // AVComposition for slow motion video
+            // AVAssetURL for normal videos
+            
+            // For slow motion video checking for AVCompostion
+            // Creating an exporter to write the video into local file path and using the same to play/upload
+            
+            if asset!.isKind(of: AVComposition.self){
+                let avCompositionAsset = asset as! AVComposition
+                if avCompositionAsset.tracks.count > 1{
+                    let exporter = AVAssetExportSession(asset: avCompositionAsset, presetName: AVAssetExportPresetHighestQuality)
+                    exporter!.outputURL = self.fetchOutputURL()
+                    exporter!.outputFileType = .mp4
+                    exporter!.shouldOptimizeForNetworkUse = true
+                    exporter!.exportAsynchronously {
+                        let url = exporter!.outputURL
+                        DispatchQueue.main.async {
+                            complete(url)
+                        }
+                    }
+                }
+            } else {
+                // Normal video, are stored as AVAssetURL
+                let url = (asset as! AVURLAsset).url
+                DispatchQueue.main.async {
+                    complete(url)
+                }
+            }
+        }
+    }
+    
+    static func fetchOutputURL() -> URL{
+        let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let path = documentDirectory.appendingPathComponent("test.mp4")
+        return path
+    }
+    
     static func getFullSizePhoto(by asset: PHAsset, complete: @escaping (UIImage?) -> Void) -> PHImageRequestID {
         let manager = PHImageManager.default()
         let options = PHImageRequestOptions()
