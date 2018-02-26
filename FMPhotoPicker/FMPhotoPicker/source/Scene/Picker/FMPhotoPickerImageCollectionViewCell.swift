@@ -21,7 +21,7 @@ class FMPhotoPickerImageCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var videoInfoView: UIView!
     @IBOutlet weak var videoLengthLabel: UILabel!
     
-    private var photoAsset: FMPhotoAsset?
+    private weak var photoAsset: FMPhotoAsset?
     
     public var onTapSelect = {}
     

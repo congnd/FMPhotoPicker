@@ -38,7 +38,7 @@ class FMPresenterBottomView: UIView {
         playbackControlView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         playbackControlView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         
-        playerProgressDidChange = { percent in
+        playerProgressDidChange = { [unowned self] percent in
             self.playbackControlView.playerProgressDidChange(value: percent)
         }
     }

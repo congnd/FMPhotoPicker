@@ -64,6 +64,7 @@ class FMVideoViewController: FMPhotoViewController {
         super.viewWillAppear(animated)
         self.shouldUpdateView = true
         self.setupVideoControlObservers()
+        self.playIcon.isHidden = false
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -199,7 +200,13 @@ class FMVideoViewController: FMPhotoViewController {
     
     private func addPlayerTimeObserverIfNeeded() {
         if playerTimeObserver == nil {
-            self.playerTimeObserver = self.player?.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(0.1, 1000), queue: .main, using: { time in
+            self.playerTimeObserver = self.player?.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(0.1, 1000), queue: .main, using: { [unowned self] time in
+                print("callback is called for video: \(self.dataSource.index(ofPhoto: self.photo)!)")
+                guard let status = self.player?.currentItem?.status,
+                    status == .readyToPlay else {
+                    return
+                }
+                    
                 let time = CMTimeGetSeconds(time)
                 let progress = (time / self.player!.currentItem!.duration.seconds)
                 self.playerProgressDidChange?(progress)
@@ -229,8 +236,6 @@ class FMVideoViewController: FMPhotoViewController {
             chaseTime = newChaseTime;
             if !isSeekInProgress {
                 trySeekToChaseTime()
-            } else {
-                print("rejected")
             }
         }
     }

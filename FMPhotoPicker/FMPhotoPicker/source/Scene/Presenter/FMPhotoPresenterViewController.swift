@@ -79,6 +79,10 @@ class FMPhotoPresenterViewController: UIViewController {
         }
     }
     
+    deinit {
+        print("deinit FMPhotoPresenterViewController")
+    }
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,10 +108,10 @@ class FMPhotoPresenterViewController: UIViewController {
         self.bottomView = FMPresenterBottomView()
         swipeInteractionController = FMPhotoInteractionAnimator(viewController: self)
         
-        self.bottomView.touchBegan = {
+        self.bottomView.touchBegan = { [unowned self] in
             self.swipeInteractionController?.disable()
         }
-        self.bottomView.touchEnded = {
+        self.bottomView.touchEnded = { [unowned self] in
             self.swipeInteractionController?.enable()
         }
         
@@ -133,6 +137,11 @@ class FMPhotoPresenterViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         bottomView.updateFrames()
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        print("didReceiveMemoryWarning")
     }
     
     // MARK: - Update Views

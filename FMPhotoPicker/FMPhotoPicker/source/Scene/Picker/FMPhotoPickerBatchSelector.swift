@@ -30,7 +30,7 @@ struct PanSelection {
 }
 
 class FMPhotoPickerBatchSelector: NSObject {
-    private let viewController: FMPhotoPickerViewController
+    private unowned let viewController: FMPhotoPickerViewController
     private let collectionView: UICollectionView
     private let dataSource: FMPhotosDataSource
     

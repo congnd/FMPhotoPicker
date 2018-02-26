@@ -75,7 +75,7 @@ public class FMPhotoPickerViewController: UIViewController {
     // MARK: - Setup View
     private func setupView() {
         let reuseCellNib = UINib(nibName: "FMPhotoPickerImageCollectionViewCell", bundle: Bundle(for: self.classForCoder))
-        self.imageCollectionView.register(reuseCellNib, forCellWithReuseIdentifier: "FMPhotoPickerImageCollectionViewCell")
+        self.imageCollectionView.register(reuseCellNib, forCellWithReuseIdentifier: FMPhotoPickerImageCollectionViewCell.reuseId)
         self.imageCollectionView.dataSource = self
         self.imageCollectionView.delegate = self
         
@@ -178,7 +178,7 @@ extension FMPhotoPickerViewController: UICollectionViewDataSource {
         cell.loadView(photoAsset: photoAsset,
                       selectMode: self.config.selectMode,
                       selectedIndex: self.dataSource.selectedIndexOfPhoto(atIndex: indexPath.item))
-        cell.onTapSelect = {
+        cell.onTapSelect = { [unowned self, unowned cell] in
             if let selectedIndex = self.dataSource.selectedIndexOfPhoto(atIndex: indexPath.item) {
                 self.dataSource.unsetSeclectedForPhoto(atIndex: indexPath.item)
                 cell.performSelectionAnimation(selectedIndex: nil)

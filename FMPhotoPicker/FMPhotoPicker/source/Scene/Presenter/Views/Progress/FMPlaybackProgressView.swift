@@ -106,6 +106,7 @@ class FMPlaybackProgressView: UIControl {
             NotificationCenter.default.post(name: .player_seek_began, object: nil)
             return true
         }
+        self.touchEnded()
         return false
     }
     
@@ -127,7 +128,6 @@ class FMPlaybackProgressView: UIControl {
         CATransaction.commit()
         
         NotificationCenter.default.post(name: .player_seek_to, object: nil, userInfo: ["percent": nextValue])
-        print(nextValue)
         return true
     }
     
@@ -136,6 +136,10 @@ class FMPlaybackProgressView: UIControl {
         thumbLayer.highlighted = false
         shouldUpdateThumbPosition = true
         NotificationCenter.default.post(name: .player_seek_ended, object: nil)
+    }
+    
+    override func cancelTracking(with event: UIEvent?) {
+        self.touchEnded()
     }
     
     public func playerProgressDidChange(value: Double) {

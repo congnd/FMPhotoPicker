@@ -13,7 +13,7 @@ class FMZoomOutAnimationController: NSObject, UIViewControllerAnimatedTransition
     
     var getDestFrame: (() -> CGRect)!
     
-    let interactionController: FMPhotoInteractionAnimator?
+    weak var interactionController: FMPhotoInteractionAnimator?
     
     init(interactionController: FMPhotoInteractionAnimator?) {
         self.interactionController = interactionController
