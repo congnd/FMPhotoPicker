@@ -70,6 +70,7 @@ class FMPlaybackControlView: UIView {
         currentTimeLabel.font = UIFont.systemFont(ofSize: 13)
         currentTimeLabel.textColor = .white
         currentTimeLabel.text = "0:00"
+        currentTimeLabel.textColor = UIColor(red: 65/255, green: 65/255, blue: 65/255, alpha: 1)
         
         totalTimeLabel.translatesAutoresizingMaskIntoConstraints = false
         totalTimeLabel.rightAnchor.constraint(equalTo: playbackProgressView.rightAnchor,
@@ -78,6 +79,7 @@ class FMPlaybackControlView: UIView {
         totalTimeLabel.font = UIFont.systemFont(ofSize: 13)
         totalTimeLabel.textColor = .white
         totalTimeLabel.text = "0:00"
+        totalTimeLabel.textColor = UIColor(red: 65/255, green: 65/255, blue: 65/255, alpha: 1)
         
         playButton.translatesAutoresizingMaskIntoConstraints = false
         playButton.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
@@ -89,8 +91,7 @@ class FMPlaybackControlView: UIView {
         playButton.addTarget(self, action: #selector(onTapPlayButton), for: .touchUpInside)
         playButton.isHidden = true
         
-        self.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)
-        
+        self.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.9)
         addPlayerObservers()
     }
     

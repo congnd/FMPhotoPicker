@@ -20,7 +20,7 @@ class FMPlaybackProgressThumbLayer: CALayer {
     
     override func draw(in ctx: CGContext) {
         if let slider = rangeSlider {
-            let thumbFrame = bounds.insetBy(dx: (frame.width - slider.thumbIconWidth) / 2, dy: 0)
+            let thumbFrame = bounds.insetBy(dx: (frame.width - slider.thumbIconWidth) / 2, dy: 2)
             let cornerRadius = thumbFrame.height * slider.curvaceousness / 2.0
             let thumbPath = UIBezierPath(roundedRect: thumbFrame, cornerRadius: cornerRadius)
             
