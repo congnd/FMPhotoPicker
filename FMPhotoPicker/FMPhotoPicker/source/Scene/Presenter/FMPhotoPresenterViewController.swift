@@ -114,6 +114,10 @@ class FMPhotoPresenterViewController: UIViewController {
         self.bottomView.touchEnded = { [unowned self] in
             self.swipeInteractionController?.enable()
         }
+        self.bottomView.onTapEditButton = { [unowned self] in
+            let editorVC = FMImageEditorViewController(selectMode: self.selectMode, dataSource: self.dataSource, initialPhotoIndex: self.currentPhotoIndex)
+            self.present(editorVC, animated: false, completion: nil)
+        }
         
         self.view.addSubview(bottomView)
         self.bottomView.translatesAutoresizingMaskIntoConstraints = false
@@ -203,12 +207,12 @@ class FMPhotoPresenterViewController: UIViewController {
         guard let fmAsset = dataSource.photo(atIndex: currentPhotoIndex) else { return }
         
         if fmAsset.mediaType == .video {
-            bottomView.show()
+            bottomView.videoMode()
             fmAsset.requestVideoFrames { cgImages in
                 self.bottomView.resetPlaybackControl(cgImages: cgImages, duration: fmAsset.asset.duration)
             }
         } else {
-            bottomView.hide()
+            bottomView.imageMode()
         }
     }
     

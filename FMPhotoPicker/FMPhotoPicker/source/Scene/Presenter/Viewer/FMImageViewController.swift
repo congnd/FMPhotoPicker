@@ -18,11 +18,7 @@ class FMImageViewController: FMPhotoViewController {
         gesture.numberOfTapsRequired = 2
         return gesture
     }()
-    
-//    required init?(coder aDecoder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-    
+
     deinit {
         self.photo.cancelAllRequest()
     }

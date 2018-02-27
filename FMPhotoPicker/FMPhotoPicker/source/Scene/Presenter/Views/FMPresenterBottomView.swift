@@ -14,11 +14,17 @@ class FMPresenterBottomView: UIView {
     private var shouldReceiveUpdate = true
     
     public var playbackControlView: FMPlaybackControlView
+    public var editMenuView: FMPresenterEditMenuView
+    
     public var touchBegan: () -> Void = {} {
         didSet { self.playbackControlView.touchBegan = self.touchBegan }
     }
     public var touchEnded: () -> Void = {} {
         didSet { self.playbackControlView.touchEnded = self.touchEnded }
+    }
+    
+    public var onTapEditButton: () -> Void = {} {
+        didSet { self.editMenuView.onTapEditButton = self.onTapEditButton }
     }
     
     public var playerProgressDidChange: ((Double) -> Void)?
@@ -29,6 +35,7 @@ class FMPresenterBottomView: UIView {
     
     init() {
         playbackControlView = FMPlaybackControlView()
+        editMenuView = FMPresenterEditMenuView()
         super.init(frame: .zero)
         
         self.addSubview(playbackControlView)
@@ -41,6 +48,13 @@ class FMPresenterBottomView: UIView {
         playerProgressDidChange = { [unowned self] percent in
             self.playbackControlView.playerProgressDidChange(value: percent)
         }
+        
+        self.addSubview(editMenuView)
+        editMenuView.translatesAutoresizingMaskIntoConstraints = false
+        editMenuView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        editMenuView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        editMenuView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        editMenuView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
     }
     
     public func resetPlaybackControl(cgImages: [CGImage], duration: TimeInterval) {
@@ -49,14 +63,16 @@ class FMPresenterBottomView: UIView {
         }
     }
     
-    public func show() {
-        self.isHidden = false
+    public func videoMode() {
+        editMenuView.isHidden = true
+        playbackControlView.isHidden = false
         self.shouldReceiveUpdate = true
         resetPlaybackControl(cgImages: [], duration: 0)
     }
     
-    public func hide() {
-        self.isHidden = true
+    public func imageMode() {
+        editMenuView.isHidden = false
+        playbackControlView.isHidden = true
         self.shouldReceiveUpdate = false
     }
     

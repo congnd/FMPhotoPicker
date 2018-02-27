@@ -52,7 +52,7 @@
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fok-2X-Dem">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fok-2X-Dem">
                                     <rect key="frame" x="307" y="2" width="60" height="40"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="40" id="KAm-eY-Ipn"/>
@@ -90,7 +90,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o05-8f-eoM">
-                    <rect key="frame" x="331" y="80" width="28" height="28"/>
+                    <rect key="frame" x="339" y="80" width="28" height="28"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="check_on" translatesAutoresizingMaskIntoConstraints="NO" id="lfY-RY-Mr8">
                             <rect key="frame" x="0.0" y="0.0" width="28" height="28"/>
@@ -130,7 +130,7 @@
             <constraints>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="hwJ-iD-bAE" secondAttribute="trailing" id="0FM-pd-a72"/>
                 <constraint firstItem="hwJ-iD-bAE" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="5Vo-oK-3jP"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="o05-8f-eoM" secondAttribute="trailing" constant="16" id="E4e-SJ-ghN"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="o05-8f-eoM" secondAttribute="trailing" constant="8" id="E4e-SJ-ghN"/>
                 <constraint firstItem="o05-8f-eoM" firstAttribute="top" secondItem="hwJ-iD-bAE" secondAttribute="bottom" constant="16" id="Qo7-78-xKg"/>
                 <constraint firstItem="hwJ-iD-bAE" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="iGA-ej-V1N"/>
             </constraints>
