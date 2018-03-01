@@ -115,7 +115,12 @@ class FMPhotoPresenterViewController: UIViewController {
             self.swipeInteractionController?.enable()
         }
         self.bottomView.onTapEditButton = { [unowned self] in
-            let editorVC = FMImageEditorViewController(selectMode: self.selectMode, dataSource: self.dataSource, initialPhotoIndex: self.currentPhotoIndex)
+            guard let photo = self.dataSource.photo(atIndex: self.currentPhotoIndex),
+                let vc = self.pageViewController.viewControllers?.first as? FMPhotoViewController,
+                let thumbImage = vc.thumbImage(),
+                let image = vc.displayingImage()
+                else { return }
+            let editorVC = FMImageEditorViewController(withPhoto: photo, preloadImage: image, thumbImage: thumbImage)
             self.present(editorVC, animated: false, completion: nil)
         }
         

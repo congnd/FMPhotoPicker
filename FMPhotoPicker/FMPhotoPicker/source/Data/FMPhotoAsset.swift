@@ -55,6 +55,12 @@ public class FMPhotoAsset {
         }
     }
     
+    func requestImage(in desireSize: CGSize, _ complete: @escaping (UIImage?) -> Void) {
+        _ = Helper.getPhoto(by: self.asset, in: desireSize) { image in
+            complete(image)
+        }
+    }
+    
     func requestFullSizePhoto(complete: @escaping (UIImage?) -> Void) {
         if let fullSizePhoto = self.fullSizePhoto {
             complete(fullSizePhoto)

@@ -32,4 +32,12 @@ class FMPhotoViewController: UIViewController {
     public func viewToSnapshot() -> UIView {
         return self.view
     }
+    
+    public func displayingImage() -> UIImage? {
+        return nil
+    }
+    
+    public func thumbImage() -> UIImage? {
+        return nil
+    }
 }

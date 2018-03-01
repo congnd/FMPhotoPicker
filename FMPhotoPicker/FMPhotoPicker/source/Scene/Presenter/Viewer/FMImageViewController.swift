@@ -11,6 +11,7 @@ import UIKit
 class FMImageViewController: FMPhotoViewController {
     // MARK: - Public
     public var scalingImageView: FMScalingImageView!
+    public var smallImage: UIImage?
     
     // MARK: - Private
     lazy private(set) var doubleTapGestureRecognizer: UITapGestureRecognizer = {
@@ -36,6 +37,7 @@ class FMImageViewController: FMPhotoViewController {
         self.view.addSubview(self.scalingImageView)
         
         self.photo.requestThumb() { image in
+            self.smallImage = image
             self.scalingImageView.image = image
         }
         
@@ -94,6 +96,14 @@ class FMImageViewController: FMPhotoViewController {
     
     override func viewToSnapshot() -> UIView {
         return self.scalingImageView.imageView
+    }
+    
+    override func displayingImage() -> UIImage? {
+        return self.scalingImageView.image
+    }
+    
+    override func thumbImage() -> UIImage? {
+        return self.smallImage
     }
 }
 
