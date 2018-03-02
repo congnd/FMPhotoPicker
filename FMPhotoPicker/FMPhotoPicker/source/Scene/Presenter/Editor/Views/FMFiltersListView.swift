@@ -22,14 +22,14 @@ class NoEffect: FMFilterable {
 class FMFiltersListView: UIView {
     private let collectionView: UICollectionView
     private let image: UIImage
-    private var filters: [FMFilterable]
+    private var availableFilters: [FMFilterable]
     private var demoImages: [String:UIImage] = [:]
     private var selectedCellIndex: Int = 0
     
     public var didSelectFilter: (FMFilterable) -> Void = { _ in }
     
     
-    init(withImage image: UIImage) {
+    init(withImage image: UIImage, appliedFilter: FMFilterable?) {
         self.image = image
         
         let layout = UICollectionViewFlowLayout()
@@ -37,10 +37,14 @@ class FMFiltersListView: UIView {
         layout.minimumInteritemSpacing = 1
         layout.scrollDirection = .horizontal
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        filters = FMFilterName.allValues.map { return FMFilter(name: $0) }
-        filters.insert(NoEffect(), at: 0)
+        availableFilters = FMFilterName.allValues.map { return FMFilter(name: $0) }
+        availableFilters.insert(NoEffect(), at: 0)
         
         super.init(frame: .zero)
+        
+        if let index = self.availableFilters.index(where: { return $0.filterName() == appliedFilter?.filterName() }) {
+            self.selectedCellIndex = index
+        }
         
         self.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -55,6 +59,15 @@ class FMFiltersListView: UIView {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.showsHorizontalScrollIndicator = false
+        
+        collectionView.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.old, context: nil)
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if let observedObject = object as? UICollectionView, observedObject == collectionView {
+            collectionView.removeObserver(self, forKeyPath: "contentSize")
+            collectionView.scrollToItem(at: IndexPath(row: self.selectedCellIndex, section: 0), at: .centeredHorizontally, animated: false)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -64,14 +77,14 @@ class FMFiltersListView: UIView {
 
 extension FMFiltersListView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return filters.count
+        return availableFilters.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FMFilterCell.reussId, for: indexPath) as? FMFilterCell
             else { return UICollectionViewCell() }
         
-        let filter = filters[indexPath.item]
+        let filter = availableFilters[indexPath.item]
         if let demo = demoImages[filter.filterName()] {
            cell.imageView.image = demo
         } else {
@@ -80,7 +93,7 @@ extension FMFiltersListView: UICollectionViewDataSource {
             cell.imageView.image = demo
         }
         
-        cell.name.text = filters[indexPath.item].filterName()
+        cell.name.text = availableFilters[indexPath.item].filterName()
         if indexPath.item == selectedCellIndex {
             cell.setSelected()
         }
@@ -91,7 +104,7 @@ extension FMFiltersListView: UICollectionViewDataSource {
 }
 extension FMFiltersListView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let filter = filters[indexPath.item]
+        let filter = availableFilters[indexPath.item]
         didSelectFilter(filter)
         
         (collectionView.cellForItem(at: IndexPath(row: selectedCellIndex, section: 0)) as? FMFilterCell)?.setDeselected()

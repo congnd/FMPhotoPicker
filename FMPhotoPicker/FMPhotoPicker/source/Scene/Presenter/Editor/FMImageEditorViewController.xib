@@ -53,6 +53,9 @@
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <state key="normal" title="決定"/>
+                                    <connections>
+                                        <action selector="onTapDone:" destination="-1" eventType="touchUpInside" id="rjT-G7-0Pd"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -65,7 +68,7 @@
                             </constraints>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" red="0.57919406890000003" green="0.1280144453" blue="0.57268613580000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="Cso-Cz-tup" secondAttribute="bottom" id="6bb-8F-dS2"/>
                         <constraint firstItem="Cso-Cz-tup" firstAttribute="leading" secondItem="zK2-M3-1gG" secondAttribute="leading" id="8sj-g4-PFo"/>
@@ -88,7 +91,7 @@
                                     <state key="normal" title="位置調整"/>
                                 </button>
                             </subviews>
-                            <color key="backgroundColor" red="0.0" green="0.99143940210000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="UbG-RA-D49" firstAttribute="centerY" secondItem="7JO-AQ-ps5" secondAttribute="centerY" id="QWU-oA-aDZ"/>
                                 <constraint firstItem="UbG-RA-D49" firstAttribute="centerX" secondItem="7JO-AQ-ps5" secondAttribute="centerX" id="ro0-n6-2es"/>
@@ -102,7 +105,7 @@
                                     <state key="normal" title="フィルター"/>
                                 </button>
                             </subviews>
-                            <color key="backgroundColor" red="1" green="0.32586389780000002" blue="0.29645484690000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="iga-x3-Nbo" firstAttribute="centerY" secondItem="Fl8-Qt-5hu" secondAttribute="centerY" id="308-2N-YOv"/>
                                 <constraint firstItem="iga-x3-Nbo" firstAttribute="centerX" secondItem="Fl8-Qt-5hu" secondAttribute="centerX" id="KL7-d0-0XV"/>

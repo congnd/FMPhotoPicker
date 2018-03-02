@@ -15,11 +15,14 @@ public class FMPhotoAsset {
     var thumb: UIImage?
     var thumbRequestId: PHImageRequestID?
     
+    var originalThumb: UIImage?
+    
     var videoFrames: [CGImage]?
     
-    private var fullSizePhoto: UIImage?
-    private var fullSizePhotoRequestId: PHImageRequestID?
+    var thumbChanged: (UIImage) -> Void = { _ in }
     
+    private var fullSizePhotoRequestId: PHImageRequestID?
+    private var editor = FMImageEditor()
     /**
      Indicates whether the request for the full size image was canceled.
      A workaround for this issue:
@@ -50,30 +53,33 @@ public class FMPhotoAsset {
             self.thumbRequestId = Helper.getPhoto(by: self.asset, in: CGSize(width: 150, height: 150)) { image in
                 self.thumbRequestId = nil
                 self.thumb = image
-                complete(image)
+                self.originalThumb = image
+                
+                guard let image = image else { return complete(nil) }
+                let edited = self.editor.reproduce(source: image)
+                complete(edited)
             }
         }
     }
     
     func requestImage(in desireSize: CGSize, _ complete: @escaping (UIImage?) -> Void) {
         _ = Helper.getPhoto(by: self.asset, in: desireSize) { image in
-            complete(image)
+            guard let image = image else { return complete(nil) }
+            let edited = self.editor.reproduce(source: image)
+            complete(edited)
         }
     }
     
     func requestFullSizePhoto(complete: @escaping (UIImage?) -> Void) {
-        if let fullSizePhoto = self.fullSizePhoto {
-            complete(fullSizePhoto)
-        } else {
-            self.fullSizePhotoRequestId = Helper.getFullSizePhoto(by: self.asset) { image in
-                self.fullSizePhotoRequestId = nil
-//                self.fullSizePhoto = image
-                if self.canceledFullSizeRequest {
-                    self.canceledFullSizeRequest = false
-                    complete(nil)
-                } else {
-                    complete(image)
-                }
+        self.fullSizePhotoRequestId = Helper.getFullSizePhoto(by: self.asset) { image in
+            self.fullSizePhotoRequestId = nil
+            if self.canceledFullSizeRequest {
+                self.canceledFullSizeRequest = false
+                complete(nil)
+            } else {
+                guard let image = image else { return complete(nil) }
+                let edited = self.editor.reproduce(source: image)
+                complete(edited)
             }
         }
     }
@@ -93,6 +99,20 @@ public class FMPhotoAsset {
         if let fullSizePhotoRequestId = self.fullSizePhotoRequestId {
             PHImageManager.default().cancelImageRequest(fullSizePhotoRequestId)
             self.canceledFullSizeRequest = true
+        }
+    }
+    
+    public func getAppliedFilter() -> FMFilterable? {
+        return editor.filter
+    }
+    
+    public func apply(filter: FMFilterable) {
+        editor.filter = filter
+        if let source = originalThumb {
+            thumb = editor.reproduce(source: source)
+            if thumb != nil {
+                thumbChanged(thumb!)
+            }
         }
     }
 }

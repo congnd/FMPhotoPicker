@@ -53,6 +53,11 @@ class FMPhotoPickerImageCollectionViewCell: UICollectionViewCell {
             self.imageView.image = image
         }
         
+        photoAsset.thumbChanged = { [weak self] image in
+            guard let strongSelf = self else { return }
+            strongSelf.imageView.image = image
+        }
+        
         if photoAsset.mediaType == .video {
             self.videoInfoView.isHidden = false
             self.videoLengthLabel.text = photoAsset.asset.duration.stringTime

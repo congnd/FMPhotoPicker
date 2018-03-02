@@ -19,21 +19,27 @@ class FMImageEditorViewController: UIViewController {
     private let filterSubMenuView: FMFiltersListView
     public var scalingImageView: FMScalingImageView!
     public var photo: FMPhotoAsset
+    private var originalThumb: UIImage
     private var originalImage: UIImage
-    private var resizedImage: UIImage
+    
+    private var selectedFilter: FMFilterable?
     
     // MARK - Init
-    public init(withPhoto photo: FMPhotoAsset, preloadImage: UIImage, thumbImage: UIImage) {
+    public init(withPhoto photo: FMPhotoAsset, preloadImage: UIImage, originalThumb: UIImage) {
         self.photo = photo
+        self.originalThumb = originalThumb
         self.originalImage = preloadImage
-        self.resizedImage = self.originalImage
-        self.filterSubMenuView = FMFiltersListView(withImage: thumbImage)
+        
+        self.filterSubMenuView = FMFiltersListView(withImage: originalThumb, appliedFilter: photo.getAppliedFilter())
         
         super.init(nibName: "FMImageEditorViewController", bundle: Bundle(for: FMImageEditorViewController.self))
         
         self.filterSubMenuView.didSelectFilter = { [unowned self] filter in
-            self.scalingImageView.image = filter.filter(image: self.resizedImage)
+            self.selectedFilter = filter
+            self.scalingImageView.image = filter.filter(image: self.originalImage)
         }
+        
+        self.view.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -58,11 +64,12 @@ class FMImageEditorViewController: UIViewController {
         self.scalingImageView.clipsToBounds = true
         self.scalingImageView.image = self.originalImage
         
-        self.photo.requestImage(in: self.view.frame.size, { [unowned self] image in
-            guard let image = image else { return }
-            self.resizedImage = image
-            self.scalingImageView.image = image
-        })
+//        self.photo.requestImage(in: self.view.frame.size, { [weak self] image in
+//            guard let strongSelf = self,
+//                let image = image else { return }
+//            strongSelf.resizedImage = image
+//            strongSelf.scalingImageView.image = image
+//        })
         
         self.view.addSubview(self.scalingImageView)
         self.view.sendSubview(toBack: self.scalingImageView)
@@ -103,9 +110,36 @@ class FMImageEditorViewController: UIViewController {
         self.topMenuTopConstraint.constant = 0
         self.bottomMenuBottomConstraint.constant = 0
     }
+    
+    private func hideAnimatedMenu(completion: (() -> Void)?) {
+        self.topMenuTopConstraint.constant = -self.topMenuContainter.frame.height
+        self.bottomMenuBottomConstraint.constant = -self.bottomMenuContainer.frame.height
+        UIView.animate(withDuration: 0.375,
+                       delay: 0,
+                       options: .curveEaseOut,
+                       animations: {
+                        self.topMenuContainter.alpha = 0
+                        self.bottomMenuContainer.alpha = 0
+                        self.view.layoutIfNeeded()
+        },
+                       completion: { _ in
+                        completion?()
+        })
+    }
 
+    @IBAction func onTapDone(_ sender: Any) {
+        if let filter = selectedFilter {
+            photo.apply(filter: filter)
+        }
+        hideAnimatedMenu {
+            self.dismiss(animated: false, completion: nil)
+        }
+    }
+    
     @IBAction func onTapCancel(_ sender: Any) {
-        self.dismiss(animated: false, completion: nil)
+        hideAnimatedMenu {
+            self.dismiss(animated: false, completion: nil)
+        }
     }
 }
 
