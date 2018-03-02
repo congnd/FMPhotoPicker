@@ -30,6 +30,7 @@
 		CED2E99B2047D25400AB8206 /* FMFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED2E99A2047D25400AB8206 /* FMFilter.swift */; };
 		CED2E99D2047D3C400AB8206 /* FMFilterName.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED2E99C2047D3C400AB8206 /* FMFilterName.swift */; };
 		CED2E99F2047F10200AB8206 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED2E99E2047F10200AB8206 /* UIImage+Extension.swift */; };
+		CED2E9A32048E6D800AB8206 /* FMImageEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED2E9A22048E6D800AB8206 /* FMImageEditor.swift */; };
 		CEDF9C3B203AC6AE0048D182 /* FMPresenterBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDF9C3A203AC6AE0048D182 /* FMPresenterBottomView.swift */; };
 		CEDF9C3D203ACCD20048D182 /* FMPresenterTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDF9C3C203ACCD20048D182 /* FMPresenterTopView.swift */; };
 		CEDF9C3F203ADB0E0048D182 /* FMPlaybackControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDF9C3E203ADB0E0048D182 /* FMPlaybackControlView.swift */; };
@@ -85,6 +86,7 @@
 		CED2E99A2047D25400AB8206 /* FMFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMFilter.swift; sourceTree = "<group>"; };
 		CED2E99C2047D3C400AB8206 /* FMFilterName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMFilterName.swift; sourceTree = "<group>"; };
 		CED2E99E2047F10200AB8206 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
+		CED2E9A22048E6D800AB8206 /* FMImageEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMImageEditor.swift; sourceTree = "<group>"; };
 		CEDF9C3A203AC6AE0048D182 /* FMPresenterBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMPresenterBottomView.swift; sourceTree = "<group>"; };
 		CEDF9C3C203ACCD20048D182 /* FMPresenterTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMPresenterTopView.swift; sourceTree = "<group>"; };
 		CEDF9C3E203ADB0E0048D182 /* FMPlaybackControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMPlaybackControlView.swift; sourceTree = "<group>"; };
@@ -233,14 +235,31 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		CED2E9972047CFA800AB8206 /* Filters */ = {
+		CED2E9972047CFA800AB8206 /* Filter */ = {
 			isa = PBXGroup;
 			children = (
 				CED2E9982047D1E100AB8206 /* FMFilterable.swift */,
 				CED2E99A2047D25400AB8206 /* FMFilter.swift */,
 				CED2E99C2047D3C400AB8206 /* FMFilterName.swift */,
 			);
-			path = Filters;
+			path = Filter;
+			sourceTree = "<group>";
+		};
+		CED2E9A02048E65500AB8206 /* ImageEditor */ = {
+			isa = PBXGroup;
+			children = (
+				CED2E9A22048E6D800AB8206 /* FMImageEditor.swift */,
+				CED2E9A12048E68700AB8206 /* Crop */,
+				CED2E9972047CFA800AB8206 /* Filter */,
+			);
+			path = ImageEditor;
+			sourceTree = "<group>";
+		};
+		CED2E9A12048E68700AB8206 /* Crop */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Crop;
 			sourceTree = "<group>";
 		};
 		CEDF9C42203ADBAE0048D182 /* Views */ = {
@@ -304,7 +323,7 @@
 		CEE50D2320196E32005AE708 /* source */ = {
 			isa = PBXGroup;
 			children = (
-				CED2E9972047CFA800AB8206 /* Filters */,
+				CED2E9A02048E65500AB8206 /* ImageEditor */,
 				CE510903202AE8CD003CBFA5 /* Utilities */,
 				CE5108FC202AE789003CBFA5 /* Data */,
 				CE510901202AE7EE003CBFA5 /* Interaction Animator */,
@@ -433,6 +452,7 @@
 				CE0C5FB9201AC4870040A03A /* FMZoomInAnimationController.swift in Sources */,
 				CED2E99220455B2500AB8206 /* FMFiltersListView.swift in Sources */,
 				CEE50D2A20196E45005AE708 /* FMPhotoPickerImageCollectionViewLayout.swift in Sources */,
+				CED2E9A32048E6D800AB8206 /* FMImageEditor.swift in Sources */,
 				CE238A07201EB38000CEBCB5 /* FMScalingImageView.swift in Sources */,
 				CEE311B72022E29700ABBE0C /* FMPhotosDataSource.swift in Sources */,
 				CE510905202AFD80003CBFA5 /* FMPhotoPickerBatchSelector.swift in Sources */,
