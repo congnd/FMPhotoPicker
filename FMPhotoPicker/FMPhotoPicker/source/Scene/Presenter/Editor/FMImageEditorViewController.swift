@@ -90,8 +90,67 @@ class FMImageEditorViewController: UIViewController {
     }
     
     override var prefersStatusBarHidden: Bool { return true }
+
+    // MARK: - IBActions
+    @IBAction func onTapDone(_ sender: Any) {
+        if let filter = selectedFilter {
+            photo.apply(filter: filter)
+        }
+        hideAnimatedMenu {
+            self.dismiss(animated: false, completion: nil)
+        }
+    }
     
-    // MARK -
+    @IBAction func onTapCancel(_ sender: Any) {
+        hideAnimatedMenu {
+            self.dismiss(animated: false, completion: nil)
+        }
+    }
+    @IBAction func onTapOpenFilter(_ sender: Any) {
+        showAnimatedFilterMenu()
+    }
+    @IBAction func onTapOpenCrop(_ sender: Any) {
+        showAnimatedCropMenu()
+    }
+    
+    // MARK: - Animation
+    private func showAnimatedCropMenu() {
+        guard cropSubMenuView.isHidden == true else { return }
+        
+        subMenuContainer.isHidden = false
+        filterSubMenuView.isHidden = true
+        cropSubMenuView.isHidden = false
+        
+        cropSubMenuView.alpha = 0
+        UIView.animate(withDuration: 0.375,
+                       animations: {
+                        self.cropSubMenuView.alpha = 1
+                        self.filterSubMenuView.alpha = 0
+        },
+                       completion: { _ in
+                        self.subMenuContainer.backgroundColor = .white
+                        self.filterSubMenuView.isHidden = true
+        })
+    }
+    
+    private func showAnimatedFilterMenu() {
+        guard filterSubMenuView.isHidden == true else { return }
+        
+        subMenuContainer.isHidden = false
+        filterSubMenuView.isHidden = false
+        
+        filterSubMenuView.alpha = 0
+        UIView.animate(withDuration: 0.375,
+                       animations: {
+                        self.filterSubMenuView.alpha = 1
+                        self.cropSubMenuView.alpha = 0
+        },
+                       completion: { _ in
+                        self.subMenuContainer.backgroundColor = .white
+                        self.cropSubMenuView.isHidden = true
+        })
+    }
+    
     private func showAnimatedMenu() {
         topMenuTopConstraint.constant = topMenuContainter.frame.height
         bottomMenuBottomConstraint.constant = bottomMenuContainer.frame.height
@@ -125,56 +184,6 @@ class FMImageEditorViewController: UIViewController {
         },
                        completion: { _ in
                         completion?()
-        })
-    }
-
-    @IBAction func onTapDone(_ sender: Any) {
-        if let filter = selectedFilter {
-            photo.apply(filter: filter)
-        }
-        hideAnimatedMenu {
-            self.dismiss(animated: false, completion: nil)
-        }
-    }
-    
-    @IBAction func onTapCancel(_ sender: Any) {
-        hideAnimatedMenu {
-            self.dismiss(animated: false, completion: nil)
-        }
-    }
-    @IBAction func onTapOpenFilter(_ sender: Any) {
-        guard filterSubMenuView.isHidden == true else { return }
-        
-        subMenuContainer.isHidden = false
-        filterSubMenuView.isHidden = false
-        
-        filterSubMenuView.alpha = 0
-        UIView.animate(withDuration: 0.375,
-                       animations: {
-                        self.filterSubMenuView.alpha = 1
-                        self.cropSubMenuView.alpha = 0
-        },
-                       completion: { _ in
-                        self.subMenuContainer.backgroundColor = .white
-                        self.cropSubMenuView.isHidden = true
-        })
-    }
-    @IBAction func onTapOpenCrop(_ sender: Any) {
-        guard cropSubMenuView.isHidden == true else { return }
-        
-        subMenuContainer.isHidden = false
-        filterSubMenuView.isHidden = true
-        cropSubMenuView.isHidden = false
-        
-        cropSubMenuView.alpha = 0
-        UIView.animate(withDuration: 0.375,
-                       animations: {
-                        self.cropSubMenuView.alpha = 1
-                        self.filterSubMenuView.alpha = 0
-        },
-                       completion: { _ in
-                        self.subMenuContainer.backgroundColor = .white
-                        self.filterSubMenuView.isHidden = true
         })
     }
 }
