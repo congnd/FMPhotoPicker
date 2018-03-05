@@ -52,13 +52,7 @@ class FMImageEditorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        subMenuContainer.addSubview(filterSubMenuView)
-        filterSubMenuView.translatesAutoresizingMaskIntoConstraints = false
-        filterSubMenuView.heightAnchor.constraint(equalToConstant: 90).isActive = true
-        filterSubMenuView.rightAnchor.constraint(equalTo: subMenuContainer.rightAnchor).isActive = true
-        filterSubMenuView.leftAnchor.constraint(equalTo: subMenuContainer.leftAnchor).isActive = true
-        filterSubMenuView.bottomAnchor.constraint(equalTo: subMenuContainer.bottomAnchor).isActive = true
-        
+        filterSubMenuView.insert(toView: subMenuContainer)
         cropSubMenuView.insert(toView: subMenuContainer)
         
         subMenuContainer.isHidden = true

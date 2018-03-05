@@ -63,6 +63,16 @@ class FMFiltersListView: UIView {
         collectionView.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.old, context: nil)
     }
     
+    func insert(toView parenetView: UIView) {
+        parenetView.addSubview(self)
+        
+        translatesAutoresizingMaskIntoConstraints = false
+        heightAnchor.constraint(equalToConstant: 90).isActive = true
+        rightAnchor.constraint(equalTo: parenetView.rightAnchor).isActive = true
+        leftAnchor.constraint(equalTo: parenetView.leftAnchor).isActive = true
+        bottomAnchor.constraint(equalTo: parenetView.bottomAnchor).isActive = true
+    }
+    
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if let observedObject = object as? UICollectionView, observedObject == collectionView {
             collectionView.removeObserver(self, forKeyPath: "contentSize")
