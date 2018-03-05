@@ -1,5 +1,5 @@
 //
-//  FMFiltersListView.swift
+//  FMFiltersMenuView.swift
 //  FMPhotoPicker
 //
 //  Created by c-nguyen on 2018/02/27.
@@ -19,7 +19,7 @@ class NoEffect: FMFilterable {
     }
 }
 
-class FMFiltersListView: UIView {
+class FMFiltersMenuView: UIView {
     private let collectionView: UICollectionView
     private let image: UIImage
     private var availableFilters: [FMFilterable]
@@ -85,7 +85,7 @@ class FMFiltersListView: UIView {
     }
 }
 
-extension FMFiltersListView: UICollectionViewDataSource {
+extension FMFiltersMenuView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return availableFilters.count
     }
@@ -112,7 +112,7 @@ extension FMFiltersListView: UICollectionViewDataSource {
     
     
 }
-extension FMFiltersListView: UICollectionViewDelegate {
+extension FMFiltersMenuView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let filter = availableFilters[indexPath.item]
         didSelectFilter(filter)

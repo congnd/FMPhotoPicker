@@ -16,8 +16,8 @@ class FMImageEditorViewController: UIViewController {
     @IBOutlet weak var bottomMenuContainer: UIView!
     @IBOutlet weak var subMenuContainer: UIView!
     
-    lazy private var filterSubMenuView: FMFiltersListView = {
-       return FMFiltersListView(withImage: originalThumb, appliedFilter: photo.getAppliedFilter())
+    lazy private var filterSubMenuView: FMFiltersMenuView = {
+       return FMFiltersMenuView(withImage: originalThumb, appliedFilter: photo.getAppliedFilter())
     }()
     
     lazy private var cropSubMenuView: FMCropMenuView = {
