@@ -16,8 +16,14 @@ class FMImageEditorViewController: UIViewController {
     @IBOutlet weak var bottomMenuContainer: UIView!
     @IBOutlet weak var subMenuContainer: UIView!
     
-    private let filterSubMenuView: FMFiltersListView
-    private let cropSubMenuView: FMCropMenuView
+    lazy private var filterSubMenuView: FMFiltersListView = {
+       return FMFiltersListView(withImage: originalThumb, appliedFilter: photo.getAppliedFilter())
+    }()
+    
+    lazy private var cropSubMenuView: FMCropMenuView = {
+      return FMCropMenuView()
+    }()
+    
     public var scalingImageView: FMScalingImageView!
     public var photo: FMPhotoAsset
     private var originalThumb: UIImage
@@ -30,9 +36,6 @@ class FMImageEditorViewController: UIViewController {
         self.photo = photo
         self.originalThumb = originalThumb
         self.originalImage = preloadImage
-        
-        self.filterSubMenuView = FMFiltersListView(withImage: originalThumb, appliedFilter: photo.getAppliedFilter())
-        self.cropSubMenuView = FMCropMenuView()
         
         super.init(nibName: "FMImageEditorViewController", bundle: Bundle(for: FMImageEditorViewController.self))
         
@@ -52,8 +55,10 @@ class FMImageEditorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        filterSubMenuView.insert(toView: subMenuContainer)
-        cropSubMenuView.insert(toView: subMenuContainer)
+        DispatchQueue.main.async {
+            self.filterSubMenuView.insert(toView: self.subMenuContainer)
+            self.cropSubMenuView.insert(toView: self.subMenuContainer)
+        }
         
         subMenuContainer.isHidden = true
         filterSubMenuView.isHidden = true
@@ -65,13 +70,6 @@ class FMImageEditorViewController: UIViewController {
         self.scalingImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.scalingImageView.clipsToBounds = true
         self.scalingImageView.image = self.originalImage
-        
-//        self.photo.requestImage(in: self.view.frame.size, { [weak self] image in
-//            guard let strongSelf = self,
-//                let image = image else { return }
-//            strongSelf.resizedImage = image
-//            strongSelf.scalingImageView.image = image
-//        })
         
         self.view.addSubview(self.scalingImageView)
         self.view.sendSubview(toBack: self.scalingImageView)
