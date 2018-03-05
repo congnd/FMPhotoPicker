@@ -17,6 +17,7 @@ class FMImageEditorViewController: UIViewController {
     @IBOutlet weak var subMenuContainer: UIView!
     
     private let filterSubMenuView: FMFiltersListView
+    private let cropSubMenuView: FMCropMenuView
     public var scalingImageView: FMScalingImageView!
     public var photo: FMPhotoAsset
     private var originalThumb: UIImage
@@ -31,6 +32,7 @@ class FMImageEditorViewController: UIViewController {
         self.originalImage = preloadImage
         
         self.filterSubMenuView = FMFiltersListView(withImage: originalThumb, appliedFilter: photo.getAppliedFilter())
+        self.cropSubMenuView = FMCropMenuView()
         
         super.init(nibName: "FMImageEditorViewController", bundle: Bundle(for: FMImageEditorViewController.self))
         
@@ -56,6 +58,12 @@ class FMImageEditorViewController: UIViewController {
         filterSubMenuView.rightAnchor.constraint(equalTo: subMenuContainer.rightAnchor).isActive = true
         filterSubMenuView.leftAnchor.constraint(equalTo: subMenuContainer.leftAnchor).isActive = true
         filterSubMenuView.bottomAnchor.constraint(equalTo: subMenuContainer.bottomAnchor).isActive = true
+        
+        cropSubMenuView.insert(toView: subMenuContainer)
+        
+        subMenuContainer.isHidden = true
+        filterSubMenuView.isHidden = true
+        cropSubMenuView.isHidden = true
         
         self.scalingImageView = FMScalingImageView(frame: self.view.frame)
         self.scalingImageView.delegate = self
@@ -120,6 +128,7 @@ class FMImageEditorViewController: UIViewController {
                        animations: {
                         self.topMenuContainter.alpha = 0
                         self.bottomMenuContainer.alpha = 0
+                        self.subMenuContainer.alpha = 0
                         self.view.layoutIfNeeded()
         },
                        completion: { _ in
@@ -140,6 +149,41 @@ class FMImageEditorViewController: UIViewController {
         hideAnimatedMenu {
             self.dismiss(animated: false, completion: nil)
         }
+    }
+    @IBAction func onTapOpenFilter(_ sender: Any) {
+        guard filterSubMenuView.isHidden == true else { return }
+        
+        subMenuContainer.isHidden = false
+        filterSubMenuView.isHidden = false
+        
+        filterSubMenuView.alpha = 0
+        UIView.animate(withDuration: 0.375,
+                       animations: {
+                        self.filterSubMenuView.alpha = 1
+                        self.cropSubMenuView.alpha = 0
+        },
+                       completion: { _ in
+                        self.subMenuContainer.backgroundColor = .white
+                        self.cropSubMenuView.isHidden = true
+        })
+    }
+    @IBAction func onTapOpenCrop(_ sender: Any) {
+        guard cropSubMenuView.isHidden == true else { return }
+        
+        subMenuContainer.isHidden = false
+        filterSubMenuView.isHidden = true
+        cropSubMenuView.isHidden = false
+        
+        cropSubMenuView.alpha = 0
+        UIView.animate(withDuration: 0.375,
+                       animations: {
+                        self.cropSubMenuView.alpha = 1
+                        self.filterSubMenuView.alpha = 0
+        },
+                       completion: { _ in
+                        self.subMenuContainer.backgroundColor = .white
+                        self.filterSubMenuView.isHidden = true
+        })
     }
 }
 

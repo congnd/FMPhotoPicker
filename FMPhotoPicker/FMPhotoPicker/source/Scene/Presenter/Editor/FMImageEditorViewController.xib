@@ -89,6 +89,9 @@
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UbG-RA-D49">
                                     <rect key="frame" x="63" y="8" width="62" height="30"/>
                                     <state key="normal" title="位置調整"/>
+                                    <connections>
+                                        <action selector="onTapOpenCrop:" destination="-1" eventType="touchUpInside" id="2iY-nt-cMg"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -103,6 +106,9 @@
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iga-x3-Nbo">
                                     <rect key="frame" x="55" y="8" width="77" height="30"/>
                                     <state key="normal" title="フィルター"/>
+                                    <connections>
+                                        <action selector="onTapOpenFilter:" destination="-1" eventType="touchUpInside" id="Qq7-Cy-wuC"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -127,7 +133,7 @@
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zaG-6j-m4a">
                     <rect key="frame" x="0.0" y="531" width="375" height="90"/>
-                    <color key="backgroundColor" red="0.76832055066661309" green="0.97680455450000003" blue="0.7963356948037259" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="90" id="tG0-V0-aoP"/>
                     </constraints>
