@@ -25,6 +25,8 @@ class FMImageEditorViewController: UIViewController {
     }()
     
     public var scalingImageView: FMScalingImageView!
+    private var cropView: FMCropView!
+    
     public var photo: FMPhotoAsset
     private var originalThumb: UIImage
     private var originalImage: UIImage
@@ -71,6 +73,10 @@ class FMImageEditorViewController: UIViewController {
         self.scalingImageView.clipsToBounds = true
         self.scalingImageView.image = self.originalImage
         
+        cropView = FMCropView()
+        view.addSubview(cropView)
+        view.sendSubview(toBack: cropView)
+        
         self.view.addSubview(self.scalingImageView)
         self.view.sendSubview(toBack: self.scalingImageView)
         
@@ -83,6 +89,10 @@ class FMImageEditorViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         showAnimatedMenu()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        cropView.frame = view.frame
     }
 
     override func didReceiveMemoryWarning() {
