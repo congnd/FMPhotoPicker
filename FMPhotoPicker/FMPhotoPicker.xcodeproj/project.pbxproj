@@ -14,7 +14,7 @@
 		CE18608D2030D38700A5D73D /* FMLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE18608C2030D38700A5D73D /* FMLoadingView.swift */; };
 		CE1A5BC4204D3E6A009EA821 /* FMCropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1A5BC3204D3E6A009EA821 /* FMCropView.swift */; };
 		CE1A5BC8204D3E91009EA821 /* FMCropScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1A5BC7204D3E91009EA821 /* FMCropScrollView.swift */; };
-		CE1A5BCA204D3EB2009EA821 /* FMCropOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1A5BC9204D3EB2009EA821 /* FMCropOverlayView.swift */; };
+		CE1A5BCA204D3EB2009EA821 /* FMCropCropBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1A5BC9204D3EB2009EA821 /* FMCropCropBoxView.swift */; };
 		CE1A5BCC204D3F6E009EA821 /* FMCropBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1A5BCB204D3F6E009EA821 /* FMCropBackgroundView.swift */; };
 		CE1A5BCE204D3F88009EA821 /* FMCropForegroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1A5BCD204D3F88009EA821 /* FMCropForegroundView.swift */; };
 		CE1A5BD2204E1FA5009EA821 /* InsertableUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1A5BD1204E1FA5009EA821 /* InsertableUIView.swift */; };
@@ -77,7 +77,7 @@
 		CE18608C2030D38700A5D73D /* FMLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMLoadingView.swift; sourceTree = "<group>"; };
 		CE1A5BC3204D3E6A009EA821 /* FMCropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMCropView.swift; sourceTree = "<group>"; };
 		CE1A5BC7204D3E91009EA821 /* FMCropScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMCropScrollView.swift; sourceTree = "<group>"; };
-		CE1A5BC9204D3EB2009EA821 /* FMCropOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMCropOverlayView.swift; sourceTree = "<group>"; };
+		CE1A5BC9204D3EB2009EA821 /* FMCropCropBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMCropCropBoxView.swift; sourceTree = "<group>"; };
 		CE1A5BCB204D3F6E009EA821 /* FMCropBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMCropBackgroundView.swift; sourceTree = "<group>"; };
 		CE1A5BCD204D3F88009EA821 /* FMCropForegroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMCropForegroundView.swift; sourceTree = "<group>"; };
 		CE1A5BD1204E1FA5009EA821 /* InsertableUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsertableUIView.swift; sourceTree = "<group>"; };
@@ -149,7 +149,7 @@
 			children = (
 				CE1A5BC3204D3E6A009EA821 /* FMCropView.swift */,
 				CE1A5BC7204D3E91009EA821 /* FMCropScrollView.swift */,
-				CE1A5BC9204D3EB2009EA821 /* FMCropOverlayView.swift */,
+				CE1A5BC9204D3EB2009EA821 /* FMCropCropBoxView.swift */,
 				CE1A5BCB204D3F6E009EA821 /* FMCropBackgroundView.swift */,
 				CE1A5BCD204D3F88009EA821 /* FMCropForegroundView.swift */,
 			);
@@ -486,7 +486,7 @@
 				CED2E9A32048E6D800AB8206 /* FMImageEditor.swift in Sources */,
 				CE238A07201EB38000CEBCB5 /* FMScalingImageView.swift in Sources */,
 				CEE311B72022E29700ABBE0C /* FMPhotosDataSource.swift in Sources */,
-				CE1A5BCA204D3EB2009EA821 /* FMCropOverlayView.swift in Sources */,
+				CE1A5BCA204D3EB2009EA821 /* FMCropCropBoxView.swift in Sources */,
 				CE510905202AFD80003CBFA5 /* FMPhotoPickerBatchSelector.swift in Sources */,
 				CEDF9C47203ADC2D0048D182 /* FMPlaybackProgressThumbLayer.swift in Sources */,
 				CEEC7E3920328C2000BBC214 /* FMWarningView.swift in Sources */,

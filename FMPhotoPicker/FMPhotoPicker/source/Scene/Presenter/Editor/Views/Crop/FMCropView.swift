@@ -10,9 +10,9 @@ import UIKit
 
 class FMCropView: UIView {
 
-    private let scrollView: FMCropScrollView
-    private let overlayView: FMCropOverlayView
-    private let foregroundView: FMCropForegroundView
+    public let scrollView: FMCropScrollView
+    private let cropBoxView: FMCropCropBoxView
+    public let foregroundView: FMCropForegroundView
     
     private let translucencyView: UIVisualEffectView
     
@@ -20,7 +20,7 @@ class FMCropView: UIView {
         didSet {
             scrollView.frame = frame
             foregroundView.frame = scrollView.convert(scrollView.imageView.frame, to: self)
-            overlayView.frame = foregroundView.frame
+            cropBoxView.frame = foregroundView.frame
             matchForegroundToBackground()
         }
     }
@@ -29,12 +29,17 @@ class FMCropView: UIView {
         let testImage = UIImage(named: "file0001176452626.jpg", in: Bundle(for: FMCropView.self), compatibleWith: nil)!
         
         scrollView = FMCropScrollView(image: testImage)
-        overlayView = FMCropOverlayView()
+        cropBoxView = FMCropCropBoxView()
         foregroundView = FMCropForegroundView(image: testImage)
         translucencyView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
         
         super.init(frame: .zero)
         
+        cropBoxView.cropView = self
+        cropBoxView.cropBoxDidChange = { [unowned self] rect in
+            self.foregroundView.frame = rect
+            self.matchForegroundToBackground()
+        }
         addSubview(scrollView)
         scrollView.delegate = self
         
@@ -42,8 +47,7 @@ class FMCropView: UIView {
         translucencyView.isUserInteractionEnabled = false
         
         addSubview(foregroundView)
-        addSubview(overlayView)
-        
+        addSubview(cropBoxView)
         
         self.backgroundColor = .white
     }

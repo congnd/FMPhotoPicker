@@ -23,6 +23,7 @@ class FMCropForegroundView: UIView {
         super.init(frame: .zero)
         
         imageView.image = image
+        imageView.contentMode = .scaleAspectFit
         addSubview(imageView)
         
         isUserInteractionEnabled = false
