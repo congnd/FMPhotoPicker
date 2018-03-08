@@ -98,28 +98,38 @@ class FMCropView: UIView {
         let targetOffset = CGPoint(x: targetForcusPointInScrollContentViewCoordination.x - contentBound.midX,
                              y: targetForcusPointInScrollContentViewCoordination.y - contentBound.midY)
         
-        scrollView.zoomScale *= scale
-        scrollView.contentOffset = targetOffset
-        
-        cropBoxView.frame = cropFrame
-        
-        cropboxViewFrameDidChange(rect: cropFrame)
+        UIView.animate(withDuration: 0.5,
+                       delay: 0,
+                       usingSpringWithDamping: 1.0,
+                       initialSpringVelocity: 1.0,
+                       options: .beginFromCurrentState,
+                       animations: {
+                        self.scrollView.zoomScale *= scale
+                        self.scrollView.contentOffset = targetOffset
+                        
+                        self.cropBoxView.frame = cropFrame
+                        
+                        self.cropboxViewFrameDidChange(rect: cropFrame)
+        },
+                       completion: nil)
     }
     
     private func cropboxViewFrameDidChange(rect: CGRect) {
-        self.foregroundView.frame = rect
-        self.matchForegroundToBackground()
+        foregroundView.frame = rect
+        matchForegroundToBackground()
         
-        self.scrollView.contentInset = UIEdgeInsets(top: rect.minY, left: rect.minX, bottom: self.bounds.maxY - rect.maxY, right: self.bounds.maxX - rect.maxX)
+        scrollView.contentInset = UIEdgeInsets(top: rect.minY, left: rect.minX, bottom: self.bounds.maxY - rect.maxY, right: self.bounds.maxX - rect.maxX)
         
         let scale = max(rect.size.height / testImageSize.height, rect.size.width / testImageSize.width);
-        self.scrollView.minimumZoomScale = scale;
+        scrollView.minimumZoomScale = scale;
         
-        var size = self.scrollView.contentSize
-        size.width = floor(size.width)
-        size.height = floor(size.height)
-        self.scrollView.contentSize = size
-        self.scrollView.zoomScale = self.scrollView.zoomScale
+//        var size = scrollView.contentSize
+//        size.width = floor(size.width)
+//        size.height = floor(size.height)
+//        scrollView.contentSize = size
+        
+        // Forece scrollview to update its content after changing the minimumZoomScale
+        scrollView.zoomScale = self.scrollView.zoomScale
     }
 }
 
