@@ -34,8 +34,12 @@ class FMCropTranslucencyView: UIVisualEffectView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        timer?.invalidate()
+        timer = nil
+    }
+    
     public func scheduleShowing() {
-        print("scheduleShowing")
         if status == .show || status == .beingShow {
             return
         }
@@ -56,7 +60,6 @@ class FMCropTranslucencyView: UIVisualEffectView {
     
     // MARK: - show/hide translucent view
     @objc private func show() {
-        print("show")
         status = .beingShow
         UIView.animate(withDuration: animationDuration,
                        animations: {
@@ -68,7 +71,6 @@ class FMCropTranslucencyView: UIVisualEffectView {
     }
     
     private func hide() {
-        print("hide")
         status = .beingHide
         layer.removeAllAnimations()
         UIView.animate(withDuration: animationDuration,
@@ -81,7 +83,6 @@ class FMCropTranslucencyView: UIVisualEffectView {
     }
     
     public func safetyHide() {
-        print("safetyHide")
         if status != .beingHide && status != .hide {
             timer?.invalidate()
             hide()
@@ -89,7 +90,6 @@ class FMCropTranslucencyView: UIVisualEffectView {
     }
     
     public func safetyShow() {
-        print("safetyShow")
         if status == .scheduledShow {
             timer?.invalidate()
             timer = nil
