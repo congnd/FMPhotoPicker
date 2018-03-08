@@ -16,6 +16,8 @@ class FMCropView: UIView {
     
     private let translucencyView: UIVisualEffectView
     
+    lazy public var contentBound: CGRect = { return bounds.insetBy(dx: 30, dy: 70) }()
+    
     override var frame: CGRect {
         didSet {
             scrollView.frame = frame
@@ -27,6 +29,7 @@ class FMCropView: UIView {
 
     init() {
         let testImage = UIImage(named: "file0001176452626.jpg", in: Bundle(for: FMCropView.self), compatibleWith: nil)!
+        let testImageSize = testImage.size
         
         scrollView = FMCropScrollView(image: testImage)
         cropBoxView = FMCropCropBoxView()
@@ -39,6 +42,17 @@ class FMCropView: UIView {
         cropBoxView.cropBoxDidChange = { [unowned self] rect in
             self.foregroundView.frame = rect
             self.matchForegroundToBackground()
+            
+            self.scrollView.contentInset = UIEdgeInsets(top: rect.minY, left: rect.minX, bottom: self.bounds.maxY - rect.maxY, right: self.bounds.maxX - rect.maxX)
+            
+            let scale = max(rect.size.height / testImageSize.height, rect.size.width / testImageSize.width);
+            self.scrollView.minimumZoomScale = scale;
+            
+            var size = self.scrollView.contentSize
+            size.width = floor(size.width)
+            size.height = floor(size.height)
+            self.scrollView.contentSize = size
+            self.scrollView.zoomScale = self.scrollView.zoomScale
         }
         addSubview(scrollView)
         scrollView.delegate = self

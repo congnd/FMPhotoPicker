@@ -69,7 +69,9 @@ class FMCropCropBoxView: UIView {
             panOriginEdge = self.edge(forPoint: tapPoint)
             panOriginPoint = tapPoint
             panOriginFrame = self.frame
-            contentBound = cropView.bounds.insetBy(dx: 60, dy: 100)
+            
+            // TODO: It should be here?
+            contentBound = cropView.contentBound
         }
         
         if recognizer.state == .ended {
