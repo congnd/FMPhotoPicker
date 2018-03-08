@@ -48,9 +48,6 @@ class FMCropScrollView: UIScrollView {
         bouncesZoom = true;
         decelerationRate = UIScrollViewDecelerationRateFast;
         
-        imageView.layer.borderWidth = 2
-        imageView.layer.borderColor = UIColor.blue.cgColor
-        
         backgroundColor = .white
     }
     

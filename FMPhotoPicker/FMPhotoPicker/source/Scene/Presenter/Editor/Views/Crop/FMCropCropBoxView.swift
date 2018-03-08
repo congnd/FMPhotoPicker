@@ -23,13 +23,6 @@ enum FMCropCropBoxEdge {
 }
 
 class FMCropCropBoxView: UIView {
-    
-    override var frame: CGRect {
-        didSet {
-            
-        }
-    }
-    
     public var cropBoxControlChanged: (CGRect) -> Void = {_ in }
     public var cropBoxControlEnded: () -> Void = {}
     public var cropBoxControlStarted: () -> Void = {}
@@ -50,14 +43,20 @@ class FMCropCropBoxView: UIView {
     private var panOriginFrame: CGRect = .zero
     private var contentBound: CGRect = .zero
     private let minSize = CGSize(width: 100, height: 100)
+    
+    override var frame: CGRect {
+        didSet {
+            
+        }
+    }
 
     init() {
         super.init(frame: .zero)
         
         isUserInteractionEnabled = false
         
-        layer.borderWidth = 6
-        layer.borderColor = UIColor.brown.cgColor
+        layer.borderWidth = 1
+        layer.borderColor = UIColor.white.cgColor
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -90,7 +89,6 @@ class FMCropCropBoxView: UIView {
         
         var frame = self.frame
 
-        
         switch panOriginEdge {
         case .top:
             frame = applyDriverEdgeTop(toRect: frame, deltaY: deltaY)

@@ -16,10 +16,11 @@ class FMCropView: UIView {
     
     private let translucencyView: UIVisualEffectView
     
-    lazy public var contentBound: CGRect = { return bounds.insetBy(dx: 30, dy: 70) }()
+    lazy public var contentBound: CGRect = { return bounds.insetBy(dx: 20, dy: 60) }()
     
     private var testImageSize: CGSize
     private var centerCropBoxTimer: Timer?
+    private let cornersView: FMCropCropBoxCornersView
     
     override var frame: CGRect {
         didSet {
@@ -38,6 +39,8 @@ class FMCropView: UIView {
         cropBoxView = FMCropCropBoxView()
         foregroundView = FMCropForegroundView(image: testImage)
         translucencyView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
+        
+        cornersView = FMCropCropBoxCornersView()
         
         super.init(frame: .zero)
         
@@ -59,6 +62,7 @@ class FMCropView: UIView {
         
         addSubview(foregroundView)
         addSubview(cropBoxView)
+        addSubview(cornersView)
         
         self.backgroundColor = .white
         
@@ -117,11 +121,14 @@ class FMCropView: UIView {
                         self.cropBoxView.frame = cropFrame
                         self.cropboxViewFrameDidChange(rect: cropFrame)
         },
-                       completion: nil)
+                       completion: { _ in
+                        self.showTranslucentView()
+        })
     }
     
     private func cropboxViewFrameDidChange(rect: CGRect) {
         foregroundView.frame = rect
+        cornersView.frame = rect
         matchForegroundToBackground()
         
         scrollView.contentInset = UIEdgeInsets(top: rect.minY, left: rect.minX, bottom: self.bounds.maxY - rect.maxY, right: self.bounds.maxX - rect.maxX)
@@ -144,8 +151,10 @@ class FMCropView: UIView {
     
     private func cropBoxControlDidStart() {
         invalidateCropBoxTimer()
+        hideTranslucentView()
     }
     
+    // MARK: - Timer
     private func resetCropBoxTimer() {
         invalidateCropBoxTimer()
         startCropBoxTimer()
@@ -166,6 +175,21 @@ class FMCropView: UIView {
     @objc private func timerTrigged() {
         moveCroppedContentToCenterAnimated()
     }
+    
+    // MARK: - show/hide translucent view
+    private func showTranslucentView() {
+        self.translucencyView.layer.removeAllAnimations()
+        UIView.animate(withDuration: 0.375, animations: {
+            self.translucencyView.alpha = 1
+        })
+    }
+    
+    private func hideTranslucentView() {
+        self.translucencyView.layer.removeAllAnimations()
+        UIView.animate(withDuration: 0.2, animations: {
+            self.translucencyView.alpha = 0.5
+        })
+    }
 }
 
 extension FMCropView: UIScrollViewDelegate {
@@ -175,17 +199,19 @@ extension FMCropView: UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         matchForegroundToBackground()
+        hideTranslucentView()
     }
     
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
         matchForegroundToBackground()
+        hideTranslucentView()
     }
     
-    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        showTranslucentView()
     }
     
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
-        
+        showTranslucentView()
     }
 }

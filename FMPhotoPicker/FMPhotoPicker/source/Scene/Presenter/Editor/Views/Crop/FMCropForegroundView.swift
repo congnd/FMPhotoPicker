@@ -29,8 +29,8 @@ class FMCropForegroundView: UIView {
         isUserInteractionEnabled = false
         clipsToBounds = true
         
-        layer.borderWidth = 12
-        layer.borderColor = UIColor.red.cgColor
+//        layer.borderWidth = 12
+//        layer.borderColor = UIColor.red.cgColor
     }
     
     required init?(coder aDecoder: NSCoder) {
