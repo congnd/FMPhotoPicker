@@ -18,6 +18,8 @@ class FMCropView: UIView {
     
     lazy public var contentBound: CGRect = { return bounds.insetBy(dx: 30, dy: 70) }()
     
+    private var testImageSize: CGSize
+    
     override var frame: CGRect {
         didSet {
             scrollView.frame = frame
@@ -29,7 +31,7 @@ class FMCropView: UIView {
 
     init() {
         let testImage = UIImage(named: "file0001176452626.jpg", in: Bundle(for: FMCropView.self), compatibleWith: nil)!
-        let testImageSize = testImage.size
+        testImageSize = testImage.size
         
         scrollView = FMCropScrollView(image: testImage)
         cropBoxView = FMCropCropBoxView()
@@ -40,19 +42,7 @@ class FMCropView: UIView {
         
         cropBoxView.cropView = self
         cropBoxView.cropBoxDidChange = { [unowned self] rect in
-            self.foregroundView.frame = rect
-            self.matchForegroundToBackground()
-            
-            self.scrollView.contentInset = UIEdgeInsets(top: rect.minY, left: rect.minX, bottom: self.bounds.maxY - rect.maxY, right: self.bounds.maxX - rect.maxX)
-            
-            let scale = max(rect.size.height / testImageSize.height, rect.size.width / testImageSize.width);
-            self.scrollView.minimumZoomScale = scale;
-            
-            var size = self.scrollView.contentSize
-            size.width = floor(size.width)
-            size.height = floor(size.height)
-            self.scrollView.contentSize = size
-            self.scrollView.zoomScale = self.scrollView.zoomScale
+            self.cropboxViewFrameDidChange(rect: rect)
         }
         addSubview(scrollView)
         scrollView.delegate = self
@@ -64,6 +54,12 @@ class FMCropView: UIView {
         addSubview(cropBoxView)
         
         self.backgroundColor = .white
+        
+        let btn = UIButton(frame: CGRect(x: 0, y: 40, width: 100, height: 40))
+        btn.backgroundColor = .red
+        btn.addTarget(self, action: #selector(testMove), for: .touchUpInside)
+        btn.setTitle("test move", for: .normal)
+        self.addSubview(btn)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -72,6 +68,58 @@ class FMCropView: UIView {
     
     private func matchForegroundToBackground() {
         foregroundView.imageView.frame = scrollView.convert(scrollView.imageView.frame, to: foregroundView)
+    }
+    
+    @objc private func testMove() {
+        moveCroppedContentToCenterAnimated()
+    }
+    
+    private func moveCroppedContentToCenterAnimated() {
+        var cropFrame = cropBoxView.frame
+        
+        //The scale we need to scale up the crop box to fit full screen
+        let scale = min(contentBound.width / cropFrame.width, contentBound.height / cropFrame.height)
+        
+        // center point of cropBoxView in CropView coordination system
+        let originFocusPointInCropViewCoordination = CGPoint(x: cropBoxView.frame.midX, y: cropBoxView.frame.midY)
+        
+        // calculate new cropFrame that is translated to center of contentBound
+        cropFrame.size.width = ceil(cropFrame.size.width * scale)
+        cropFrame.size.height = ceil(cropFrame.size.height * scale)
+        cropFrame.origin.x = contentBound.origin.x + ceil(contentBound.size.width - cropFrame.size.width) * 0.5
+        cropFrame.origin.y = contentBound.origin.y + ceil(contentBound.size.height - cropFrame.size.height) * 0.5
+        
+        
+        let originForcusPointInScrollContentViewCoordination = CGPoint(x: originFocusPointInCropViewCoordination.x + scrollView.contentOffset.x,
+                                                                       y: originFocusPointInCropViewCoordination.y + scrollView.contentOffset.y)
+        let targetForcusPointInScrollContentViewCoordination = CGPoint(x: originForcusPointInScrollContentViewCoordination.x * scale,
+                                                                       y: originForcusPointInScrollContentViewCoordination.y * scale)
+        
+        let targetOffset = CGPoint(x: targetForcusPointInScrollContentViewCoordination.x - contentBound.midX,
+                             y: targetForcusPointInScrollContentViewCoordination.y - contentBound.midY)
+        
+        scrollView.zoomScale *= scale
+        scrollView.contentOffset = targetOffset
+        
+        cropBoxView.frame = cropFrame
+        
+        cropboxViewFrameDidChange(rect: cropFrame)
+    }
+    
+    private func cropboxViewFrameDidChange(rect: CGRect) {
+        self.foregroundView.frame = rect
+        self.matchForegroundToBackground()
+        
+        self.scrollView.contentInset = UIEdgeInsets(top: rect.minY, left: rect.minX, bottom: self.bounds.maxY - rect.maxY, right: self.bounds.maxX - rect.maxX)
+        
+        let scale = max(rect.size.height / testImageSize.height, rect.size.width / testImageSize.width);
+        self.scrollView.minimumZoomScale = scale;
+        
+        var size = self.scrollView.contentSize
+        size.width = floor(size.width)
+        size.height = floor(size.height)
+        self.scrollView.contentSize = size
+        self.scrollView.zoomScale = self.scrollView.zoomScale
     }
 }
 
