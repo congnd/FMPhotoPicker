@@ -14,7 +14,7 @@ class FMCropView: UIView {
     private let cropBoxView: FMCropCropBoxView
     public let foregroundView: FMCropForegroundView
     
-    private let translucencyView: UIVisualEffectView
+    private let translucencyView: FMCropTranslucencyView
     
     lazy public var contentBound: CGRect = { return bounds.insetBy(dx: 20, dy: 60) }()
     
@@ -38,7 +38,7 @@ class FMCropView: UIView {
         scrollView = FMCropScrollView(image: testImage)
         cropBoxView = FMCropCropBoxView()
         foregroundView = FMCropForegroundView(image: testImage)
-        translucencyView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
+        translucencyView = FMCropTranslucencyView(effect: UIBlurEffect(style: .light))
         
         cornersView = FMCropCropBoxCornersView()
         
@@ -54,8 +54,21 @@ class FMCropView: UIView {
         cropBoxView.cropBoxControlStarted = { [unowned self] in
             self.cropBoxControlDidStart()
         }
+        
         addSubview(scrollView)
         scrollView.delegate = self
+        
+        scrollView.touchesBegan = { [unowned self] in
+            self.translucencyView.safetyHide()
+        }
+        
+        scrollView.touchesEnded = { [unowned self] in
+            self.translucencyView.scheduleShowing()
+        }
+        
+        scrollView.touchesCancelled = { [unowned self] in
+            self.translucencyView.scheduleShowing()
+        }
         
         translucencyView.insert(toView: self)
         translucencyView.isUserInteractionEnabled = false
@@ -122,7 +135,7 @@ class FMCropView: UIView {
                         self.cropboxViewFrameDidChange(rect: cropFrame)
         },
                        completion: { _ in
-                        self.showTranslucentView()
+                        self.translucencyView.safetyShow()
         })
     }
     
@@ -151,7 +164,7 @@ class FMCropView: UIView {
     
     private func cropBoxControlDidStart() {
         invalidateCropBoxTimer()
-        hideTranslucentView()
+        translucencyView.safetyHide()
     }
     
     // MARK: - Timer
@@ -170,25 +183,11 @@ class FMCropView: UIView {
     
     private func invalidateCropBoxTimer() {
         centerCropBoxTimer?.invalidate()
+        centerCropBoxTimer = nil
     }
     
     @objc private func timerTrigged() {
         moveCroppedContentToCenterAnimated()
-    }
-    
-    // MARK: - show/hide translucent view
-    private func showTranslucentView() {
-        self.translucencyView.layer.removeAllAnimations()
-        UIView.animate(withDuration: 0.375, animations: {
-            self.translucencyView.alpha = 1
-        })
-    }
-    
-    private func hideTranslucentView() {
-        self.translucencyView.layer.removeAllAnimations()
-        UIView.animate(withDuration: 0.2, animations: {
-            self.translucencyView.alpha = 0.5
-        })
     }
 }
 
@@ -199,19 +198,25 @@ extension FMCropView: UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         matchForegroundToBackground()
-        hideTranslucentView()
+        translucencyView.safetyHide()
     }
     
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
         matchForegroundToBackground()
-        hideTranslucentView()
+        translucencyView.safetyHide()
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        showTranslucentView()
+        translucencyView.scheduleShowing()
+    }
+
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            translucencyView.scheduleShowing()
+        }
     }
     
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
-        showTranslucentView()
+        translucencyView.scheduleShowing()
     }
 }

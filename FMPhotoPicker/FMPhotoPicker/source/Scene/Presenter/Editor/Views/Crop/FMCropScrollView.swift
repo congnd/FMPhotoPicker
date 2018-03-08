@@ -128,7 +128,7 @@ class FMCropScrollView: UIScrollView {
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        touchesEnded()
+        touchesCancelled()
         super.touchesCancelled(touches, with: event)
     }
 }
