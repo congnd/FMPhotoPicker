@@ -19,6 +19,7 @@ class FMCropView: UIView {
     lazy public var contentBound: CGRect = { return bounds.insetBy(dx: 30, dy: 70) }()
     
     private var testImageSize: CGSize
+    private var centerCropBoxTimer: Timer?
     
     override var frame: CGRect {
         didSet {
@@ -43,6 +44,12 @@ class FMCropView: UIView {
         cropBoxView.cropView = self
         cropBoxView.cropBoxDidChange = { [unowned self] rect in
             self.cropboxViewFrameDidChange(rect: rect)
+        }
+        cropBoxView.cropBoxControlEnded = { [unowned self] in
+            self.cropBoxControlDidEnd()
+        }
+        cropBoxView.cropBoxControlStarted = { [unowned self] in
+            self.cropBoxControlDidStart()
         }
         addSubview(scrollView)
         scrollView.delegate = self
@@ -78,22 +85,23 @@ class FMCropView: UIView {
         var cropFrame = cropBoxView.frame
         
         //The scale we need to scale up the crop box to fit full screen
-        let scale = min(contentBound.width / cropFrame.width, contentBound.height / cropFrame.height)
+        let cropBoxScale = min(contentBound.width / cropFrame.width, contentBound.height / cropFrame.height)
         
         // center point of cropBoxView in CropView coordination system
         let originFocusPointInCropViewCoordination = CGPoint(x: cropBoxView.frame.midX, y: cropBoxView.frame.midY)
         
         // calculate new cropFrame that is translated to center of contentBound
-        cropFrame.size.width = ceil(cropFrame.size.width * scale)
-        cropFrame.size.height = ceil(cropFrame.size.height * scale)
+        cropFrame.size.width = ceil(cropFrame.size.width * cropBoxScale)
+        cropFrame.size.height = ceil(cropFrame.size.height * cropBoxScale)
         cropFrame.origin.x = contentBound.origin.x + ceil(contentBound.size.width - cropFrame.size.width) * 0.5
         cropFrame.origin.y = contentBound.origin.y + ceil(contentBound.size.height - cropFrame.size.height) * 0.5
         
+        let scrollViewScale = min(cropBoxScale, scrollView.maximumZoomScale / scrollView.zoomScale)
         
         let originForcusPointInScrollContentViewCoordination = CGPoint(x: originFocusPointInCropViewCoordination.x + scrollView.contentOffset.x,
                                                                        y: originFocusPointInCropViewCoordination.y + scrollView.contentOffset.y)
-        let targetForcusPointInScrollContentViewCoordination = CGPoint(x: originForcusPointInScrollContentViewCoordination.x * scale,
-                                                                       y: originForcusPointInScrollContentViewCoordination.y * scale)
+        let targetForcusPointInScrollContentViewCoordination = CGPoint(x: originForcusPointInScrollContentViewCoordination.x * scrollViewScale,
+                                                                       y: originForcusPointInScrollContentViewCoordination.y * scrollViewScale)
         
         let targetOffset = CGPoint(x: targetForcusPointInScrollContentViewCoordination.x - contentBound.midX,
                              y: targetForcusPointInScrollContentViewCoordination.y - contentBound.midY)
@@ -104,15 +112,12 @@ class FMCropView: UIView {
                        initialSpringVelocity: 1.0,
                        options: .beginFromCurrentState,
                        animations: {
-                        self.scrollView.zoomScale *= scale
+                        self.scrollView.zoomScale *= scrollViewScale
                         self.scrollView.contentOffset = targetOffset
                         self.cropBoxView.frame = cropFrame
-                        self.foregroundView.frame = cropFrame
-                        self.matchForegroundToBackground()
-        },
-                       completion: { complete in
                         self.cropboxViewFrameDidChange(rect: cropFrame)
-        })
+        },
+                       completion: nil)
     }
     
     private func cropboxViewFrameDidChange(rect: CGRect) {
@@ -131,6 +136,35 @@ class FMCropView: UIView {
         
         // Forece scrollview to update its content after changing the minimumZoomScale
         scrollView.zoomScale = self.scrollView.zoomScale
+    }
+    
+    private func cropBoxControlDidEnd() {
+        resetCropBoxTimer()
+    }
+    
+    private func cropBoxControlDidStart() {
+        invalidateCropBoxTimer()
+    }
+    
+    private func resetCropBoxTimer() {
+        invalidateCropBoxTimer()
+        startCropBoxTimer()
+    }
+    
+    private func startCropBoxTimer() {
+        centerCropBoxTimer = Timer.scheduledTimer(timeInterval: 0.8,
+                                                  target: self,
+                                                  selector: #selector(timerTrigged),
+                                                  userInfo: nil,
+                                                  repeats: false)
+    }
+    
+    private func invalidateCropBoxTimer() {
+        centerCropBoxTimer?.invalidate()
+    }
+    
+    @objc private func timerTrigged() {
+        moveCroppedContentToCenterAnimated()
     }
 }
 

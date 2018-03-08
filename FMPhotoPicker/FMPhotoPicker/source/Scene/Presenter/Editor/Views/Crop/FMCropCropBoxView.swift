@@ -31,6 +31,8 @@ class FMCropCropBoxView: UIView {
     }
     
     public var cropBoxDidChange: (CGRect) -> Void = {_ in }
+    public var cropBoxControlEnded: () -> Void = {}
+    public var cropBoxControlStarted: () -> Void = {}
     
     public weak var cropView: FMCropView! {
         didSet {
@@ -72,10 +74,12 @@ class FMCropCropBoxView: UIView {
             
             // TODO: It should be here?
             contentBound = cropView.contentBound
+            
+            cropBoxControlStarted()
         }
         
-        if recognizer.state == .ended {
-            
+        if recognizer.state == .ended || recognizer.state == .cancelled {
+            cropBoxControlEnded()
         }
         receivedResizeControlTouch(inPoint: tapPoint)
     }
