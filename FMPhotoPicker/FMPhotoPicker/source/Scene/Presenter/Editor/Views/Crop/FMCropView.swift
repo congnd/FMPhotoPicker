@@ -42,7 +42,7 @@ class FMCropView: UIView {
         super.init(frame: .zero)
         
         cropBoxView.cropView = self
-        cropBoxView.cropBoxDidChange = { [unowned self] rect in
+        cropBoxView.cropBoxControlChanged = { [unowned self] rect in
             self.cropboxViewFrameDidChange(rect: rect)
         }
         cropBoxView.cropBoxControlEnded = { [unowned self] in

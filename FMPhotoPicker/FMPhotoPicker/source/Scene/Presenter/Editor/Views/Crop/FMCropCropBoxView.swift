@@ -30,7 +30,7 @@ class FMCropCropBoxView: UIView {
         }
     }
     
-    public var cropBoxDidChange: (CGRect) -> Void = {_ in }
+    public var cropBoxControlChanged: (CGRect) -> Void = {_ in }
     public var cropBoxControlEnded: () -> Void = {}
     public var cropBoxControlStarted: () -> Void = {}
     
@@ -118,7 +118,7 @@ class FMCropCropBoxView: UIView {
         }
         
         self.frame = frame
-        cropBoxDidChange(frame)
+        cropBoxControlChanged(frame)
     }
     
     private func applyDriverEdgeTop(toRect rect: CGRect, deltaY: CGFloat) -> CGRect {
