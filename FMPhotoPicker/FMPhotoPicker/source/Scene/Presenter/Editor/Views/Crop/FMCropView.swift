@@ -106,12 +106,13 @@ class FMCropView: UIView {
                        animations: {
                         self.scrollView.zoomScale *= scale
                         self.scrollView.contentOffset = targetOffset
-                        
                         self.cropBoxView.frame = cropFrame
-                        
-                        self.cropboxViewFrameDidChange(rect: cropFrame)
+                        self.foregroundView.frame = cropFrame
+                        self.matchForegroundToBackground()
         },
-                       completion: nil)
+                       completion: { complete in
+                        self.cropboxViewFrameDidChange(rect: cropFrame)
+        })
     }
     
     private func cropboxViewFrameDidChange(rect: CGRect) {
