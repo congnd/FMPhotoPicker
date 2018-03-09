@@ -129,7 +129,6 @@ class FMImageEditorViewController: UIViewController {
         guard cropSubMenuView.isHidden == true else { return }
         
         subMenuContainer.isHidden = false
-        filterSubMenuView.isHidden = true
         cropSubMenuView.isHidden = false
         
         cropSubMenuView.alpha = 0
