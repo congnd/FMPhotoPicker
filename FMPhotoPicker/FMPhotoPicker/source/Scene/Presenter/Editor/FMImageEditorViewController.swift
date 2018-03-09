@@ -17,11 +17,20 @@ class FMImageEditorViewController: UIViewController {
     @IBOutlet weak var subMenuContainer: UIView!
     
     lazy private var filterSubMenuView: FMFiltersMenuView = {
-       return FMFiltersMenuView(withImage: originalThumb, appliedFilter: photo.getAppliedFilter())
+       let filterSubMenuView = FMFiltersMenuView(withImage: originalThumb, appliedFilter: photo.getAppliedFilter())
+        filterSubMenuView.didSelectFilter = { [unowned self] filter in
+            self.selectedFilter = filter
+            self.scalingImageView.image = filter.filter(image: self.originalImage)
+        }
+        return filterSubMenuView
     }()
     
     lazy private var cropSubMenuView: FMCropMenuView = {
-      return FMCropMenuView()
+        let cropSubMenuView = FMCropMenuView()
+        cropSubMenuView.didSelectCropName = { [unowned self] cropName in
+            self.cropView.cropName = cropName
+        }
+        return cropSubMenuView
     }()
     
     public var scalingImageView: FMScalingImageView!
@@ -40,11 +49,6 @@ class FMImageEditorViewController: UIViewController {
         self.originalImage = preloadImage
         
         super.init(nibName: "FMImageEditorViewController", bundle: Bundle(for: FMImageEditorViewController.self))
-        
-        self.filterSubMenuView.didSelectFilter = { [unowned self] filter in
-            self.selectedFilter = filter
-            self.scalingImageView.image = filter.filter(image: self.originalImage)
-        }
         
         self.view.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
     }

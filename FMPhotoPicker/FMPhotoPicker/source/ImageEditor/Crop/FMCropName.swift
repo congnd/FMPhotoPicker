@@ -23,7 +23,7 @@ enum FMCropName: String {
     public func ratio() -> FMCropRatio? {
         switch self {
         case .ratio4x3:
-            return FMCropRatio(width: 16, height: 9)
+            return FMCropRatio(width: 4, height: 3)
         case .ratio16x9:
             return FMCropRatio(width: 16, height: 9)
         case .ratioSquare:

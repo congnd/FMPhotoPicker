@@ -13,7 +13,15 @@ class FMCropMenuView: UIView {
     private let menuItems: [FMCropMenuItem]
     private let cropItems: [FMCropName]
     
-    private var selectedCropItem: FMCropName?
+    public var didSelectCropName: (FMCropName) -> Void = { _ in }
+    
+    private var selectedCropItem: FMCropName? {
+        didSet {
+            if let selectedCropItem = selectedCropItem {
+                didSelectCropName(selectedCropItem)
+            }
+        }
+    }
     
     init() {
         let layout = UICollectionViewFlowLayout()
@@ -22,7 +30,7 @@ class FMCropMenuView: UIView {
         layout.scrollDirection = .horizontal
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
-        cropItems = [.ratio4x3, .ratio16x9, .ratioCustom, .ratioOrigin, .ratioSquare]
+        cropItems = [.ratioSquare, .ratio4x3, .ratio16x9, .ratioCustom, .ratioOrigin]
         menuItems = [.cropReset, .cropRotation]
         
         super.init(frame: .zero)

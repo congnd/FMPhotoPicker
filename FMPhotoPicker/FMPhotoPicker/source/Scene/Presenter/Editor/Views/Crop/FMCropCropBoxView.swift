@@ -37,6 +37,7 @@ class FMCropCropBoxView: UIView {
         }
     }
     public var resizeGestureRecognizer: UIPanGestureRecognizer!
+    public var cropName: FMCropName
     
     private var panOriginEdge: FMCropCropBoxEdge = .undefined
     private var panOriginPoint: CGPoint = .zero
@@ -50,7 +51,9 @@ class FMCropCropBoxView: UIView {
         }
     }
 
-    init() {
+    init(cropName: FMCropName) {
+        self.cropName = cropName
+        
         super.init(frame: .zero)
         
         isUserInteractionEnabled = false

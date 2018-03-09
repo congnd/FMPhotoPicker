@@ -16,11 +16,21 @@ class FMCropView: UIView {
     
     private let translucencyView: FMCropTranslucencyView
     
-    lazy public var contentFrame: CGRect = { return bounds.insetBy(dx: 20, dy: 60) }()
+    lazy public var contentFrame: CGRect = {
+        return bounds.insetBy(dx: 20, dy: 60)
+    }()
     
-    private var testImageSize: CGSize
     private var centerCropBoxTimer: Timer?
     private let cornersView: FMCropCropBoxCornersView
+    
+    public var cropName: FMCropName = .ratioOrigin {
+        didSet {
+            moveCroppedContentToCenterAnimated()
+            cropBoxView.cropName = cropName
+        }
+    }
+    
+    private var image: UIImage
     
     override var frame: CGRect {
         didSet {
@@ -34,12 +44,11 @@ class FMCropView: UIView {
     }
 
     init() {
-        let testImage = UIImage(named: "file0001176452626.jpg", in: Bundle(for: FMCropView.self), compatibleWith: nil)!
-        testImageSize = testImage.size
+        image = UIImage(named: "file0001176452626.jpg", in: Bundle(for: FMCropView.self), compatibleWith: nil)!
         
-        scrollView = FMCropScrollView(image: testImage)
-        cropBoxView = FMCropCropBoxView()
-        foregroundView = FMCropForegroundView(image: testImage)
+        scrollView = FMCropScrollView(image: image)
+        cropBoxView = FMCropCropBoxView(cropName: cropName)
+        foregroundView = FMCropForegroundView(image: image)
         translucencyView = FMCropTranslucencyView(effect: UIBlurEffect(style: .light))
         
         cornersView = FMCropCropBoxCornersView()
@@ -81,10 +90,10 @@ class FMCropView: UIView {
         
         self.backgroundColor = .white
         
-        let btn = UIButton(frame: CGRect(x: 0, y: 40, width: 100, height: 40))
+        let btn = UIButton(frame: CGRect(x: 0, y: 40, width: 160, height: 40))
         btn.backgroundColor = .red
         btn.addTarget(self, action: #selector(testMove), for: .touchUpInside)
-        btn.setTitle("test move", for: .normal)
+        btn.setTitle("Show/Hide Blur", for: .normal)
         self.addSubview(btn)
     }
     
@@ -109,12 +118,25 @@ class FMCropView: UIView {
     
     private func moveCroppedContentToCenterAnimated() {
         var cropFrame = cropBoxView.frame
+        let cropRatio = cropName.ratio()
         
         //The scale we need to scale up the crop box to fit full screen
         let cropBoxScale = min(contentFrame.width / cropFrame.width, contentFrame.height / cropFrame.height)
         
         // center point of cropBoxView in CropView coordination system
         let originFocusPointInCropViewCoordination = CGPoint(x: cropBoxView.frame.midX, y: cropBoxView.frame.midY)
+        
+        if cropName == .ratioOrigin {
+            let ratio = image.size.height / image.size.width
+            
+            // correct ratio only
+            cropFrame.size.height = cropFrame.size.width * ratio
+        } else if let cropRatio = cropRatio {
+            let ratio = CGFloat(cropRatio.height) / CGFloat(cropRatio.width)
+            
+            // correct ratio only
+            cropFrame.size.height = cropFrame.size.width * ratio
+        }
         
         // calculate new cropFrame that is translated to center of contentBound
         cropFrame.size.width = ceil(cropFrame.size.width * cropBoxScale)
@@ -155,7 +177,7 @@ class FMCropView: UIView {
         
         scrollView.contentInset = UIEdgeInsets(top: rect.minY, left: rect.minX, bottom: self.bounds.maxY - rect.maxY, right: self.bounds.maxX - rect.maxX)
         
-        let scale = max(rect.size.height / testImageSize.height, rect.size.width / testImageSize.width);
+        let scale = max(rect.size.height / image.size.height, rect.size.width / image.size.width);
         scrollView.minimumZoomScale = scale;
         
 //        var size = scrollView.contentSize
