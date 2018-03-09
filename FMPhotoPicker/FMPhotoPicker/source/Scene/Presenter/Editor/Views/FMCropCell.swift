@@ -42,12 +42,14 @@ class FMCropCell: UICollectionViewCell {
     }
     
     public func setSelected() {
-        imageView.layer.borderColor = selectedColor.cgColor
+        let tintedImage = imageView.image?.withRenderingMode(.alwaysTemplate)
+        imageView.image = tintedImage
+        imageView.tintColor = selectedColor
+        
         name.textColor = selectedColor
     }
     
     public func setDeselected() {
-        imageView.layer.borderColor = unselectColor.cgColor
         name.textColor = unselectColor
     }
     
