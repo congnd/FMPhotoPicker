@@ -89,6 +89,7 @@ class FMImageEditorViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         showAnimatedMenu()
+        cropView.moveCropBoxToAspectFillContentFrame()
     }
     
     override func viewDidLayoutSubviews() {

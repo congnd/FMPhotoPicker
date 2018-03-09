@@ -41,7 +41,7 @@ class FMCropCropBoxView: UIView {
     private var panOriginEdge: FMCropCropBoxEdge = .undefined
     private var panOriginPoint: CGPoint = .zero
     private var panOriginFrame: CGRect = .zero
-    private var contentBound: CGRect = .zero
+    private var contentFrame: CGRect = .zero
     private let minSize = CGSize(width: 100, height: 100)
     
     override var frame: CGRect {
@@ -72,7 +72,7 @@ class FMCropCropBoxView: UIView {
             panOriginFrame = self.frame
             
             // TODO: It should be here?
-            contentBound = cropView.contentBound
+            contentFrame = cropView.contentFrame
             
             cropBoxControlStarted()
         }
@@ -123,7 +123,7 @@ class FMCropCropBoxView: UIView {
         var result = rect
         
         let posY = panOriginFrame.origin.y + deltaY
-        result.origin.y = min(max(posY, contentBound.minY), result.maxY - minSize.height)
+        result.origin.y = min(max(posY, contentFrame.minY), result.maxY - minSize.height)
         
         result.size.height = panOriginFrame.height - (result.origin.y - panOriginFrame.origin.y)
         
@@ -134,7 +134,7 @@ class FMCropCropBoxView: UIView {
         var result = rect
         
         let width = panOriginFrame.size.width + deltaX
-        result.size.width = max(min(width, contentBound.maxX - panOriginFrame.minX), minSize.width)
+        result.size.width = max(min(width, contentFrame.maxX - panOriginFrame.minX), minSize.width)
         
         return result
     }
@@ -143,7 +143,7 @@ class FMCropCropBoxView: UIView {
         var result = rect
         
         let height = panOriginFrame.size.height + deltaY
-        result.size.height = max(min(height, contentBound.maxY - panOriginFrame.minY), minSize.height)
+        result.size.height = max(min(height, contentFrame.maxY - panOriginFrame.minY), minSize.height)
         
         return result
     }
@@ -152,7 +152,7 @@ class FMCropCropBoxView: UIView {
         var result = rect
         
         let posX = panOriginFrame.origin.x + deltaX
-        result.origin.x = min(max(posX, contentBound.minX), result.maxX - minSize.width)
+        result.origin.x = min(max(posX, contentFrame.minX), result.maxX - minSize.width)
         
         result.size.width = panOriginFrame.width - (result.origin.x - panOriginFrame.origin.x)
         
