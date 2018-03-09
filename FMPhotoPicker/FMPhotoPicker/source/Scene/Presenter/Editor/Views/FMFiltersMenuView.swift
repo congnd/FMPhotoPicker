@@ -115,11 +115,14 @@ extension FMFiltersMenuView: UICollectionViewDataSource {
 extension FMFiltersMenuView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let filter = availableFilters[indexPath.item]
-        didSelectFilter(filter)
         
-        (collectionView.cellForItem(at: IndexPath(row: selectedCellIndex, section: 0)) as? FMFilterCell)?.setDeselected()
+        let prevSelectedCellIndex = selectedCellIndex
         
         selectedCellIndex = indexPath.item
         (collectionView.cellForItem(at: IndexPath(row: selectedCellIndex, section: 0)) as? FMFilterCell)?.setSelected()
+        
+        collectionView.reloadItems(at: [IndexPath(row: prevSelectedCellIndex, section: 0)])
+        
+        didSelectFilter(filter)
     }
 }
