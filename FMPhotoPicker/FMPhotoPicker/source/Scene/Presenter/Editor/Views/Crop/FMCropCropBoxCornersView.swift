@@ -9,6 +9,7 @@
 import UIKit
 
 class FMCropCropBoxCornersView: UIView {
+    private let borderWidth: CGFloat = 1.0
     private let lineWidth: CGFloat = 2.5
     private let lineHeight: CGFloat = 25.0
     private let color = UIColor(red: 1, green: 81/255, blue: 81/255, alpha: 1)
@@ -27,22 +28,22 @@ class FMCropCropBoxCornersView: UIView {
     
     override var frame: CGRect {
         didSet {
-            topLeftView.frame.origin.x = bounds.origin.x - lineWidth
-            topLeftView.frame.origin.y = bounds.origin.y - lineWidth
+            topLeftView.frame.origin.x = bounds.origin.x - lineWidth + borderWidth
+            topLeftView.frame.origin.y = bounds.origin.y - lineWidth + borderWidth
             
-            topRightView.frame.origin.x = bounds.maxX + lineWidth - lineHeight
+            topRightView.frame.origin.x = bounds.maxX + lineWidth - lineHeight - borderWidth
             topRightView.frame.origin.y = topLeftView.frame.origin.y
             
-            rightTopView.frame.origin.x = bounds.maxX
+            rightTopView.frame.origin.x = bounds.maxX - borderWidth
             rightTopView.frame.origin.y = topRightView.frame.origin.y
             
-            rightBottomView.frame.origin.x = bounds.maxX
-            rightBottomView.frame.origin.y = bounds.maxY + lineWidth - lineHeight
+            rightBottomView.frame.origin.x = bounds.maxX - borderWidth
+            rightBottomView.frame.origin.y = bounds.maxY + lineWidth - lineHeight - borderWidth
             
             bottomRightView.frame.origin.x = topRightView.frame.origin.x
-            bottomRightView.frame.origin.y = bounds.maxY
+            bottomRightView.frame.origin.y = bounds.maxY - borderWidth
             
-            bottomLeftView.frame.origin.x = bounds.origin.x - lineWidth
+            bottomLeftView.frame.origin.x = bounds.origin.x - lineWidth + borderWidth
             bottomLeftView.frame.origin.y = bottomRightView.frame.origin.y
             
             leftBottomView.frame.origin.x = topLeftView.frame.origin.x
