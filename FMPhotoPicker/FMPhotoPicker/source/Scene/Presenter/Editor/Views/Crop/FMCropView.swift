@@ -23,10 +23,10 @@ class FMCropView: UIView {
     private var centerCropBoxTimer: Timer?
     private let cornersView: FMCropCropBoxCornersView
     
-    public var cropName: FMCropName = .ratioOrigin {
+    public var cropName: FMCropName = .ratioCustom {
         didSet {
             moveCroppedContentToCenterAnimated()
-            cropBoxView.cropRatio = cropName.ratio()
+            cropBoxView.cropRatio = cropRatio(forCrop: cropName)
         }
     }
     
@@ -47,7 +47,9 @@ class FMCropView: UIView {
         image = UIImage(named: "file0001176452626.jpg", in: Bundle(for: FMCropView.self), compatibleWith: nil)!
         
         scrollView = FMCropScrollView(image: image)
-        cropBoxView = FMCropCropBoxView(cropRatio: cropName.ratio())
+        
+        cropBoxView = FMCropCropBoxView(cropRatio: nil)
+        
         foregroundView = FMCropForegroundView(image: image)
         translucencyView = FMCropTranslucencyView(effect: UIBlurEffect(style: .light))
         
@@ -55,6 +57,7 @@ class FMCropView: UIView {
         
         super.init(frame: .zero)
         
+        cropBoxView.cropRatio = cropRatio(forCrop: cropName)
         cropBoxView.cropView = self
         cropBoxView.cropBoxControlChanged = { [unowned self] rect in
             self.cropboxViewFrameDidChange(rect: rect)
@@ -219,6 +222,13 @@ class FMCropView: UIView {
     
     @objc private func timerTrigged() {
         moveCroppedContentToCenterAnimated()
+    }
+    
+    private func cropRatio(forCrop cropName: FMCropName) -> FMCropRatio? {
+        if cropName == .ratioOrigin {
+            return FMCropRatio(width: image.size.width, height: image.size.height)
+        }
+        return cropName.ratio()
     }
 }
 

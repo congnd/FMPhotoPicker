@@ -9,8 +9,8 @@
 import UIKit
 
 struct FMCropRatio {
-    let width: Int
-    let height: Int
+    let width: CGFloat
+    let height: CGFloat
 }
 
 enum FMCropName: String {
