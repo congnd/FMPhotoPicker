@@ -26,7 +26,7 @@ class FMCropView: UIView {
     public var cropName: FMCropName = .ratioOrigin {
         didSet {
             moveCroppedContentToCenterAnimated()
-            cropBoxView.cropName = cropName
+            cropBoxView.cropRatio = cropName.ratio()
         }
     }
     
@@ -47,7 +47,7 @@ class FMCropView: UIView {
         image = UIImage(named: "file0001176452626.jpg", in: Bundle(for: FMCropView.self), compatibleWith: nil)!
         
         scrollView = FMCropScrollView(image: image)
-        cropBoxView = FMCropCropBoxView(cropName: cropName)
+        cropBoxView = FMCropCropBoxView(cropRatio: cropName.ratio())
         foregroundView = FMCropForegroundView(image: image)
         translucencyView = FMCropTranslucencyView(effect: UIBlurEffect(style: .light))
         

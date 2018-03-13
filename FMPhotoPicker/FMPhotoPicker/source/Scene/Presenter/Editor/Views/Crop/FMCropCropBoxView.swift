@@ -37,13 +37,13 @@ class FMCropCropBoxView: UIView {
         }
     }
     public var resizeGestureRecognizer: UIPanGestureRecognizer!
-    public var cropName: FMCropName
+    public var cropRatio: FMCropRatio?
     
     private var panOriginEdge: FMCropCropBoxEdge = .undefined
     private var panOriginPoint: CGPoint = .zero
     private var panOriginFrame: CGRect = .zero
     private var contentFrame: CGRect = .zero
-    private let minSize = CGSize(width: 100, height: 100)
+    private let minSize = CGSize(width: 60, height: 60)
     
     override var frame: CGRect {
         didSet {
@@ -51,8 +51,8 @@ class FMCropCropBoxView: UIView {
         }
     }
 
-    init(cropName: FMCropName) {
-        self.cropName = cropName
+    init(cropRatio: FMCropRatio?) {
+        self.cropRatio = cropRatio
         
         super.init(frame: .zero)
         
@@ -87,32 +87,320 @@ class FMCropCropBoxView: UIView {
     }
     
     public func receivedResizeControlTouch(inPoint point: CGPoint) {
-        let deltaX = (point.x - panOriginPoint.x)
-        let deltaY = (point.y - panOriginPoint.y)
+        let deltaX = ceil(point.x - panOriginPoint.x)
+        let deltaY = ceil(point.y - panOriginPoint.y)
         
         var frame = self.frame
-
+        let ratio = cropRatio == nil ? nil : (CGFloat(cropRatio!.width) / CGFloat(cropRatio!.height))
+        
         switch panOriginEdge {
         case .top:
-            frame = applyDriverEdgeTop(toRect: frame, deltaY: deltaY)
+            frame.size.height = panOriginFrame.height - deltaY
+            if let ratio = ratio { frame.size.width = ceil(frame.height * ratio) }
+            frame.origin.y = panOriginFrame.maxY - frame.height
+            frame.origin.x = panOriginFrame.origin.x + (panOriginFrame.width - frame.width) * 0.5
+            
+            if frame.minX < contentFrame.minX {
+                frame.size.width = (panOriginFrame.midX - contentFrame.minX) * 2
+                if let ratio = ratio { frame.size.height = ceil(frame.width / ratio) }
+                frame.origin.y = panOriginFrame.maxY - frame.height
+                frame.origin.x = panOriginFrame.origin.x + (panOriginFrame.width - frame.width) * 0.5
+            }
+            
+            if frame.minY < contentFrame.minY {
+                frame.size.height = panOriginFrame.maxY - contentFrame.minY
+                if let ratio = ratio { frame.size.width = ceil(frame.height * ratio) }
+                frame.origin.y = panOriginFrame.maxY - frame.height
+                frame.origin.x = panOriginFrame.origin.x + (panOriginFrame.width - frame.width) * 0.5
+            }
+            
+            if frame.maxX > contentFrame.maxX {
+                frame.size.width = (contentFrame.maxX - panOriginFrame.midX) * 2
+                if let ratio = ratio { frame.size.height = ceil(frame.width / ratio) }
+                frame.origin.y = panOriginFrame.maxY - frame.height
+                frame.origin.x = panOriginFrame.origin.x + (panOriginFrame.width - frame.width) * 0.5
+            }
+            
+            var minFrame = CGRect(x: panOriginFrame.minX + (panOriginFrame.width - panOriginFrame.width) * 0.5,
+                                  y: panOriginFrame.maxY - minSize.height,
+                                  width: panOriginFrame.width,
+                                  height: minSize.height)
+            if let ratio = ratio {
+                minFrame.size.width = ceil(minSize.height * ratio)
+                if minFrame.size.width < minSize.width {
+                    minFrame.size.width = minSize.width
+                    minFrame.size.height = ceil(minFrame.width / ratio)
+                }
+                minFrame.origin.x = panOriginFrame.minX + (panOriginFrame.width - minFrame.width) * 0.5
+                minFrame.origin.y = panOriginFrame.maxY - minFrame.height
+            }
+            if !frame.contains(minFrame) {
+                frame = minFrame
+            }
+            
         case .right:
-            frame = applyDriverEdgeRight(toRect: frame, deltaX: deltaX)
+            frame.size.width = panOriginFrame.width + deltaX
+            if let ratio = ratio { frame.size.height = ceil(frame.width / ratio) }
+            frame.origin.y = panOriginFrame.minY - (frame.height - panOriginFrame.height) * 0.5
+            
+            if frame.minY < contentFrame.minY {
+                frame.size.height = (panOriginFrame.midY - contentFrame.minY) * 2
+                if let ratio = ratio { frame.size.width = ceil(frame.height * ratio) }
+                frame.origin.y = panOriginFrame.minY - (frame.height - panOriginFrame.height) * 0.5
+            }
+            
+            if frame.maxX > contentFrame.maxX {
+                frame.size.width = contentFrame.maxX - panOriginFrame.minX
+                if let ratio = ratio { frame.size.height = ceil(frame.width / ratio) }
+                frame.origin.y = panOriginFrame.minY - (frame.height - panOriginFrame.height) * 0.5
+            }
+            
+            if frame.maxY > contentFrame.maxY {
+                frame.size.height = (contentFrame.maxY - panOriginFrame.midY) * 2
+                if let ratio = ratio { frame.size.width = ceil(frame.height * ratio) }
+                frame.origin.y = panOriginFrame.minY - (frame.height - panOriginFrame.height) * 0.5
+            }
+            
+            var minFrame = CGRect(x: panOriginFrame.minX,
+                                  y: panOriginFrame.minY + (panOriginFrame.height - panOriginFrame.height) * 0.5,
+                                  width: minSize.width,
+                                  height: panOriginFrame.height)
+            if let ratio = ratio {
+                minFrame.size.height = ceil(minSize.width / ratio)
+                if minFrame.size.height < minSize.height {
+                    minFrame.size.height = minSize.height
+                    minFrame.size.width = ceil(minFrame.height * ratio)
+                }
+                minFrame.origin.y = panOriginFrame.minY + (panOriginFrame.height - minFrame.height) * 0.5
+            }
+            if !frame.contains(minFrame) {
+                frame = minFrame
+            }
         case .bottom:
-            frame = applyDriverEdgeBottom(toRect: frame, deltaY: deltaY)
+            frame.size.height = panOriginFrame.height + deltaY
+            if let ratio = ratio { frame.size.width = ceil(frame.height * ratio) }
+            frame.origin.x = panOriginFrame.minX - (frame.width - panOriginFrame.width) * 0.5
+            
+            if frame.maxX > contentFrame.maxX {
+                frame.size.width = (contentFrame.maxX - panOriginFrame.midX) * 2
+                if let ratio = ratio { frame.size.height = ceil(frame.width / ratio) }
+                frame.origin.x = panOriginFrame.minX - (frame.width - panOriginFrame.width) * 0.5
+            }
+            
+            if frame.maxY > contentFrame.maxY {
+                frame.size.height = contentFrame.maxY - panOriginFrame.minY
+                if let ratio = ratio { frame.size.width = ceil(frame.height * ratio) }
+                frame.origin.x = panOriginFrame.minX - (frame.width - panOriginFrame.width) * 0.5
+            }
+            
+            if frame.minX < contentFrame.minX {
+                frame.size.width = (panOriginFrame.midX - contentFrame.minX) * 2
+                if let ratio = ratio { frame.size.height = ceil(frame.width / ratio) }
+                frame.origin.x = panOriginFrame.minX - (frame.width - panOriginFrame.width) * 0.5
+            }
+            
+            var minFrame = CGRect(x: panOriginFrame.minX  + (panOriginFrame.width - panOriginFrame.width) * 0.5,
+                                  y: panOriginFrame.minY,
+                                  width: panOriginFrame.width,
+                                  height: minSize.height)
+            if let ratio = ratio {
+                minFrame.size.width = ceil(minSize.height * ratio)
+                if minFrame.size.width < minSize.width {
+                    minFrame.size.width = minSize.width
+                    minFrame.size.height = ceil(minFrame.width / ratio)
+                }
+                minFrame.origin.x = panOriginFrame.minX + (panOriginFrame.width - minFrame.width) * 0.5
+            }
+            if !frame.contains(minFrame) {
+                frame = minFrame
+            }
+            
         case .left:
-            frame = applyDriverEdgeLeft(toRect: frame, deltaX: deltaX)
+            frame.size.width = panOriginFrame.width - deltaX
+            if let ratio = ratio { frame.size.height = ceil(frame.width / ratio) }
+            frame.origin.x = panOriginFrame.maxX - frame.width
+            frame.origin.y = panOriginFrame.origin.y + (panOriginFrame.height - frame.height) * 0.5
+            
+            if frame.minX < contentFrame.minX {
+                frame.size.width = panOriginFrame.maxX - contentFrame.minX
+                if let ratio = ratio { frame.size.height = ceil(frame.width / ratio) }
+                frame.origin.x = panOriginFrame.maxX - frame.width
+                frame.origin.y = panOriginFrame.origin.y + (panOriginFrame.height - frame.height) * 0.5
+            }
+            
+            if frame.maxY > contentFrame.maxY {
+                frame.size.height = (contentFrame.maxY - panOriginFrame.midY) * 2
+                if let ratio = ratio { frame.size.width = ceil(frame.height * ratio) }
+                frame.origin.x = panOriginFrame.maxX - frame.width
+                frame.origin.y = panOriginFrame.origin.y + (panOriginFrame.height - frame.height) * 0.5
+            }
+            
+            if frame.minY < contentFrame.minY {
+                frame.size.height = panOriginFrame.maxY - contentFrame.minY
+                if let ratio = ratio { frame.size.width = ceil(frame.height * ratio) }
+                frame.origin.x = panOriginFrame.maxX - frame.width
+                frame.origin.y = panOriginFrame.origin.y + (panOriginFrame.height - frame.height) * 0.5
+            }
+            
+            var minFrame = CGRect(x: panOriginFrame.maxX - minSize.width,
+                                  y: panOriginFrame.minY + (panOriginFrame.height - panOriginFrame.height) * 0.5,
+                                  width: minSize.width,
+                                  height: panOriginFrame.height)
+            if let ratio = ratio {
+                minFrame.size.height = ceil(minSize.width / ratio)
+                if minFrame.size.height < minSize.height {
+                    minFrame.size.height = minSize.height
+                    minFrame.size.width = ceil(minFrame.height * ratio)
+                }
+                minFrame.origin.x = panOriginFrame.maxX - minFrame.width
+                minFrame.origin.y = panOriginFrame.minY + (panOriginFrame.height - minFrame.height) * 0.5
+            }
+            if !frame.contains(minFrame) {
+                frame = minFrame
+            }
         case .topRight:
-            frame = applyDriverEdgeTop(toRect: frame, deltaY: deltaY)
-            frame = applyDriverEdgeRight(toRect: frame, deltaX: deltaX)
+            frame.size.width = max(panOriginFrame.width + deltaX, minSize.width)
+            frame.size.height = max(panOriginFrame.height - deltaY, minSize.height)
+            if let ratio = ratio { frame.size.height = ceil(frame.width / ratio) }
+            frame.origin.y = panOriginFrame.maxY - frame.height
+            
+            if frame.minY < contentFrame.minY {
+                frame.size.height = panOriginFrame.maxY - contentFrame.minY
+                if let ratio = ratio { frame.size.width = ceil(frame.height * ratio) }
+                frame.origin.y = panOriginFrame.maxY - frame.height
+            }
+            
+            if frame.maxX > contentFrame.maxX {
+                frame.size.width = contentFrame.maxX - panOriginFrame.minX
+                if let ratio = ratio { frame.size.height = ceil(frame.width / ratio) }
+                frame.origin.y = panOriginFrame.maxY - frame.height
+            }
+            
+            if let ratio = ratio {
+                var minFrame = CGRect(x: panOriginFrame.origin.x,
+                                      y: panOriginFrame.maxY - minSize.height,
+                                      width: minSize.width,
+                                      height: minSize.height)
+                
+                minFrame.size.height = minSize.width / ratio
+                if minFrame.size.height < minSize.height {
+                    minFrame.size.height = minSize.height
+                    minFrame.size.width = ceil(minFrame.height * ratio)
+                }
+                minFrame.origin.y = panOriginFrame.maxY - minFrame.height
+                
+                if !frame.contains(minFrame) {
+                    frame = minFrame
+                }
+            }
+            
         case .bottomRight:
-            frame = applyDriverEdgeBottom(toRect: frame, deltaY: deltaY)
-            frame = applyDriverEdgeRight(toRect: frame, deltaX: deltaX)
+            frame.size.width = max(panOriginFrame.width + deltaX, minSize.width)
+            frame.size.height = max(panOriginFrame.height + deltaY, minSize.height)
+            if let ratio = ratio { frame.size.height = ceil(frame.width / ratio) }
+            
+            if frame.maxX > contentFrame.maxX {
+                frame.size.width = contentFrame.maxX - panOriginFrame.minX
+                if let ratio = ratio { frame.size.height = ceil(frame.width / ratio) }
+            }
+            
+            if frame.maxY > contentFrame.maxY {
+                frame.size.height = contentFrame.maxY - panOriginFrame.minY
+                if let ratio = ratio { frame.size.width = ceil(frame.height * ratio) }
+            }
+            
+            if let ratio = ratio {
+                var minFrame = CGRect(x: panOriginFrame.origin.x,
+                                      y: panOriginFrame.origin.y,
+                                      width: minSize.width,
+                                      height: minSize.height)
+                
+                minFrame.size.height = minSize.width / ratio
+                if minFrame.size.height < minSize.height {
+                    minFrame.size.height = minSize.height
+                    minFrame.size.width = ceil(minFrame.height * ratio)
+                }
+                
+                if !frame.contains(minFrame) {
+                    frame = minFrame
+                }
+            }
+            
         case .bottomLeft:
-            frame = applyDriverEdgeBottom(toRect: frame, deltaY: deltaY)
-            frame = applyDriverEdgeLeft(toRect: frame, deltaX: deltaX)
+            frame.size.width = max(panOriginFrame.width - deltaX, minSize.width)
+            frame.size.height = max(panOriginFrame.height + deltaY, minSize.height)
+            if let ratio = ratio { frame.size.height = ceil(frame.width / ratio) }
+            frame.origin.x = panOriginFrame.maxX - frame.width
+            
+            if frame.minX < contentFrame.minX {
+                frame.size.width = panOriginFrame.maxX - contentFrame.minX
+                if let ratio = ratio { frame.size.height = ceil(frame.width / ratio) }
+                frame.origin.x = panOriginFrame.maxX - frame.width
+            }
+            
+            if frame.maxY > contentFrame.maxY {
+                frame.size.height = contentFrame.maxY - panOriginFrame.minY
+                if let ratio = ratio { frame.size.width = ceil(frame.height * ratio) }
+                frame.origin.x = panOriginFrame.maxX - frame.width
+            }
+            
+            if let ratio = ratio {
+                var minFrame = CGRect(x: panOriginFrame.maxX - minSize.width,
+                                      y: panOriginFrame.origin.y,
+                                      width: minSize.width,
+                                      height: minSize.height)
+                
+                minFrame.size.height = ceil(minSize.width / ratio)
+                if minFrame.size.height < minSize.height {
+                    minFrame.size.height = minSize.height
+                    minFrame.size.width = ceil(minFrame.height * ratio)
+                }
+                minFrame.origin.x = panOriginFrame.maxX - minFrame.width
+                
+                if !frame.contains(minFrame) {
+                    frame = minFrame
+                }
+            }
         case .topLeft:
-            frame = applyDriverEdgeTop(toRect: frame, deltaY: deltaY)
-            frame = applyDriverEdgeLeft(toRect: frame, deltaX: deltaX)
+            frame.size.width = max(panOriginFrame.width - deltaX, minSize.width)
+            frame.size.height = max(panOriginFrame.height - deltaY, minSize.height)
+            if let ratio = ratio { frame.size.height = ceil(frame.width / ratio) }
+            frame.origin.x = panOriginFrame.maxX - frame.width
+            frame.origin.y = panOriginFrame.maxY - frame.height
+            
+            if frame.minX < contentFrame.minX {
+                frame.size.width = panOriginFrame.maxX - contentFrame.minX
+                if let ratio = ratio { frame.size.height = ceil(frame.width / ratio) }
+                frame.origin.x = panOriginFrame.maxX - frame.width
+                frame.origin.y = panOriginFrame.maxY - frame.height
+            }
+            
+            if frame.minY < contentFrame.minY {
+                frame.size.height = panOriginFrame.maxY - contentFrame.minY
+                if let ratio = ratio { frame.size.width = ceil(frame.height * ratio) }
+                frame.origin.x = panOriginFrame.maxX - frame.width
+                frame.origin.y = panOriginFrame.maxY - frame.height
+            }
+            
+            if let ratio = ratio {
+                var minFrame = CGRect(x: panOriginFrame.maxX - minSize.width,
+                                      y: panOriginFrame.maxY - minSize.height,
+                                      width: minSize.width,
+                                      height: minSize.height)
+                
+                minFrame.size.height = ceil(minSize.width / ratio)
+                if minFrame.size.height < minSize.height {
+                    minFrame.size.height = minSize.height
+                    minFrame.size.width = ceil(minFrame.height * ratio)
+                }
+                minFrame.origin.x = panOriginFrame.maxX - minFrame.width
+                minFrame.origin.y = panOriginFrame.maxY - minFrame.height
+                
+                if !frame.contains(minFrame) {
+                    frame = minFrame
+                }
+            }
+            
         default:
             print("edge: undefined")
             return
@@ -120,46 +408,6 @@ class FMCropCropBoxView: UIView {
         
         self.frame = frame
         cropBoxControlChanged(frame)
-    }
-    
-    private func applyDriverEdgeTop(toRect rect: CGRect, deltaY: CGFloat) -> CGRect {
-        var result = rect
-        
-        let posY = panOriginFrame.origin.y + deltaY
-        result.origin.y = min(max(posY, contentFrame.minY), result.maxY - minSize.height)
-        
-        result.size.height = panOriginFrame.height - (result.origin.y - panOriginFrame.origin.y)
-        
-        return result
-    }
-    
-    private func applyDriverEdgeRight(toRect rect: CGRect, deltaX: CGFloat) -> CGRect {
-        var result = rect
-        
-        let width = panOriginFrame.size.width + deltaX
-        result.size.width = max(min(width, contentFrame.maxX - panOriginFrame.minX), minSize.width)
-        
-        return result
-    }
-    
-    private func applyDriverEdgeBottom(toRect rect: CGRect, deltaY: CGFloat) -> CGRect {
-        var result = rect
-        
-        let height = panOriginFrame.size.height + deltaY
-        result.size.height = max(min(height, contentFrame.maxY - panOriginFrame.minY), minSize.height)
-        
-        return result
-    }
-    
-    private func applyDriverEdgeLeft(toRect rect: CGRect, deltaX: CGFloat) -> CGRect {
-        var result = rect
-        
-        let posX = panOriginFrame.origin.x + deltaX
-        result.origin.x = min(max(posX, contentFrame.minX), result.maxX - minSize.width)
-        
-        result.size.width = panOriginFrame.width - (result.origin.x - panOriginFrame.origin.x)
-        
-        return result
     }
     
     public func edge(forPoint point: CGPoint) -> FMCropCropBoxEdge {
