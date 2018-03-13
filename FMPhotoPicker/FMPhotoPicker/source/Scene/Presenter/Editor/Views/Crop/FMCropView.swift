@@ -17,7 +17,7 @@ class FMCropView: UIView {
     private let translucencyView: FMCropTranslucencyView
     
     lazy public var contentFrame: CGRect = {
-        return CGRect(x: 20, y: 60, width: bounds.width - 40, height: bounds.height - 196)
+        return CGRect(x: 20, y: 60, width: bounds.width - 40, height: bounds.height - 216)
 //        return bounds.insetBy(dx: 20, dy: 60)
     }()
     
