@@ -23,22 +23,37 @@ enum FMFilterName: String {
     case CIColorCube = "CIColorCube"
     case CIColorCubeWithColorSpace = "CIColorCubeWithColorSpace"
     case CIColorInvert = "CIColorInvert"
-//    case CIColorMap = "CIColorMap"
     case CIColorMonochrome = "CIColorMonochrome"
     case CIColorPosterize = "CIColorPosterize"
     case CIFalseColor = "CIFalseColor"
-//    case CIMaskToAlpha = "CIMaskToAlpha"
-//    case CIMaximumComponent = "CIMaximumComponent"
     case CIMinimumComponent = "CIMinimumComponent"
     
     case CISepiaTone = "CISepiaTone"
     case CIVignette = "CIVignette"
-//    case CIVignetteEffect = "CIVignetteEffect"
     
     func displayName() -> String {
         switch self {
-        default:
-            return self.rawValue.replacingOccurrences(of: "CIPhotoEffect", with: "").replacingOccurrences(of: "CIColor", with: "").replacingOccurrences(of: "CI", with: "")
+        case .CIPhotoEffectChrome: return "Chrome"
+        case .CIPhotoEffectFade: return "Fade"
+        case .CIPhotoEffectInstant: return "Instant"
+        case .CIPhotoEffectMono: return "Mono"
+        case .CIPhotoEffectNoir: return "Noir"
+        case .CIPhotoEffectProcess: return "Process"
+        case .CIPhotoEffectTonal: return "Tonal"
+        case .CIPhotoEffectTransfer: return "Transfer"
+            
+        case .CIColorCrossPolynomial:return "Polynomial"
+        case .CIColorCube: return "Color Cube"
+        case .CIColorCubeWithColorSpace: return "Color Space"
+        case .CIColorInvert: return "Invert"
+            
+        case .CIColorMonochrome: return "Monochrome"
+        case .CIColorPosterize: return "Posterize"
+        case .CIFalseColor: return "Color"
+        case .CIMinimumComponent: return "Component"
+            
+        case .CISepiaTone: return "Sepia"
+        case .CIVignette: return "Vignette"
         }
     }
     
