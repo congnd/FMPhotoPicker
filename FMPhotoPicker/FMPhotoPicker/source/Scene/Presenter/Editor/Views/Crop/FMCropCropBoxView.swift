@@ -45,6 +45,12 @@ class FMCropCropBoxView: UIView {
     private var contentFrame: CGRect = .zero
     private let minSize = CGSize(width: 60, height: 60)
     
+    public var isCropping: Bool = false {
+        didSet {
+            
+        }
+    }
+    
     override var frame: CGRect {
         didSet {
             
@@ -64,6 +70,8 @@ class FMCropCropBoxView: UIView {
     }
     
     @objc private func handleResizeGestrureRecognizer(recognizer: UIPanGestureRecognizer) {
+        guard isCropping == true else { return }
+        
         let tapPoint = recognizer.location(in: cropView)
         
         if recognizer.state == .began {

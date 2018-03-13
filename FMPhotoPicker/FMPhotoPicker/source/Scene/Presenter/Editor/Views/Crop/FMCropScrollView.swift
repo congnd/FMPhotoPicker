@@ -23,6 +23,12 @@ class FMCropScrollView: UIScrollView {
         }
     }
     
+    public var isCropping: Bool = false {
+        didSet {
+            isScrollEnabled = isCropping
+        }
+    }
+    
     lazy private(set) var doubleTapGestureRecognizer: UITapGestureRecognizer = {
         let gesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTapWithGestureRecognizer(_:)))
         gesture.numberOfTapsRequired = 2
@@ -100,6 +106,8 @@ class FMCropScrollView: UIScrollView {
     
     // MARK: - Logic
     @objc private func handleDoubleTapWithGestureRecognizer(_ recognizer: UITapGestureRecognizer) {
+        guard isCropping == true else { return }
+        
         let pointInView = recognizer.location(in: self.imageView)
         var newZoomScale = self.maximumZoomScale
         

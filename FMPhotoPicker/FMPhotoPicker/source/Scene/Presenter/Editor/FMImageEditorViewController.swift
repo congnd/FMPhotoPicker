@@ -8,6 +8,8 @@
 
 import UIKit
 
+fileprivate let kContentFrameSpacing: CGFloat = 20.0
+
 class FMImageEditorViewController: UIViewController {
     
     @IBOutlet weak var topMenuTopConstraint: NSLayoutConstraint!
@@ -20,7 +22,7 @@ class FMImageEditorViewController: UIViewController {
        let filterSubMenuView = FMFiltersMenuView(withImage: originalThumb, appliedFilter: photo.getAppliedFilter())
         filterSubMenuView.didSelectFilter = { [unowned self] filter in
             self.selectedFilter = filter
-            self.scalingImageView.image = filter.filter(image: self.originalImage)
+            self.cropView.image = filter.filter(image: self.originalImage)
         }
         return filterSubMenuView
     }()
@@ -33,7 +35,6 @@ class FMImageEditorViewController: UIViewController {
         return cropSubMenuView
     }()
     
-    public var scalingImageView: FMScalingImageView!
     private var cropView: FMCropView!
     
     public var photo: FMPhotoAsset
@@ -70,19 +71,9 @@ class FMImageEditorViewController: UIViewController {
         filterSubMenuView.isHidden = true
         cropSubMenuView.isHidden = true
         
-        self.scalingImageView = FMScalingImageView(frame: self.view.frame)
-        self.scalingImageView.delegate = self
-        
-        self.scalingImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        self.scalingImageView.clipsToBounds = true
-        self.scalingImageView.image = self.originalImage
-        
-        cropView = FMCropView()
+        cropView = FMCropView(image: originalImage)
         view.addSubview(cropView)
         view.sendSubview(toBack: cropView)
-        
-        self.view.addSubview(self.scalingImageView)
-        self.view.sendSubview(toBack: self.scalingImageView)
         
         self.view.backgroundColor = .black
     }
@@ -93,10 +84,12 @@ class FMImageEditorViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         showAnimatedMenu()
-        cropView.moveCropBoxToAspectFillContentFrame()
         
         // show filter menu by default
         showAnimatedFilterMenu()
+        cropView.contentFrame = contentFrameFilter()
+        cropView.moveCropBoxToAspectFillContentFrame()
+        cropView.isCropping = false
     }
     
     override func viewDidLayoutSubviews() {
@@ -117,18 +110,34 @@ class FMImageEditorViewController: UIViewController {
         hideAnimatedMenu {
             self.dismiss(animated: false, completion: nil)
         }
+        
+        cropView.contentFrame = contentFrameFullScreen()
+        cropView.moveCropBoxToAspectFillContentFrame()
+        cropView.isCropping = false
     }
     
     @IBAction func onTapCancel(_ sender: Any) {
         hideAnimatedMenu {
             self.dismiss(animated: false, completion: nil)
         }
+        
+        cropView.contentFrame = contentFrameFullScreen()
+        cropView.moveCropBoxToAspectFillContentFrame()
+        cropView.isCropping = false
     }
     @IBAction func onTapOpenFilter(_ sender: Any) {
         showAnimatedFilterMenu()
+        
+        cropView.contentFrame = contentFrameFilter()
+        cropView.moveCropBoxToAspectFillContentFrame()
+        cropView.isCropping = false
     }
     @IBAction func onTapOpenCrop(_ sender: Any) {
         showAnimatedCropMenu()
+        
+        cropView.contentFrame = contentFrameCrop()
+        cropView.moveCropBoxToAspectFillContentFrame()
+        cropView.isCropping = true
     }
     
     // MARK: - Animation
@@ -203,10 +212,23 @@ class FMImageEditorViewController: UIViewController {
                         completion?()
         })
     }
-}
-
-extension FMImageEditorViewController: UIScrollViewDelegate {
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return self.scalingImageView.imageView
+    
+    // MARK: - Logics
+    private func contentFrameCrop() -> CGRect {
+        return CGRect(x: kContentFrameSpacing,
+                      y: kContentFrameSpacing + topMenuContainter.frame.height,
+                      width: view.bounds.width - 2 * kContentFrameSpacing,
+                      height: view.bounds.height - topMenuContainter.frame.height - bottomMenuContainer.frame.height - subMenuContainer.frame.height - 2 * kContentFrameSpacing)
+    }
+    
+    private func contentFrameFilter() -> CGRect {
+        return CGRect(x: 0,
+                      y: topMenuContainter.frame.height,
+                      width: view.bounds.width,
+                      height: view.bounds.height - topMenuContainter.frame.height - bottomMenuContainer.frame.height - subMenuContainer.frame.height)
+    }
+    
+    private func contentFrameFullScreen() -> CGRect {
+        return view.bounds
     }
 }

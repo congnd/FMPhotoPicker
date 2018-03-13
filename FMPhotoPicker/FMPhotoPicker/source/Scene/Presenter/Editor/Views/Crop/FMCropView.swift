@@ -23,6 +23,7 @@ class FMCropView: UIView {
     
     private var centerCropBoxTimer: Timer?
     private let cornersView: FMCropCropBoxCornersView
+    private let whiteBackgroundView: UIView
     
     public var cropName: FMCropName = .ratioCustom {
         didSet {
@@ -31,7 +32,26 @@ class FMCropView: UIView {
         }
     }
     
-    private var image: UIImage
+    public var isCropping: Bool = false {
+        didSet {
+            cropBoxView.isCropping = isCropping
+            scrollView.isCropping = isCropping
+            if isCropping {
+                whiteBackgroundView.isHidden = true
+                cornersView.isHidden = false
+            } else {
+                whiteBackgroundView.isHidden = false
+                cornersView.isHidden = true
+            }
+        }
+    }
+    
+    public var image: UIImage {
+        didSet {
+            scrollView.imageView.image = image
+            foregroundView.imageView.image = image
+        }
+    }
     
     override var frame: CGRect {
         didSet {
@@ -40,13 +60,13 @@ class FMCropView: UIView {
             foregroundView.frame = scrollView.convert(scrollView.imageView.frame, to: self)
             cropBoxView.frame = foregroundView.frame
             cornersView.frame = foregroundView.frame
+            whiteBackgroundView.frame = frame
             matchForegroundToBackground()
         }
     }
 
-    init() {
-        image = UIImage(named: "file0001176452626.jpg", in: Bundle(for: FMCropView.self), compatibleWith: nil)!
-        
+    init(image: UIImage) {
+        self.image = image
         scrollView = FMCropScrollView(image: image)
         
         cropBoxView = FMCropCropBoxView(cropRatio: nil)
@@ -55,6 +75,10 @@ class FMCropView: UIView {
         translucencyView = FMCropTranslucencyView(effect: UIBlurEffect(style: .light))
         
         cornersView = FMCropCropBoxCornersView()
+        
+        whiteBackgroundView = UIView()
+        whiteBackgroundView.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
+        whiteBackgroundView.isUserInteractionEnabled = false
         
         super.init(frame: .zero)
         
@@ -88,6 +112,7 @@ class FMCropView: UIView {
         translucencyView.insert(toView: self)
         translucencyView.isUserInteractionEnabled = false
         
+        addSubview(whiteBackgroundView)
         addSubview(foregroundView)
         addSubview(cropBoxView)
         addSubview(cornersView)
