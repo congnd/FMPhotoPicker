@@ -250,6 +250,10 @@ class FMCropView: UIView {
         }
         return cropName.ratio()
     }
+    
+    public func getCroppedImage() -> UIImage {
+        return UIImage(view: foregroundView)
+    }
 }
 
 extension FMCropView: UIScrollViewDelegate {

@@ -131,6 +131,8 @@ class FMImageEditorViewController: UIViewController {
         cropView.contentFrame = contentFrameFilter()
         cropView.moveCropBoxToAspectFillContentFrame()
         cropView.isCropping = false
+        
+        filterSubMenuView.image = cropView.getCroppedImage()
     }
     @IBAction func onTapOpenCrop(_ sender: Any) {
         showAnimatedCropMenu()

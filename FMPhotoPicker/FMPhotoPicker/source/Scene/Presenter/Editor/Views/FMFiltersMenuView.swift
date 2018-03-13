@@ -21,12 +21,18 @@ class NoEffect: FMFilterable {
 
 class FMFiltersMenuView: UIView {
     private let collectionView: UICollectionView
-    private let image: UIImage
     private var availableFilters: [FMFilterable]
     private var demoImages: [String:UIImage] = [:]
     private var selectedCellIndex: Int = 0
     
     public var didSelectFilter: (FMFilterable) -> Void = { _ in }
+    
+    public var image: UIImage {
+        didSet {
+            demoImages.removeAll()
+            collectionView.reloadData()
+        }
+    }
     
     
     init(withImage image: UIImage, appliedFilter: FMFilterable?) {
