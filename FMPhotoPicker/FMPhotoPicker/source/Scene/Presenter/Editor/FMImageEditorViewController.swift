@@ -94,6 +94,9 @@ class FMImageEditorViewController: UIViewController {
         super.viewDidAppear(animated)
         showAnimatedMenu()
         cropView.moveCropBoxToAspectFillContentFrame()
+        
+        // show filter menu by default
+        showAnimatedFilterMenu()
     }
     
     override func viewDidLayoutSubviews() {
