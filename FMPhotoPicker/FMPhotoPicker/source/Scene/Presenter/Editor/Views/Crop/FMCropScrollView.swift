@@ -25,7 +25,8 @@ class FMCropScrollView: UIScrollView {
     
     public var isCropping: Bool = false {
         didSet {
-            isScrollEnabled = isCropping
+            panGestureRecognizer.isEnabled = isCropping
+            pinchGestureRecognizer?.isEnabled = isCropping
         }
     }
     
