@@ -26,8 +26,12 @@ class FMCropCropBoxCornersView: UIView {
     private let leftBottomView: UIView
     private let leftTopView: UIView
     
+    private let borderView: UIView
+    
     override var frame: CGRect {
         didSet {
+            borderView.frame = bounds
+            
             topLeftView.frame.origin.x = bounds.origin.x - lineWidth + borderWidth
             topLeftView.frame.origin.y = bounds.origin.y - lineWidth + borderWidth
             
@@ -66,7 +70,12 @@ class FMCropCropBoxCornersView: UIView {
         leftBottomView = UIView(frame: CGRect(x: 0, y: 0, width: lineWidth, height: lineHeight))
         leftTopView = UIView(frame: CGRect(x: 0, y: 0, width: lineWidth, height: lineHeight))
         
+        borderView = UIView(frame: .zero)
+        
         super.init(frame: .zero)
+        
+        borderView.layer.borderWidth = borderWidth
+        borderView.layer.borderColor = UIColor.white.cgColor
         
         topLeftView.backgroundColor = color
         topRightView.backgroundColor = color
@@ -79,6 +88,8 @@ class FMCropCropBoxCornersView: UIView {
         
         leftBottomView.backgroundColor = color
         leftTopView.backgroundColor = color
+        
+        addSubview(borderView)
         
         addSubview(topLeftView)
         addSubview(topRightView)

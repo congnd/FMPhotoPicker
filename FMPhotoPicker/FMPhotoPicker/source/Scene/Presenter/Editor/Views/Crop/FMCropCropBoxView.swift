@@ -57,9 +57,6 @@ class FMCropCropBoxView: UIView {
         super.init(frame: .zero)
         
         isUserInteractionEnabled = false
-        
-        layer.borderWidth = 1
-        layer.borderColor = UIColor.white.cgColor
     }
     
     required init?(coder aDecoder: NSCoder) {
