@@ -92,12 +92,6 @@ class FMCropView: UIView {
         addSubview(cornersView)
         
         self.backgroundColor = .white
-        
-        let btn = UIButton(frame: CGRect(x: 0, y: 40, width: 160, height: 40))
-        btn.backgroundColor = .red
-        btn.addTarget(self, action: #selector(testMove), for: .touchUpInside)
-        btn.setTitle("Show/Hide Blur", for: .normal)
-        self.addSubview(btn)
     }
     
     required init?(coder aDecoder: NSCoder) {
