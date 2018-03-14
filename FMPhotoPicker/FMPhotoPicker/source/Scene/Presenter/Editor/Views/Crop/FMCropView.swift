@@ -289,6 +289,15 @@ class FMCropView: UIView {
     public func rotate() {
         
     }
+    
+    public func getCropArea() -> FMCropArea {
+        let scaleX = (cropBoxView.frame.minX + scrollView.contentOffset.x) / scrollView.contentSize.width
+        let scaleY = (cropBoxView.frame.minY + scrollView.contentOffset.y) / scrollView.contentSize.height
+        let scaleW = cropBoxView.frame.width / scrollView.contentSize.width
+        let scaleH = cropBoxView.frame.height / scrollView.contentSize.height
+        
+        return FMCropArea(scaleX: scaleX, scaleY: scaleY, scaleW: scaleW, scaleH: scaleH)
+    }
 }
 
 extension FMCropView: UIScrollViewDelegate {

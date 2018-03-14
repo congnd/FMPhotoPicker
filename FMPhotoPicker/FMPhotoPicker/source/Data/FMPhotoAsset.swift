@@ -106,9 +106,10 @@ public class FMPhotoAsset {
         return editor.filter
     }
     
-    public func apply(filter: FMFilterable?, crop: FMCroppable?) {
+    public func apply(filter: FMFilterable?, crop: FMCroppable?, cropArea: FMCropArea?) {
         editor.filter = filter
         editor.crop = crop
+        editor.cropArea = cropArea
         if let source = originalThumb {
             thumb = editor.reproduce(source: source)
             if thumb != nil {

@@ -51,7 +51,7 @@ class FMImageEditorViewController: UIViewController {
     private var originalImage: UIImage
     
     private var selectedFilter: FMFilterable?
-    private var selectedCrop: FMCroppable?
+    private var selectedCrop: FMCroppable = kDefaultCropName
     
     // MARK - Init
     public init(withPhoto photo: FMPhotoAsset, preloadImage: UIImage, originalThumb: UIImage) {
@@ -114,7 +114,10 @@ class FMImageEditorViewController: UIViewController {
 
     // MARK: - IBActions
     @IBAction func onTapDone(_ sender: Any) {
-        photo.apply(filter: selectedFilter, crop: selectedCrop)
+        // get crop data:
+        let cropArea = cropView.getCropArea()
+        
+        photo.apply(filter: selectedFilter, crop: selectedCrop, cropArea: cropArea)
         
         hideAnimatedMenu {
             self.dismiss(animated: false, completion: nil)

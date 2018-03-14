@@ -33,7 +33,11 @@ public enum FMCrop: FMCroppable {
         }
     }
     
-    public func crop(image: UIImage) -> UIImage {
+    public func crop(image: UIImage, toRect rect: CGRect) -> UIImage {
+        if let croppedCGImage = image.cgImage?.cropping(to: rect) {
+            return UIImage(cgImage: croppedCGImage)
+        }
+        
         return image
     }
     
