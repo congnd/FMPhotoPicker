@@ -10,7 +10,7 @@ import UIKit
 
 struct FMImageEditor {
     var filter: FMFilterable?
-//    var crop: FMCroppable
+    var crop: FMCroppable?
 
     
     func reproduce(source image: UIImage) -> UIImage {

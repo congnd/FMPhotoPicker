@@ -9,7 +9,7 @@
 import UIKit
 
 let kContentFrameSpacing: CGFloat = 20.0
-let kDefaultCropName: FMCropName = .ratioCustom
+let kDefaultCropName: FMCrop = .ratioCustom
 
 class FMImageEditorViewController: UIViewController {
     
@@ -30,8 +30,9 @@ class FMImageEditorViewController: UIViewController {
     
     lazy private var cropSubMenuView: FMCropMenuView = {
         let cropSubMenuView = FMCropMenuView()
-        cropSubMenuView.didSelectCropName = { [unowned self] cropName in
-            self.cropView.cropName = cropName
+        cropSubMenuView.didSelectCrop = { [unowned self] crop in
+            self.selectedCrop = crop
+            self.cropView.crop = crop
         }
         cropSubMenuView.didReceiveCropControl = { [unowned self] cropControl in
             if cropControl == .reset {
@@ -50,6 +51,7 @@ class FMImageEditorViewController: UIViewController {
     private var originalImage: UIImage
     
     private var selectedFilter: FMFilterable?
+    private var selectedCrop: FMCroppable?
     
     // MARK - Init
     public init(withPhoto photo: FMPhotoAsset, preloadImage: UIImage, originalThumb: UIImage) {
@@ -112,9 +114,8 @@ class FMImageEditorViewController: UIViewController {
 
     // MARK: - IBActions
     @IBAction func onTapDone(_ sender: Any) {
-        if let filter = selectedFilter {
-            photo.apply(filter: filter)
-        }
+        photo.apply(filter: selectedFilter, crop: selectedCrop)
+        
         hideAnimatedMenu {
             self.dismiss(animated: false, completion: nil)
         }

@@ -25,10 +25,10 @@ class FMCropView: UIView {
     private let cornersView: FMCropCropBoxCornersView
     private let whiteBackgroundView: UIView
     
-    public var cropName: FMCropName = kDefaultCropName {
+    public var crop: FMCroppable = kDefaultCropName {
         didSet {
             moveCroppedContentToCenterAnimated()
-            cropBoxView.cropRatio = cropRatio(forCrop: cropName)
+            cropBoxView.cropRatio = cropRatio(forCrop: crop)
         }
     }
     
@@ -82,7 +82,7 @@ class FMCropView: UIView {
         
         super.init(frame: .zero)
         
-        cropBoxView.cropRatio = cropRatio(forCrop: cropName)
+        cropBoxView.cropRatio = cropRatio(forCrop: crop)
         cropBoxView.cropView = self
         cropBoxView.cropBoxControlChanged = { [unowned self] rect in
             self.cropboxViewFrameDidChange(rect: rect)
@@ -141,7 +141,7 @@ class FMCropView: UIView {
     
     private func moveCroppedContentToCenterAnimated() {
         var cropFrame = cropBoxView.frame
-        let cropRatio = cropName.ratio()
+        let cropRatio = crop.ratio()
         
         //The scale we need to scale up the crop box to fit full screen
         let cropBoxScale = min(contentFrame.width / cropFrame.width, contentFrame.height / cropFrame.height)
@@ -149,7 +149,7 @@ class FMCropView: UIView {
         // center point of cropBoxView in CropView coordination system
         let originFocusPointInCropViewCoordination = CGPoint(x: cropBoxView.frame.midX, y: cropBoxView.frame.midY)
         
-        if cropName == .ratioOrigin {
+        if (crop as? FMCrop) == .ratioOrigin {
             let ratio = image.size.height / image.size.width
             
             // correct ratio only
@@ -244,11 +244,11 @@ class FMCropView: UIView {
         moveCroppedContentToCenterAnimated()
     }
     
-    private func cropRatio(forCrop cropName: FMCropName) -> FMCropRatio? {
-        if cropName == .ratioOrigin {
+    private func cropRatio(forCrop crop: FMCroppable) -> FMCropRatio? {
+        if (crop as? FMCrop) == .ratioOrigin {
             return FMCropRatio(width: image.size.width, height: image.size.height)
         }
-        return cropName.ratio()
+        return crop.ratio()
     }
     
     public func getCroppedImage() -> UIImage {
@@ -281,7 +281,7 @@ class FMCropView: UIView {
                         self.cropboxViewFrameDidChange(rect: cropFrame)
         },
                        completion: { _ in
-                        self.cropName = kDefaultCropName
+                        self.crop = kDefaultCropName
                         self.translucencyView.safetyShow()
         })
     }

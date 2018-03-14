@@ -16,15 +16,15 @@ enum FMCropControl {
 class FMCropMenuView: UIView {
     private let collectionView: UICollectionView
     private let menuItems: [FMCropMenuItem]
-    private let cropItems: [FMCropName]
+    private let cropItems: [FMCrop]
     
-    public var didSelectCropName: (FMCropName) -> Void = { _ in }
+    public var didSelectCrop: (FMCrop) -> Void = { _ in }
     public var didReceiveCropControl: (FMCropControl) -> Void = { _ in }
     
-    private var selectedCropItem: FMCropName? {
+    private var selectedCropItem: FMCrop? {
         didSet {
             if let selectedCropItem = selectedCropItem {
-                didSelectCropName(selectedCropItem)
+                didSelectCrop(selectedCropItem)
             }
         }
     }
@@ -97,7 +97,7 @@ extension FMCropMenuView: UICollectionViewDataSource {
         } else if indexPath.section == 1 {
             // crop items
             let cropItem = cropItems[indexPath.row]
-            cell.name.text = cropItem.rawValue
+            cell.name.text = cropItem.name()
             cell.imageView.image = cropItem.icon()
             
             if selectedCropItem == cropItem {
