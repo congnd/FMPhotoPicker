@@ -16,27 +16,29 @@ enum FMCropControl {
 class FMCropMenuView: UIView {
     private let collectionView: UICollectionView
     private let menuItems: [FMCropMenuItem]
-    private let cropItems: [FMCrop]
+    private let cropItems: [FMCroppable]
     
-    public var didSelectCrop: (FMCrop) -> Void = { _ in }
+    public var didSelectCrop: (FMCroppable) -> Void = { _ in }
     public var didReceiveCropControl: (FMCropControl) -> Void = { _ in }
     
-    private var selectedCropItem: FMCrop? {
+    private var selectedCrop: FMCroppable? {
         didSet {
-            if let selectedCropItem = selectedCropItem {
-                didSelectCrop(selectedCropItem)
+            if let selectedCrop = selectedCrop {
+                didSelectCrop(selectedCrop)
             }
         }
     }
     
-    init() {
+    init(appliedCrop: FMCroppable?) {
+        selectedCrop = appliedCrop
+        
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 90, height: 90)
         layout.minimumInteritemSpacing = 1
         layout.scrollDirection = .horizontal
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
-        cropItems = [.ratioSquare, .ratio4x3, .ratio16x9, .ratioCustom, .ratioOrigin]
+        cropItems = [FMCrop.ratioSquare, FMCrop.ratio4x3, FMCrop.ratio16x9, FMCrop.ratioCustom, FMCrop.ratioOrigin]
         menuItems = [.cropReset, .cropRotation]
         
         super.init(frame: .zero)
@@ -100,7 +102,7 @@ extension FMCropMenuView: UICollectionViewDataSource {
             cell.name.text = cropItem.name()
             cell.imageView.image = cropItem.icon()
             
-            if selectedCropItem == cropItem {
+            if selectedCrop?.name() == cropItem.name() {
                 cell.setSelected()
             }
         }
@@ -113,19 +115,19 @@ extension FMCropMenuView: UICollectionViewDelegate {
         if indexPath.section == 0 {
             if indexPath.row == 0 {
                 didReceiveCropControl(.reset)
-                selectedCropItem = kDefaultCropName
+                selectedCrop = kDefaultCropName
                 collectionView.reloadData()
             } else if indexPath.row == 1 {
                 didReceiveCropControl(.rotate)
             }
         } else if indexPath.section == 1 {
             if let cell = collectionView.cellForItem(at: indexPath) as? FMCropCell {
-                let prevCropItem = selectedCropItem
-                selectedCropItem = cropItems[indexPath.row]
+                let prevCropItem = selectedCrop
+                selectedCrop = cropItems[indexPath.row]
                 cell.setSelected()
                 
                 if let prevCropItem = prevCropItem,
-                    let prevRow = cropItems.index(of: prevCropItem) {
+                    let prevRow = cropItems.index(where: { $0.name() == prevCropItem.name() }) {
                     collectionView.reloadItems(at: [IndexPath(row: prevRow, section: 1)])
                 }
             }

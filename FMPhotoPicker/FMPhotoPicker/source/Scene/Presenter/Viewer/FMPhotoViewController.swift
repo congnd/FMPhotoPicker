@@ -37,6 +37,10 @@ class FMPhotoViewController: UIViewController {
         return nil
     }
     
+    public func getOriginalImage() -> UIImage? {
+        return nil
+    }
+    
     public func thumbImage() -> UIImage? {
         return nil
     }

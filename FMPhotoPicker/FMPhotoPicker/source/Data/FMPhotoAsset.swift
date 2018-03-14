@@ -9,6 +9,11 @@
 import Foundation
 import Photos
 
+enum FMImageEditState {
+    case original
+    case edited
+}
+
 public class FMPhotoAsset {
     var asset: PHAsset
     var mediaType: FMMediaType
@@ -70,7 +75,7 @@ public class FMPhotoAsset {
         }
     }
     
-    func requestFullSizePhoto(complete: @escaping (UIImage?) -> Void) {
+    func requestFullSizePhoto(inState state: FMImageEditState = .edited, complete: @escaping (UIImage?) -> Void) {
         self.fullSizePhotoRequestId = Helper.getFullSizePhoto(by: self.asset) { image in
             self.fullSizePhotoRequestId = nil
             if self.canceledFullSizeRequest {
@@ -78,8 +83,10 @@ public class FMPhotoAsset {
                 complete(nil)
             } else {
                 guard let image = image else { return complete(nil) }
-                let edited = self.editor.reproduce(source: image)
-                complete(edited)
+                if state == .original {
+                    return complete(image)
+                }
+                return complete(self.editor.reproduce(source: image))
             }
         }
     }
@@ -104,6 +111,14 @@ public class FMPhotoAsset {
     
     public func getAppliedFilter() -> FMFilterable? {
         return editor.filter
+    }
+    
+    public func getAppliedCrop() -> FMCroppable? {
+        return editor.crop
+    }
+    
+    public func getAppliedCropArea() -> FMCropArea? {
+        return editor.cropArea
     }
     
     public func apply(filter: FMFilterable?, crop: FMCroppable?, cropArea: FMCropArea?) {

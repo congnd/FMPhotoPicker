@@ -12,6 +12,7 @@ class FMImageViewController: FMPhotoViewController {
     // MARK: - Public
     public var scalingImageView: FMScalingImageView!
     public var smallImage: UIImage?
+    public var originalImage: UIImage? // the image loaded from storage without any process
     
     // MARK: - Private
     lazy private(set) var doubleTapGestureRecognizer: UITapGestureRecognizer = {
@@ -51,6 +52,15 @@ class FMImageViewController: FMPhotoViewController {
                let image = image else { return }
             
             strongSelf.scalingImageView.image = image
+        }
+        
+        // get original image
+        // prepare for edit
+        self.photo.requestFullSizePhoto(inState: .original) { [weak self] image in
+            guard let strongSelf = self,
+                let image = image else { return }
+            
+            strongSelf.originalImage = image
         }
     }
     
@@ -102,6 +112,10 @@ class FMImageViewController: FMPhotoViewController {
     
     override func displayingImage() -> UIImage? {
         return self.scalingImageView.image
+    }
+
+    override func getOriginalImage() -> UIImage? {
+        return originalImage
     }
     
     override func thumbImage() -> UIImage? {

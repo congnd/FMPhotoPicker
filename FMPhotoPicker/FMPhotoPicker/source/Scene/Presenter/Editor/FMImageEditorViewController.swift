@@ -29,7 +29,7 @@ class FMImageEditorViewController: UIViewController {
     }()
     
     lazy private var cropSubMenuView: FMCropMenuView = {
-        let cropSubMenuView = FMCropMenuView()
+        let cropSubMenuView = FMCropMenuView(appliedCrop: selectedCrop)
         cropSubMenuView.didSelectCrop = { [unowned self] crop in
             self.selectedCrop = crop
             self.cropView.crop = crop
@@ -58,6 +58,9 @@ class FMImageEditorViewController: UIViewController {
         self.photo = photo
         self.originalThumb = originalThumb
         self.originalImage = preloadImage
+        if let appliedCrop = photo.getAppliedCrop() {
+            selectedCrop = appliedCrop
+        }
         
         super.init(nibName: "FMImageEditorViewController", bundle: Bundle(for: FMImageEditorViewController.self))
         
@@ -81,7 +84,10 @@ class FMImageEditorViewController: UIViewController {
         filterSubMenuView.isHidden = true
         cropSubMenuView.isHidden = true
         
-        cropView = FMCropView(image: originalImage)
+        cropView = FMCropView(image: originalImage,
+                              appliedCrop: photo.getAppliedCrop(),
+                              appliedCropArea: photo.getAppliedCropArea())
+        
         view.addSubview(cropView)
         view.sendSubview(toBack: cropView)
         

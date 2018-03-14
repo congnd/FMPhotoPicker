@@ -32,6 +32,8 @@ class FMCropView: UIView {
         }
     }
     
+    private var cropArea: FMCropArea?
+    
     public var isCropping: Bool = false {
         didSet {
             cropBoxView.isCropping = isCropping
@@ -65,8 +67,13 @@ class FMCropView: UIView {
         }
     }
 
-    init(image: UIImage) {
+    init(image: UIImage, appliedCrop: FMCroppable?, appliedCropArea: FMCropArea?) {
         self.image = image
+        if let appliedCrop = appliedCrop {
+            crop = appliedCrop
+        }
+        cropArea = appliedCropArea
+        
         scrollView = FMCropScrollView(image: image)
         
         cropBoxView = FMCropCropBoxView(cropRatio: nil)
