@@ -8,12 +8,18 @@
 
 import UIKit
 
+enum FMCropControl {
+    case reset
+    case rotate
+}
+
 class FMCropMenuView: UIView {
     private let collectionView: UICollectionView
     private let menuItems: [FMCropMenuItem]
     private let cropItems: [FMCropName]
     
     public var didSelectCropName: (FMCropName) -> Void = { _ in }
+    public var didReceiveCropControl: (FMCropControl) -> Void = { _ in }
     
     private var selectedCropItem: FMCropName? {
         didSet {
@@ -104,7 +110,15 @@ extension FMCropMenuView: UICollectionViewDataSource {
 }
 extension FMCropMenuView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.section == 1 {
+        if indexPath.section == 0 {
+            if indexPath.row == 0 {
+                didReceiveCropControl(.reset)
+                selectedCropItem = kDefaultCropName
+                collectionView.reloadData()
+            } else if indexPath.row == 1 {
+                didReceiveCropControl(.rotate)
+            }
+        } else if indexPath.section == 1 {
             if let cell = collectionView.cellForItem(at: indexPath) as? FMCropCell {
                 let prevCropItem = selectedCropItem
                 selectedCropItem = cropItems[indexPath.row]

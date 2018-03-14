@@ -25,7 +25,7 @@ class FMCropView: UIView {
     private let cornersView: FMCropCropBoxCornersView
     private let whiteBackgroundView: UIView
     
-    public var cropName: FMCropName = .ratioCustom {
+    public var cropName: FMCropName = kDefaultCropName {
         didSet {
             moveCroppedContentToCenterAnimated()
             cropBoxView.cropRatio = cropRatio(forCrop: cropName)
@@ -175,7 +175,7 @@ class FMCropView: UIView {
                                                                        y: originForcusPointInScrollContentViewCoordination.y * scrollViewScale)
         
         let targetOffset = CGPoint(x: targetForcusPointInScrollContentViewCoordination.x - contentFrame.midX,
-                             y: targetForcusPointInScrollContentViewCoordination.y - contentFrame.midY)
+                                   y: targetForcusPointInScrollContentViewCoordination.y - contentFrame.midY)
         
         UIView.animate(withDuration: 0.5,
                        delay: 0,
@@ -253,6 +253,41 @@ class FMCropView: UIView {
     
     public func getCroppedImage() -> UIImage {
         return UIImage(view: foregroundView)
+    }
+    
+    public func reset() {
+        let imageRatio = image.size.width / image.size.height
+        let contentFrameRatio = contentFrame.width / contentFrame.height
+        var cropFrame: CGRect = .zero
+        if imageRatio > contentFrameRatio {
+            cropFrame.size.width = contentFrame.width
+            cropFrame.size.height = ceil(cropFrame.width / imageRatio)
+        } else {
+            cropFrame.size.height = contentFrame.height
+            cropFrame.size.width = ceil(cropFrame.height * imageRatio)
+        }
+        cropFrame.origin = CGPoint(x: (contentFrame.width - cropFrame.width) / 2 + contentFrame.origin.x,
+                                   y: (contentFrame.height - cropFrame.height) / 2 + contentFrame.origin.y)
+        
+        UIView.animate(withDuration: 0.5,
+                       delay: 0,
+                       usingSpringWithDamping: 1.0,
+                       initialSpringVelocity: 1.0,
+                       options: .beginFromCurrentState,
+                       animations: {
+                        self.scrollView.zoomScale = self.scrollView.minimumZoomScale
+                        self.scrollView.contentOffset = CGPoint(x: -cropFrame.origin.x, y: -cropFrame.origin.y)
+                        self.cropBoxView.frame = cropFrame
+                        self.cropboxViewFrameDidChange(rect: cropFrame)
+        },
+                       completion: { _ in
+                        self.cropName = kDefaultCropName
+                        self.translucencyView.safetyShow()
+        })
+    }
+    
+    public func rotate() {
+        
     }
 }
 

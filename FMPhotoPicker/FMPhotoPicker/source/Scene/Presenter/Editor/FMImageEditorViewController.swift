@@ -8,7 +8,8 @@
 
 import UIKit
 
-fileprivate let kContentFrameSpacing: CGFloat = 20.0
+let kContentFrameSpacing: CGFloat = 20.0
+let kDefaultCropName: FMCropName = .ratioCustom
 
 class FMImageEditorViewController: UIViewController {
     
@@ -31,6 +32,13 @@ class FMImageEditorViewController: UIViewController {
         let cropSubMenuView = FMCropMenuView()
         cropSubMenuView.didSelectCropName = { [unowned self] cropName in
             self.cropView.cropName = cropName
+        }
+        cropSubMenuView.didReceiveCropControl = { [unowned self] cropControl in
+            if cropControl == .reset {
+                self.cropView.reset()
+            } else if cropControl == .rotate {
+                self.cropView.rotate()
+            }
         }
         return cropSubMenuView
     }()
