@@ -45,8 +45,8 @@ class FMImageViewController: FMPhotoViewController {
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        self.photo.requestFullSizePhoto() { fullSizeImage in
-        self.photo.requestImage(in: self.view.frame.size) { [weak self] image in
+        self.photo.requestFullSizePhoto() { [weak self] image in
+//        self.photo.requestImage(in: self.view.frame.size) { [weak self] image in
             guard let strongSelf = self,
                let image = image else { return }
             
