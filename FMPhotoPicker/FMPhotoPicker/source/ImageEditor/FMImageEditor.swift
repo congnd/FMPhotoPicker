@@ -26,6 +26,7 @@ struct FMImageEditor {
     var filter: FMFilterable?
     var crop: FMCroppable?
     var cropArea: FMCropArea?
+    var scale: CGFloat = 1
 
     
     func reproduce(source image: UIImage) -> UIImage {

@@ -121,7 +121,7 @@ public class FMPhotoAsset {
         return editor.cropArea
     }
     
-    public func apply(filter: FMFilterable?, crop: FMCroppable?, cropArea: FMCropArea?) {
+    public func apply(filter: FMFilterable?, crop: FMCroppable?, cropArea: FMCropArea?, scale: CGFloat) {
         editor.filter = filter
         editor.crop = crop
         editor.cropArea = cropArea
