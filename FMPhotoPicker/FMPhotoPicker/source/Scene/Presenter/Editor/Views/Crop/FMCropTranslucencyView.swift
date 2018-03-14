@@ -17,7 +17,6 @@ enum FMCropTranslucencyStatus {
 }
 
 class FMCropTranslucencyView: UIVisualEffectView {
-    private let animationDuration: TimeInterval = 0.375
     private let showAlpha: CGFloat = 1.0
     private let hideAlpha: CGFloat = 0.5
     
@@ -61,7 +60,7 @@ class FMCropTranslucencyView: UIVisualEffectView {
     // MARK: - show/hide translucent view
     @objc private func show() {
         status = .beingShow
-        UIView.animate(withDuration: animationDuration,
+        UIView.animate(withDuration: kEnteringAnimationDuration,
                        animations: {
                         self.alpha = self.showAlpha
         },
@@ -73,7 +72,7 @@ class FMCropTranslucencyView: UIVisualEffectView {
     private func hide() {
         status = .beingHide
         layer.removeAllAnimations()
-        UIView.animate(withDuration: animationDuration,
+        UIView.animate(withDuration: kLeavingAnimationDuration,
                        animations: {
                         self.alpha = self.hideAlpha
         },

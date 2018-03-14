@@ -162,7 +162,7 @@ class FMImageEditorViewController: UIViewController {
         cropSubMenuView.isHidden = false
         
         cropSubMenuView.alpha = 0
-        UIView.animate(withDuration: 0.375,
+        UIView.animate(withDuration: kEnteringAnimationDuration,
                        animations: {
                         self.cropSubMenuView.alpha = 1
                         self.filterSubMenuView.alpha = 0
@@ -180,7 +180,7 @@ class FMImageEditorViewController: UIViewController {
         filterSubMenuView.isHidden = false
         
         filterSubMenuView.alpha = 0
-        UIView.animate(withDuration: 0.375,
+        UIView.animate(withDuration: kEnteringAnimationDuration,
                        animations: {
                         self.filterSubMenuView.alpha = 1
                         self.cropSubMenuView.alpha = 0
@@ -196,7 +196,7 @@ class FMImageEditorViewController: UIViewController {
         bottomMenuBottomConstraint.constant = bottomMenuContainer.frame.height
         topMenuContainter.alpha = 0
         bottomMenuContainer.alpha = 0
-        UIView.animate(withDuration: 0.375,
+        UIView.animate(withDuration: kEnteringAnimationDuration,
                        delay: 0,
                        options: .curveEaseOut,
                        animations: {
@@ -213,7 +213,7 @@ class FMImageEditorViewController: UIViewController {
     private func hideAnimatedMenu(completion: (() -> Void)?) {
         self.topMenuTopConstraint.constant = -self.topMenuContainter.frame.height
         self.bottomMenuBottomConstraint.constant = -self.bottomMenuContainer.frame.height
-        UIView.animate(withDuration: 0.375,
+        UIView.animate(withDuration: kLeavingAnimationDuration,
                        delay: 0,
                        options: .curveEaseOut,
                        animations: {

@@ -9,6 +9,10 @@
 import UIKit
 import Photos
 
+internal let kComplexAnimationDuration: Double = 0.375
+internal let kEnteringAnimationDuration: Double = 0.225
+internal let kLeavingAnimationDuration: Double = 0.195
+
 // MARK: - Delegate protocol
 public protocol FMPhotoPickerViewControllerDelegate: class {
     func fmPhotoPickerController(_ picker: FMPhotoPickerViewController, didFinishPickingPhotoWith photos: [UIImage])
