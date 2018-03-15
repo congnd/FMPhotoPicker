@@ -49,15 +49,6 @@ class FMImageViewController: FMPhotoViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         loadAndShowPhotoIfNeeded()
-        
-        // get original image
-        // prepare for edit
-        self.photo.requestFullSizePhoto(inState: .original) { [weak self] image in
-            guard let strongSelf = self,
-                let image = image else { return }
-            
-            strongSelf.originalImage = image
-        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -129,11 +120,22 @@ class FMImageViewController: FMPhotoViewController {
     
     private func loadAndShowPhotoIfNeeded() {
         guard isFinishFirstTimeLoadPhoto == false else { return }
+        
+        isFinishFirstTimeLoadPhoto = true
+        
         self.photo.requestFullSizePhoto() { [weak self] image in
             guard let strongSelf = self,
                 let image = image else { return }
             strongSelf.scalingImageView.image = image
-            strongSelf.isFinishFirstTimeLoadPhoto = true
+        }
+        
+        // get original image
+        // prepare for edit
+        self.photo.requestFullSizePhoto(inState: .original) { [weak self] image in
+            guard let strongSelf = self,
+                let image = image else { return }
+            
+            strongSelf.originalImage = image
         }
     }
 }
