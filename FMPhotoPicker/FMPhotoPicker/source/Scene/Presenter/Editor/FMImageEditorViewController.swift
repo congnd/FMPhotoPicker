@@ -25,6 +25,8 @@ class FMImageEditorViewController: UIViewController {
     @IBOutlet weak var cropMenuButton: UIButton!
     @IBOutlet weak var cropMenuIcon: UIImageView!
     
+    public var didEndEditting: () -> Void = {}
+    
     
     lazy private var filterSubMenuView: FMFiltersMenuView = {
        let filterSubMenuView = FMFiltersMenuView(withImage: originalThumb, appliedFilter: photo.getAppliedFilter())
@@ -163,6 +165,9 @@ class FMImageEditorViewController: UIViewController {
         cropView.contentFrame = contentFrameFullScreen()
         cropView.moveCropBoxToAspectFillContentFrame()
         cropView.isCropping = false
+        
+        // notify PresenterViewController to update it's image
+        didEndEditting()
     }
     
     @IBAction func onTapCancel(_ sender: Any) {

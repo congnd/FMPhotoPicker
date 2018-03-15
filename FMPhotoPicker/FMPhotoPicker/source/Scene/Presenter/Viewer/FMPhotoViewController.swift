@@ -44,4 +44,8 @@ class FMPhotoViewController: UIViewController {
     public func thumbImage() -> UIImage? {
         return nil
     }
+    
+    public func shouldReloadPhoto() {
+        
+    }
 }

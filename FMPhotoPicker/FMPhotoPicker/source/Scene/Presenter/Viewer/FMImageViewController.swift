@@ -20,6 +20,8 @@ class FMImageViewController: FMPhotoViewController {
         gesture.numberOfTapsRequired = 2
         return gesture
     }()
+    
+    private var isFinishFirstTimeLoadPhoto = false
 
     deinit {
         self.photo.cancelAllRequest()
@@ -46,13 +48,7 @@ class FMImageViewController: FMPhotoViewController {
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.photo.requestFullSizePhoto() { [weak self] image in
-//        self.photo.requestImage(in: self.view.frame.size) { [weak self] image in
-            guard let strongSelf = self,
-               let image = image else { return }
-            
-            strongSelf.scalingImageView.image = image
-        }
+        loadAndShowPhotoIfNeeded()
         
         // get original image
         // prepare for edit
@@ -120,6 +116,25 @@ class FMImageViewController: FMPhotoViewController {
     
     override func thumbImage() -> UIImage? {
         return self.smallImage
+    }
+    
+    override func shouldReloadPhoto() {
+        self.photo.requestFullSizePhoto() { [weak self] image in
+            guard let strongSelf = self,
+                let image = image else { return }
+            
+            strongSelf.scalingImageView.image = image
+        }
+    }
+    
+    private func loadAndShowPhotoIfNeeded() {
+        guard isFinishFirstTimeLoadPhoto == false else { return }
+        self.photo.requestFullSizePhoto() { [weak self] image in
+            guard let strongSelf = self,
+                let image = image else { return }
+            strongSelf.scalingImageView.image = image
+            strongSelf.isFinishFirstTimeLoadPhoto = true
+        }
     }
 }
 

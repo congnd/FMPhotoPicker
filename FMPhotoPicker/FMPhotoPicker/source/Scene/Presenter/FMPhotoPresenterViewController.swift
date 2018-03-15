@@ -121,6 +121,11 @@ class FMPhotoPresenterViewController: UIViewController {
                 let image = vc.getOriginalImage()
                 else { return }
             let editorVC = FMImageEditorViewController(withPhoto: photo, preloadImage: image, originalThumb: originalThumb)
+            editorVC.didEndEditting = { [unowned self] in
+                if let photoVC = self.pageViewController.viewControllers?.first as? FMPhotoViewController {
+                    photoVC.shouldReloadPhoto()
+                }
+            }
             self.present(editorVC, animated: false, completion: nil)
         }
         
