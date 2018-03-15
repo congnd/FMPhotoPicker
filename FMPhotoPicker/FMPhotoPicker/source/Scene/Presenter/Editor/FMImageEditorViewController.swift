@@ -85,6 +85,20 @@ class FMImageEditorViewController: UIViewController {
         DispatchQueue.main.async {
             self.filterSubMenuView.insert(toView: self.subMenuContainer)
             self.cropSubMenuView.insert(toView: self.subMenuContainer)
+            
+            // convert crop/filter icon to tint
+            let filterTintIcon = self.filterMenuIcon.image?.withRenderingMode(.alwaysTemplate)
+            self.filterMenuIcon.image = filterTintIcon
+            
+            let cropTintIcon = self.cropMenuIcon.image?.withRenderingMode(.alwaysTemplate)
+            self.cropMenuIcon.image = cropTintIcon
+            
+            // default color
+            self.filterMenuButton.setTitleColor(kRedColor, for: .normal)
+            self.filterMenuIcon.tintColor = kRedColor
+            
+            self.cropMenuButton.setTitleColor(kBlackColor, for: .normal)
+            self.cropMenuIcon.tintColor = kBlackColor
         }
         
         subMenuContainer.isHidden = true
@@ -96,28 +110,20 @@ class FMImageEditorViewController: UIViewController {
                               appliedCropArea: photo.getAppliedCropArea(),
                               zoomScale: photo.getAppliedZoomScale())
         
-        view.addSubview(cropView)
-        view.sendSubview(toBack: cropView)
-        
-        // convert crop/filter icon to tint
-        let filterTintIcon = filterMenuIcon.image?.withRenderingMode(.alwaysTemplate)
-        filterMenuIcon.image = filterTintIcon
-        
-        let cropTintIcon = cropMenuIcon.image?.withRenderingMode(.alwaysTemplate)
-        cropMenuIcon.image = cropTintIcon
-        
-        // default color
-        filterMenuButton.setTitleColor(kRedColor, for: .normal)
-        filterMenuIcon.tintColor = kRedColor
-        
-        cropMenuButton.setTitleColor(kBlackColor, for: .normal)
-        cropMenuIcon.tintColor = kBlackColor
+        self.view.addSubview(self.cropView)
+        self.view.sendSubview(toBack: self.cropView)
         
         self.view.backgroundColor = .black
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        // hide bottom menu
+        bottomMenuBottomConstraint.constant = -bottomMenuContainer.frame.height
+        
+        // show filter mode by default
+        cropView.isCropping = false
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -128,7 +134,6 @@ class FMImageEditorViewController: UIViewController {
         
         cropView.contentFrame = contentFrameFilter()
         cropView.moveCropBoxToAspectFillContentFrame()
-        cropView.isCropping = false
     }
     
     override func viewDidLayoutSubviews() {

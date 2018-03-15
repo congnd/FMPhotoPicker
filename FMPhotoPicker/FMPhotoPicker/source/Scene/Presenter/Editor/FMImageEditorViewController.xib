@@ -61,14 +61,24 @@
                                         <action selector="onTapDone:" destination="-1" eventType="touchUpInside" id="rjT-G7-0Pd"/>
                                     </connections>
                                 </button>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y3S-el-vFd">
+                                    <rect key="frame" x="0.0" y="43" width="375" height="1"/>
+                                    <color key="backgroundColor" red="0.86659044027328491" green="0.86671549081802368" blue="0.86656302213668823" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="1" id="HKc-aD-qB2"/>
+                                    </constraints>
+                                </view>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="Oky-8O-GsR" firstAttribute="centerY" secondItem="Cso-Cz-tup" secondAttribute="centerY" id="94Z-it-Vnv"/>
                                 <constraint firstItem="Oky-8O-GsR" firstAttribute="leading" secondItem="Cso-Cz-tup" secondAttribute="leading" constant="16" id="Vs4-12-WeG"/>
+                                <constraint firstAttribute="trailing" secondItem="y3S-el-vFd" secondAttribute="trailing" id="ZUU-hg-YJb"/>
                                 <constraint firstAttribute="height" constant="44" id="hUK-cF-OhZ"/>
+                                <constraint firstAttribute="bottom" secondItem="y3S-el-vFd" secondAttribute="bottom" id="irB-GV-7WB"/>
                                 <constraint firstAttribute="trailing" secondItem="l4B-6K-1aJ" secondAttribute="trailing" constant="16" id="jfa-Oe-KA6"/>
                                 <constraint firstItem="l4B-6K-1aJ" firstAttribute="centerY" secondItem="Cso-Cz-tup" secondAttribute="centerY" id="puf-Qf-QDe"/>
+                                <constraint firstItem="y3S-el-vFd" firstAttribute="leading" secondItem="Cso-Cz-tup" secondAttribute="leading" id="rLx-03-c9h"/>
                             </constraints>
                         </view>
                     </subviews>
@@ -167,8 +177,20 @@
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zaG-6j-m4a">
                     <rect key="frame" x="0.0" y="563" width="375" height="64"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OkC-Uc-QC2">
+                            <rect key="frame" x="0.0" y="-1" width="375" height="1"/>
+                            <color key="backgroundColor" red="0.86659044027328491" green="0.86671549081802368" blue="0.86656302213668823" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="nI9-7d-NpU"/>
+                            </constraints>
+                        </view>
+                    </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstItem="OkC-Uc-QC2" firstAttribute="top" secondItem="zaG-6j-m4a" secondAttribute="top" constant="-1" id="K4w-p9-GfW"/>
+                        <constraint firstItem="OkC-Uc-QC2" firstAttribute="leading" secondItem="zaG-6j-m4a" secondAttribute="leading" id="XmB-MY-Uqc"/>
+                        <constraint firstAttribute="trailing" secondItem="OkC-Uc-QC2" secondAttribute="trailing" id="qvu-6R-JuT"/>
                         <constraint firstAttribute="height" constant="64" id="tG0-V0-aoP"/>
                     </constraints>
                 </view>

@@ -17,6 +17,7 @@ internal let kGrayColor = UIColor(red: 114/255, green: 114/255, blue: 114/255, a
 internal let kBlackColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
 internal let kBackgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
 internal let kTransparentBackgroundColor = UIColor(white: 1, alpha: 0.9)
+internal let kBorderColor = UIColor(red: 221/255, green: 221/255, blue: 221/255, alpha: 1)
 
 // MARK: - Delegate protocol
 public protocol FMPhotoPickerViewControllerDelegate: class {
