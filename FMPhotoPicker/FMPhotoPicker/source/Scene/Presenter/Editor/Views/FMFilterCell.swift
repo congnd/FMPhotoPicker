@@ -13,9 +13,12 @@ class FMFilterCell: UICollectionViewCell {
     public var imageView: UIImageView
     public var name: UILabel
     
+    private var selectCircleView: UIView
+    
     override init(frame: CGRect) {
         imageView = UIImageView()
         name = UILabel()
+        selectCircleView = UIView()
         
         super.init(frame: frame)
         
@@ -24,9 +27,15 @@ class FMFilterCell: UICollectionViewCell {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         
-        imageView.layer.borderWidth = 0
-        imageView.layer.borderColor = kRedColor.cgColor
+        selectCircleView.frame = imageView.frame.insetBy(dx: -3, dy: -3)
+        selectCircleView.layer.cornerRadius = selectCircleView.frame.width / 2
+        selectCircleView.layer.borderWidth = 2
+        selectCircleView.layer.borderColor = kRedColor.cgColor
         
+        // hide selectCircleView by default
+        selectCircleView.isHidden = true
+        
+        self.addSubview(selectCircleView)
         self.addSubview(imageView)
         self.addSubview(name)
         
@@ -44,12 +53,12 @@ class FMFilterCell: UICollectionViewCell {
     }
     
     public func setSelected() {
-        imageView.layer.borderWidth = 2
+        selectCircleView.isHidden = false
         name.textColor = kRedColor
     }
     
     public func setDeselected() {
-        imageView.layer.borderWidth = 0
+        selectCircleView.isHidden = true
         name.textColor = kGrayColor
     }
     
