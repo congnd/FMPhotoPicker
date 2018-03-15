@@ -8,7 +8,7 @@
 
 import UIKit
 
-let kContentFrameSpacing: CGFloat = 20.0
+let kContentFrameSpacing: CGFloat = 22.0
 let kDefaultCropName: FMCrop = .ratioCustom
 
 class FMImageEditorViewController: UIViewController {
