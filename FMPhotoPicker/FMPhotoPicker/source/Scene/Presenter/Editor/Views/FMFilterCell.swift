@@ -13,22 +13,19 @@ class FMFilterCell: UICollectionViewCell {
     public var imageView: UIImageView
     public var name: UILabel
     
-    let selectedColor = UIColor(red: 1, green: 81/255, blue: 81/255, alpha: 1)
-    let unselectColor = UIColor(red: 114/255, green: 114/255, blue: 114/255, alpha: 1)
-    
     override init(frame: CGRect) {
         imageView = UIImageView()
         name = UILabel()
         
         super.init(frame: frame)
         
-        imageView.frame = CGRect(x: 15, y: 8, width: 60, height: 60)
+        imageView.frame = CGRect(x: (frame.width - 36) / 2, y: 12, width: 36, height: 36)
         imageView.layer.cornerRadius = imageView.frame.width / 2
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         
         imageView.layer.borderWidth = 0
-        imageView.layer.borderColor = selectedColor.cgColor
+        imageView.layer.borderColor = kRedColor.cgColor
         
         self.addSubview(imageView)
         self.addSubview(name)
@@ -38,8 +35,8 @@ class FMFilterCell: UICollectionViewCell {
         name.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -2).isActive = true
         
         name.text = "Filter"
-        name.textColor = unselectColor
-        name.font = UIFont.systemFont(ofSize: 12)
+        name.textColor = kGrayColor
+        name.font = UIFont.systemFont(ofSize: 8)
     }
     
     override func prepareForReuse() {
@@ -48,12 +45,12 @@ class FMFilterCell: UICollectionViewCell {
     
     public func setSelected() {
         imageView.layer.borderWidth = 2
-        name.textColor = selectedColor
+        name.textColor = kRedColor
     }
     
     public func setDeselected() {
         imageView.layer.borderWidth = 0
-        name.textColor = unselectColor
+        name.textColor = kGrayColor
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -48,7 +48,7 @@ public enum FMCrop: FMCroppable {
         case .ratio4x3: return "4:3"
         case .ratio16x9: return "16:9"
         case .ratioCustom: return "カスタム"
-        case .ratioOrigin: return "元の縦横比"
+        case .ratioOrigin: return "元の比率"
         case .ratioSquare: return "正方形"
         default:
             return ""

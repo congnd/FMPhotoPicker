@@ -20,7 +20,7 @@ class FMLoadingView {
         let rootVC = (UIApplication.shared.delegate?.window??.rootViewController)!
         
         self.transparentView = UIView(frame: rootVC.view.frame)
-        self.transparentView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.4)
+        self.transparentView.backgroundColor = UIColor(white: 0, alpha: 0.4)
         
         self.indicatorContainter = UIView(frame: CGRect(x: 0, y: 0, width: 80, height: 80))
         self.indicatorContainter.backgroundColor = .white

@@ -13,16 +13,13 @@ class FMCropCell: UICollectionViewCell {
     public var imageView: UIImageView
     public var name: UILabel
     
-    let selectedColor = UIColor(red: 1, green: 81/255, blue: 81/255, alpha: 1)
-    let unselectColor = UIColor(red: 114/255, green: 114/255, blue: 114/255, alpha: 1)
-    
     override init(frame: CGRect) {
         imageView = UIImageView()
         name = UILabel()
         
         super.init(frame: frame)
         
-        imageView.frame = CGRect(x: 15, y: 8, width: 60, height: 60)
+        imageView.frame = CGRect(x: (frame.width - 24) / 2, y: 20, width: 24, height: 24)
         imageView.contentMode = .scaleAspectFit
         
         self.addSubview(imageView)
@@ -30,11 +27,11 @@ class FMCropCell: UICollectionViewCell {
         
         name.translatesAutoresizingMaskIntoConstraints = false
         name.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        name.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -2).isActive = true
+        name.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4).isActive = true
         
         name.text = "Crop"
-        name.textColor = unselectColor
-        name.font = UIFont.systemFont(ofSize: 12)
+        name.textColor = kGrayColor
+        name.font = UIFont.systemFont(ofSize: 8)
     }
     
     override func prepareForReuse() {
@@ -44,13 +41,13 @@ class FMCropCell: UICollectionViewCell {
     public func setSelected() {
         let tintedImage = imageView.image?.withRenderingMode(.alwaysTemplate)
         imageView.image = tintedImage
-        imageView.tintColor = selectedColor
+        imageView.tintColor = kRedColor
         
-        name.textColor = selectedColor
+        name.textColor = kRedColor
     }
     
     public func setDeselected() {
-        name.textColor = unselectColor
+        name.textColor = kGrayColor
     }
     
     required init?(coder aDecoder: NSCoder) {

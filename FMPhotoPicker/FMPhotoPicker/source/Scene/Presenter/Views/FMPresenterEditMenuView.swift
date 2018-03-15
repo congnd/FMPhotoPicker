@@ -24,10 +24,11 @@ class FMPresenterEditMenuView: UIView {
         editButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         editButton.setTitleColor(.black, for: .normal)
         editButton.setTitle("編集", for: .normal)
+        editButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         
         editButton.addTarget(self, action: #selector(editButtonTarget), for: .touchUpInside)
         
-        self.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.9)
+        self.backgroundColor = kTransparentBackgroundColor
     }
     
     @objc private func editButtonTarget() {

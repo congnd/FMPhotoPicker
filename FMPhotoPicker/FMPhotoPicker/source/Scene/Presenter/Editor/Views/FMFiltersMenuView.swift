@@ -39,8 +39,8 @@ class FMFiltersMenuView: UIView {
         self.image = image
         
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 90, height: 90)
-        layout.minimumInteritemSpacing = 1
+        layout.itemSize = CGSize(width: 52, height: 64)
+        layout.minimumLineSpacing = 0
         layout.scrollDirection = .horizontal
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         availableFilters = FMFilterName.allValues.map { return FMFilter(name: $0) }
@@ -65,6 +65,7 @@ class FMFiltersMenuView: UIView {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.showsHorizontalScrollIndicator = false
+        collectionView.contentInset = UIEdgeInsetsMake(0,14,0,14)
         
         collectionView.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.old, context: nil)
     }
@@ -73,7 +74,7 @@ class FMFiltersMenuView: UIView {
         parenetView.addSubview(self)
         
         translatesAutoresizingMaskIntoConstraints = false
-        heightAnchor.constraint(equalToConstant: 90).isActive = true
+        heightAnchor.constraint(equalToConstant: 64).isActive = true
         rightAnchor.constraint(equalTo: parenetView.rightAnchor).isActive = true
         leftAnchor.constraint(equalTo: parenetView.leftAnchor).isActive = true
         bottomAnchor.constraint(equalTo: parenetView.bottomAnchor).isActive = true

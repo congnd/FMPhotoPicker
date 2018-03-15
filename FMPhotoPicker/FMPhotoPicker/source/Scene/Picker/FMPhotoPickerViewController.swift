@@ -12,6 +12,11 @@ import Photos
 internal let kComplexAnimationDuration: Double = 0.375
 internal let kEnteringAnimationDuration: Double = 0.225
 internal let kLeavingAnimationDuration: Double = 0.195
+internal let kRedColor = UIColor(red: 1, green: 81/255, blue: 81/255, alpha: 1)
+internal let kGrayColor = UIColor(red: 114/255, green: 114/255, blue: 114/255, alpha: 1)
+internal let kBlackColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
+internal let kBackgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
+internal let kTransparentBackgroundColor = UIColor(white: 1, alpha: 0.9)
 
 // MARK: - Delegate protocol
 public protocol FMPhotoPickerViewControllerDelegate: class {

@@ -19,6 +19,13 @@ class FMImageEditorViewController: UIViewController {
     @IBOutlet weak var bottomMenuContainer: UIView!
     @IBOutlet weak var subMenuContainer: UIView!
     
+    @IBOutlet weak var filterMenuButton: UIButton!
+    @IBOutlet weak var filterMenuIcon: UIImageView!
+    
+    @IBOutlet weak var cropMenuButton: UIButton!
+    @IBOutlet weak var cropMenuIcon: UIImageView!
+    
+    
     lazy private var filterSubMenuView: FMFiltersMenuView = {
        let filterSubMenuView = FMFiltersMenuView(withImage: originalThumb, appliedFilter: photo.getAppliedFilter())
         filterSubMenuView.didSelectFilter = { [unowned self] filter in
@@ -64,7 +71,7 @@ class FMImageEditorViewController: UIViewController {
         
         super.init(nibName: "FMImageEditorViewController", bundle: Bundle(for: FMImageEditorViewController.self))
         
-        self.view.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
+        self.view.backgroundColor = kBackgroundColor
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -92,6 +99,20 @@ class FMImageEditorViewController: UIViewController {
         view.addSubview(cropView)
         view.sendSubview(toBack: cropView)
         
+        // convert crop/filter icon to tint
+        let filterTintIcon = filterMenuIcon.image?.withRenderingMode(.alwaysTemplate)
+        filterMenuIcon.image = filterTintIcon
+        
+        let cropTintIcon = cropMenuIcon.image?.withRenderingMode(.alwaysTemplate)
+        cropMenuIcon.image = cropTintIcon
+        
+        // default color
+        filterMenuButton.setTitleColor(kRedColor, for: .normal)
+        filterMenuIcon.tintColor = kRedColor
+        
+        cropMenuButton.setTitleColor(kBlackColor, for: .normal)
+        cropMenuIcon.tintColor = kBlackColor
+        
         self.view.backgroundColor = .black
     }
     
@@ -104,6 +125,7 @@ class FMImageEditorViewController: UIViewController {
         
         // show filter menu by default
         showAnimatedFilterMenu()
+        
         cropView.contentFrame = contentFrameFilter()
         cropView.moveCropBoxToAspectFillContentFrame()
         cropView.isCropping = false
@@ -148,6 +170,11 @@ class FMImageEditorViewController: UIViewController {
         cropView.isCropping = false
     }
     @IBAction func onTapOpenFilter(_ sender: Any) {
+        filterMenuIcon.tintColor = kRedColor
+        filterMenuButton.setTitleColor(kRedColor, for: .normal)
+        cropMenuIcon.tintColor = kBlackColor
+        cropMenuButton.setTitleColor(kBlackColor, for: .normal)
+        
         showAnimatedFilterMenu()
         
         cropView.contentFrame = contentFrameFilter()
@@ -157,6 +184,11 @@ class FMImageEditorViewController: UIViewController {
         filterSubMenuView.image = cropView.getCroppedImage()
     }
     @IBAction func onTapOpenCrop(_ sender: Any) {
+        cropMenuIcon.tintColor = kRedColor
+        cropMenuButton.setTitleColor(kRedColor, for: .normal)
+        filterMenuIcon.tintColor = kBlackColor
+        filterMenuButton.setTitleColor(kBlackColor, for: .normal)
+        
         showAnimatedCropMenu()
         
         cropView.contentFrame = contentFrameCrop()

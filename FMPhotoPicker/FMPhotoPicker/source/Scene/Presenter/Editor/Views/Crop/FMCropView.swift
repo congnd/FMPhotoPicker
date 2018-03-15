@@ -86,7 +86,7 @@ class FMCropView: UIView {
         cornersView = FMCropCropBoxCornersView()
         
         whiteBackgroundView = UIView()
-        whiteBackgroundView.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
+        whiteBackgroundView.backgroundColor = kBackgroundColor
         whiteBackgroundView.isUserInteractionEnabled = false
         
         super.init(frame: .zero)
