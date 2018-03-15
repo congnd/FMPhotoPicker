@@ -121,10 +121,16 @@ public class FMPhotoAsset {
         return editor.cropArea
     }
     
-    public func apply(filter: FMFilterable?, crop: FMCroppable?, cropArea: FMCropArea?, scale: CGFloat) {
+    public func getAppliedZoomScale() -> CGFloat? {
+        return editor.zoomScale
+    }
+    
+    public func apply(filter: FMFilterable?, crop: FMCroppable?, cropArea: FMCropArea?, zoomScale: CGFloat) {
         editor.filter = filter
         editor.crop = crop
         editor.cropArea = cropArea
+        editor.zoomScale = zoomScale
+        
         if let source = originalThumb {
             thumb = editor.reproduce(source: source)
             if thumb != nil {

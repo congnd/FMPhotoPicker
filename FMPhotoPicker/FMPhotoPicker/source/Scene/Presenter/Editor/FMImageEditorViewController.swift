@@ -86,7 +86,8 @@ class FMImageEditorViewController: UIViewController {
         
         cropView = FMCropView(image: originalImage,
                               appliedCrop: photo.getAppliedCrop(),
-                              appliedCropArea: photo.getAppliedCropArea())
+                              appliedCropArea: photo.getAppliedCropArea(),
+                              zoomScale: photo.getAppliedZoomScale())
         
         view.addSubview(cropView)
         view.sendSubview(toBack: cropView)
@@ -126,7 +127,7 @@ class FMImageEditorViewController: UIViewController {
         photo.apply(filter: selectedFilter,
                     crop: selectedCrop,
                     cropArea: cropArea,
-                    scale: cropView.scrollView.zoomScale)
+                    zoomScale: cropView.scrollView.zoomScale)
         
         hideAnimatedMenu {
             self.dismiss(animated: false, completion: nil)
