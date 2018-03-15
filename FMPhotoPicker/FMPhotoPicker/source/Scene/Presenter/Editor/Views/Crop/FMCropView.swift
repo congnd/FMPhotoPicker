@@ -215,7 +215,7 @@ class FMCropView: UIView {
                                    y: targetForcusPointInScrollContentViewCoordination.y - contentFrame.midY)
         }
         
-        UIView.animate(withDuration: 0.5,
+        UIView.animate(withDuration: kComplexAnimationDuration,
                        delay: 0,
                        usingSpringWithDamping: 1.0,
                        initialSpringVelocity: 1.0,
@@ -307,7 +307,7 @@ class FMCropView: UIView {
         cropFrame.origin = CGPoint(x: (contentFrame.width - cropFrame.width) / 2 + contentFrame.origin.x,
                                    y: (contentFrame.height - cropFrame.height) / 2 + contentFrame.origin.y)
         
-        UIView.animate(withDuration: 0.5,
+        UIView.animate(withDuration: kComplexAnimationDuration,
                        delay: 0,
                        usingSpringWithDamping: 1.0,
                        initialSpringVelocity: 1.0,

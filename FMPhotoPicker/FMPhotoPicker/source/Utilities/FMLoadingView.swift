@@ -44,13 +44,13 @@ class FMLoadingView {
     func show() {
         self.transparentView.isHidden = false
         self.transparentView.alpha = 0
-        UIView.animate(withDuration: 0.2, animations: {
+        UIView.animate(withDuration: kEnteringAnimationDuration, animations: {
             self.transparentView.alpha = 1
         })
     }
     
     func hide() {
-        UIView.animate(withDuration: 0.2,
+        UIView.animate(withDuration: kLeavingAnimationDuration,
                        animations: {
                         self.transparentView.alpha = 0
         },
