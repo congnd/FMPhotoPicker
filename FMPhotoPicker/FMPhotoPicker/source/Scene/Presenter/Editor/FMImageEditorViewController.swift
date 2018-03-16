@@ -125,6 +125,9 @@ class FMImageEditorViewController: UIViewController {
         bottomMenuBottomConstraint.constant = -bottomMenuContainer.frame.height
         
         // show filter mode by default
+        // hide the crop corners before it is shown
+        // dissable pan and pinch has no effect at this time
+        // so we need call again in viewDidAppear to dissable them
         cropView.isCropping = false
     }
     override func viewDidAppear(_ animated: Bool) {
@@ -136,6 +139,9 @@ class FMImageEditorViewController: UIViewController {
         
         cropView.contentFrame = contentFrameFilter()
         cropView.moveCropBoxToAspectFillContentFrame()
+        
+        // dissable pan and pinch gestures
+        cropView.isCropping = false
     }
     
     override func viewDidLayoutSubviews() {
