@@ -123,13 +123,17 @@ class FMImageEditorViewController: UIViewController {
         self.view.sendSubview(toBack: self.cropView)
         
         self.view.backgroundColor = .black
+        
+        // hide the view until the crop view image is located
+        view.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // hide bottom menu
+        // hide top and bottom menu
         bottomMenuBottomConstraint.constant = -bottomMenuContainer.frame.height
+        topMenuTopConstraint.constant = -topMenuContainter.frame.height
         
         // show filter mode by default
         // hide the crop corners before it is shown
@@ -146,6 +150,9 @@ class FMImageEditorViewController: UIViewController {
         
         cropView.contentFrame = contentFrameFilter()
         cropView.moveCropBoxToAspectFillContentFrame()
+        
+        // show the view when the crop view image is located
+        view.isHidden = false
         
         // dissable pan and pinch gestures
         cropView.isCropping = false
