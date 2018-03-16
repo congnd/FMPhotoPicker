@@ -148,6 +148,11 @@ class FMImageEditorViewController: UIViewController {
         // show filter menu by default
         showAnimatedFilterMenu()
         
+        // restore crop image location from previous edditting session
+        cropView.contentFrame = contentFrameFullScreen()
+        cropView.restoreFromPreviousEdittingSection()
+        
+        // move image to center of contentFrame
         cropView.contentFrame = contentFrameFilter()
         cropView.moveCropBoxToAspectFillContentFrame()
         

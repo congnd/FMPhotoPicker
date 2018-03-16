@@ -145,16 +145,13 @@ class FMCropView: UIView {
         moveCroppedContentToCenterAnimated()
     }
     
-    private func moveCroppedContentToCenterAnimated() {
-        var cropFrame = cropBoxView.frame
-        let cropRatio = crop.ratio()
-        
-        var scrollViewScale: CGFloat
-        let targetOffset: CGPoint
-        
+    public func restoreFromPreviousEdittingSection() {
+        // check for previous section data
         if let zoomScale = zoomScale, let cropArea = cropArea {
+            var cropFrame = cropBoxView.frame
+            
             // use for first time only
-            scrollViewScale = zoomScale / scrollView.zoomScale
+            let scrollViewScale = zoomScale / scrollView.zoomScale
             
             cropFrame.size.width = ceil(scrollView.imageView.frame.width / scrollView.zoomScale * cropArea.scaleW * zoomScale)
             cropFrame.size.height = ceil(scrollView.imageView.frame.height / scrollView.zoomScale * cropArea.scaleH * zoomScale)
@@ -167,53 +164,56 @@ class FMCropView: UIView {
             cropFrame.origin.x = contentFrame.origin.x + ceil(contentFrame.size.width - cropFrame.size.width) * 0.5
             cropFrame.origin.y = contentFrame.origin.y + ceil(contentFrame.size.height - cropFrame.size.height) * 0.5
             
-            targetOffset = CGPoint(x: ceil(scrollView.imageView.frame.width / scrollView.zoomScale * zoomScale * cropArea.scaleX) - cropFrame.minX,
+            let targetOffset = CGPoint(x: ceil(scrollView.imageView.frame.width / scrollView.zoomScale * zoomScale * cropArea.scaleX) - cropFrame.minX,
                                    y: ceil(scrollView.imageView.frame.height / scrollView.zoomScale * zoomScale * cropArea.scaleY) - cropFrame.minY)
             
             scrollView.zoomScale *= scrollViewScale
             scrollView.contentOffset = targetOffset
             cropBoxView.frame = cropFrame
             cropboxViewFrameDidChange(rect: cropFrame)
-            
-            self.cropArea = nil
-            self.zoomScale = nil
-            
-            return
-        } else {
-            //The scale we need to scale up the crop box to fit full screen
-            let cropBoxScale = min(contentFrame.width / cropFrame.width, contentFrame.height / cropFrame.height)
-            
-            // center point of cropBoxView in CropView coordination system
-            let originFocusPointInCropViewCoordination = CGPoint(x: cropBoxView.frame.midX, y: cropBoxView.frame.midY)
-            
-            if (crop as? FMCrop) == .ratioOrigin {
-                let ratio = image.size.height / image.size.width
-                
-                // correct ratio only
-                cropFrame.size.height = cropFrame.size.width * ratio
-            } else if let cropRatio = cropRatio {
-                let ratio = CGFloat(cropRatio.height) / CGFloat(cropRatio.width)
-                
-                // correct ratio only
-                cropFrame.size.height = cropFrame.size.width * ratio
-            }
-            
-            // calculate new cropFrame that is translated to center of contentBound
-            cropFrame.size.width = ceil(cropFrame.size.width * cropBoxScale)
-            cropFrame.size.height = ceil(cropFrame.size.height * cropBoxScale)
-            cropFrame.origin.x = contentFrame.origin.x + ceil(contentFrame.size.width - cropFrame.size.width) * 0.5
-            cropFrame.origin.y = contentFrame.origin.y + ceil(contentFrame.size.height - cropFrame.size.height) * 0.5
-            
-            scrollViewScale = min(cropBoxScale, scrollView.maximumZoomScale / scrollView.zoomScale)
-
-            let originForcusPointInScrollContentViewCoordination = CGPoint(x: originFocusPointInCropViewCoordination.x + scrollView.contentOffset.x,
-                                                                           y: originFocusPointInCropViewCoordination.y + scrollView.contentOffset.y)
-            let targetForcusPointInScrollContentViewCoordination = CGPoint(x: originForcusPointInScrollContentViewCoordination.x * scrollViewScale,
-                                                                           y: originForcusPointInScrollContentViewCoordination.y * scrollViewScale)
-            
-            targetOffset = CGPoint(x: targetForcusPointInScrollContentViewCoordination.x - contentFrame.midX,
-                                   y: targetForcusPointInScrollContentViewCoordination.y - contentFrame.midY)
         }
+    }
+    
+    private func moveCroppedContentToCenterAnimated() {
+        var cropFrame = cropBoxView.frame
+        let cropRatio = crop.ratio()
+        
+        var scrollViewScale: CGFloat
+        let targetOffset: CGPoint
+        
+        //The scale we need to scale up the crop box to fit full screen
+        let cropBoxScale = min(contentFrame.width / cropFrame.width, contentFrame.height / cropFrame.height)
+        
+        // center point of cropBoxView in CropView coordination system
+        let originFocusPointInCropViewCoordination = CGPoint(x: cropBoxView.frame.midX, y: cropBoxView.frame.midY)
+        
+        if (crop as? FMCrop) == .ratioOrigin {
+            let ratio = image.size.height / image.size.width
+            
+            // correct ratio only
+            cropFrame.size.height = cropFrame.size.width * ratio
+        } else if let cropRatio = cropRatio {
+            let ratio = CGFloat(cropRatio.height) / CGFloat(cropRatio.width)
+            
+            // correct ratio only
+            cropFrame.size.height = cropFrame.size.width * ratio
+        }
+        
+        // calculate new cropFrame that is translated to center of contentBound
+        cropFrame.size.width = ceil(cropFrame.size.width * cropBoxScale)
+        cropFrame.size.height = ceil(cropFrame.size.height * cropBoxScale)
+        cropFrame.origin.x = contentFrame.origin.x + ceil(contentFrame.size.width - cropFrame.size.width) * 0.5
+        cropFrame.origin.y = contentFrame.origin.y + ceil(contentFrame.size.height - cropFrame.size.height) * 0.5
+        
+        scrollViewScale = min(cropBoxScale, scrollView.maximumZoomScale / scrollView.zoomScale)
+
+        let originForcusPointInScrollContentViewCoordination = CGPoint(x: originFocusPointInCropViewCoordination.x + scrollView.contentOffset.x,
+                                                                       y: originFocusPointInCropViewCoordination.y + scrollView.contentOffset.y)
+        let targetForcusPointInScrollContentViewCoordination = CGPoint(x: originForcusPointInScrollContentViewCoordination.x * scrollViewScale,
+                                                                       y: originForcusPointInScrollContentViewCoordination.y * scrollViewScale)
+        
+        targetOffset = CGPoint(x: targetForcusPointInScrollContentViewCoordination.x - contentFrame.midX,
+                               y: targetForcusPointInScrollContentViewCoordination.y - contentFrame.midY)
         
         UIView.animate(withDuration: kComplexAnimationDuration,
                        delay: 0,
