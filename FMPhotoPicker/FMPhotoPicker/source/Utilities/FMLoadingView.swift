@@ -11,7 +11,6 @@ import UIKit
 
 class FMLoadingView {
     private let transparentView: UIView
-    private let indicatorContainter: UIView
     private let indicator: UIActivityIndicatorView
     
     static let shared = FMLoadingView()
@@ -22,28 +21,17 @@ class FMLoadingView {
         self.transparentView = UIView(frame: rootVC.view.frame)
         self.transparentView.backgroundColor = UIColor(white: 0, alpha: 0.4)
         
-        self.indicatorContainter = UIView(frame: CGRect(x: 0, y: 0, width: 80, height: 80))
-        self.indicatorContainter.backgroundColor = .white
-        self.indicatorContainter.layer.cornerRadius = 10
-        
         self.indicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
-        self.indicatorContainter.addSubview(self.indicator)
-        self.indicator.center = self.indicatorContainter.center
-        self.indicator.color = .black
-        self.indicator.startAnimating()
+        self.indicator.center = self.transparentView.center
+        self.indicator.color = .white
         
-        self.transparentView.addSubview(self.indicatorContainter)
-        
-        self.indicatorContainter.center = self.transparentView.center
-        
-        self.transparentView.isHidden = true
-        
-        UIApplication.shared.keyWindow?.addSubview(self.transparentView)
+        self.transparentView.addSubview(self.indicator)
     }
     
     func show() {
-        self.transparentView.isHidden = false
+        UIApplication.shared.keyWindow?.addSubview(self.transparentView)
         self.transparentView.alpha = 0
+        self.indicator.startAnimating()
         UIView.animate(withDuration: kEnteringAnimationDuration, animations: {
             self.transparentView.alpha = 1
         })
@@ -55,7 +43,8 @@ class FMLoadingView {
                         self.transparentView.alpha = 0
         },
                        completion: { completed in
-                        self.transparentView.isHidden = true
+                        self.transparentView.removeFromSuperview()
+                        self.indicator.stopAnimating()
         })
     }
     
