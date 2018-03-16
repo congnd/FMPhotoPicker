@@ -12,6 +12,8 @@ import Photos
 internal let kComplexAnimationDuration: Double = 0.375
 internal let kEnteringAnimationDuration: Double = 0.225
 internal let kLeavingAnimationDuration: Double = 0.195
+internal let kKeyframeAnimationDuration: Double = 2.0
+
 internal let kRedColor = UIColor(red: 1, green: 81/255, blue: 81/255, alpha: 1)
 internal let kGrayColor = UIColor(red: 114/255, green: 114/255, blue: 114/255, alpha: 1)
 internal let kBlackColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)

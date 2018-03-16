@@ -65,7 +65,7 @@ class FMWarningView {
         self.containerView.isHidden = false
         self.containerView.alpha = 0
         
-        UIView.animateKeyframes(withDuration: kEnteringAnimationDuration,
+        UIView.animateKeyframes(withDuration: kKeyframeAnimationDuration,
                                 delay: 0,
                                 options: .calculationModeCubic,
                                 animations: {
