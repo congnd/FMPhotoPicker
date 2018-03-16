@@ -12,7 +12,9 @@ class FMImageViewController: FMPhotoViewController {
     // MARK: - Public
     public var scalingImageView: FMScalingImageView!
     public var smallImage: UIImage?
-    public var originalImage: UIImage? // the image loaded from storage without any process
+    
+    // the full size image with filter applied
+    public var filteredImage: UIImage?
     
     // MARK: - Private
     lazy private(set) var doubleTapGestureRecognizer: UITapGestureRecognizer = {
@@ -20,8 +22,6 @@ class FMImageViewController: FMPhotoViewController {
         gesture.numberOfTapsRequired = 2
         return gesture
     }()
-    
-    private var isFinishFirstTimeLoadPhoto = false
 
     deinit {
         self.photo.cancelAllRequest()
@@ -48,7 +48,7 @@ class FMImageViewController: FMPhotoViewController {
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        loadAndShowPhotoIfNeeded()
+        reloadPhoto()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -101,41 +101,28 @@ class FMImageViewController: FMPhotoViewController {
         return self.scalingImageView.image
     }
 
-    override func getOriginalImage() -> UIImage? {
-        return originalImage
+    override func getFilteredImage() -> UIImage? {
+        return filteredImage
     }
     
     override func thumbImage() -> UIImage? {
         return self.smallImage
     }
     
-    override func shouldReloadPhoto() {
-        self.photo.requestFullSizePhoto() { [weak self] image in
-            guard let strongSelf = self,
-                let image = image else { return }
-            
-            strongSelf.scalingImageView.image = image
-        }
-    }
-    
-    private func loadAndShowPhotoIfNeeded() {
-        guard isFinishFirstTimeLoadPhoto == false else { return }
-        
-        isFinishFirstTimeLoadPhoto = true
-        
-        self.photo.requestFullSizePhoto() { [weak self] image in
+    override func reloadPhoto() {
+        self.photo.requestFullSizePhoto(cropState: .edited, filterState: .edited) { [weak self] image in
             guard let strongSelf = self,
                 let image = image else { return }
             strongSelf.scalingImageView.image = image
         }
         
-        // get original image
-        // prepare for edit
-        self.photo.requestFullSizePhoto(inState: .original) { [weak self] image in
+        // get filtered image
+        // prepare to show in edit screen
+        self.photo.requestFullSizePhoto(cropState: .original, filterState: .edited) { [weak self] image in
             guard let strongSelf = self,
                 let image = image else { return }
             
-            strongSelf.originalImage = image
+            strongSelf.filteredImage = image
         }
     }
 }

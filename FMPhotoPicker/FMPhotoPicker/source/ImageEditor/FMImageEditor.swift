@@ -8,6 +8,11 @@
 
 import UIKit
 
+enum FMImageEditState {
+    case original
+    case edited
+}
+
 public struct FMCropArea {
     var scaleX: CGFloat
     var scaleY: CGFloat
@@ -29,17 +34,32 @@ struct FMImageEditor {
     var zoomScale: CGFloat?
 
     
-    func reproduce(source image: UIImage) -> UIImage {
+    func reproduce(source image: UIImage, cropState: FMImageEditState, filterState: FMImageEditState) -> UIImage {
         var result = image
-        if let filter = filter {
-            result = filter.filter(image: result)
+        
+        if cropState == .edited {
+            result = performCrop(source: result)
         }
         
-        if let crop = crop, let cropArea = cropArea {
-            result = crop.crop(image: result,
-                               toRect: cropArea.area(forSize: result.size))
+        if filterState == .edited {
+            result = performFilter(source: result)
         }
         
         return result
+    }
+    
+    func performFilter(source image: UIImage) -> UIImage {
+        if let filter = filter {
+            return filter.filter(image: image)
+        }
+        return image
+    }
+    
+    func performCrop(source image: UIImage) -> UIImage {
+        if let crop = crop, let cropArea = cropArea {
+            return crop.crop(image: image,
+                             toRect: cropArea.area(forSize: image.size))
+        }
+        return image
     }
 }

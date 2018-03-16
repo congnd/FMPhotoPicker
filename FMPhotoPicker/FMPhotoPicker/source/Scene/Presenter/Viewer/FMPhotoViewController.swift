@@ -37,7 +37,7 @@ class FMPhotoViewController: UIViewController {
         return nil
     }
     
-    public func getOriginalImage() -> UIImage? {
+    public func getFilteredImage() -> UIImage? {
         return nil
     }
     
@@ -45,7 +45,7 @@ class FMPhotoViewController: UIViewController {
         return nil
     }
     
-    public func shouldReloadPhoto() {
+    public func reloadPhoto() {
         
     }
 }

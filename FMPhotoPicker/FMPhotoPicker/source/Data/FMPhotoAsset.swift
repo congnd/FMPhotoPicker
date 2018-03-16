@@ -9,11 +9,6 @@
 import Foundation
 import Photos
 
-enum FMImageEditState {
-    case original
-    case edited
-}
-
 public class FMPhotoAsset {
     var asset: PHAsset
     var mediaType: FMMediaType
@@ -61,7 +56,7 @@ public class FMPhotoAsset {
                 self.originalThumb = image
                 
                 guard let image = image else { return complete(nil) }
-                let edited = self.editor.reproduce(source: image)
+                let edited = self.editor.reproduce(source: image, cropState: .edited, filterState: .edited)
                 complete(edited)
             }
         }
@@ -70,12 +65,12 @@ public class FMPhotoAsset {
     func requestImage(in desireSize: CGSize, _ complete: @escaping (UIImage?) -> Void) {
         _ = Helper.getPhoto(by: self.asset, in: desireSize) { image in
             guard let image = image else { return complete(nil) }
-            let edited = self.editor.reproduce(source: image)
+            let edited = self.editor.reproduce(source: image, cropState: .edited, filterState: .edited)
             complete(edited)
         }
     }
     
-    func requestFullSizePhoto(inState state: FMImageEditState = .edited, complete: @escaping (UIImage?) -> Void) {
+    func requestFullSizePhoto(cropState: FMImageEditState, filterState: FMImageEditState, complete: @escaping (UIImage?) -> Void) {
         self.fullSizePhotoRequestId = Helper.getFullSizePhoto(by: self.asset) { image in
             self.fullSizePhotoRequestId = nil
             if self.canceledFullSizeRequest {
@@ -83,10 +78,8 @@ public class FMPhotoAsset {
                 complete(nil)
             } else {
                 guard let image = image else { return complete(nil) }
-                if state == .original {
-                    return complete(image)
-                }
-                return complete(self.editor.reproduce(source: image))
+                let result = self.editor.reproduce(source: image, cropState: cropState, filterState: filterState)
+                complete(result)
             }
         }
     }
@@ -132,7 +125,7 @@ public class FMPhotoAsset {
         editor.zoomScale = zoomScale
         
         if let source = originalThumb {
-            thumb = editor.reproduce(source: source)
+            thumb = editor.reproduce(source: source, cropState: .edited, filterState: .edited)
             if thumb != nil {
                 thumbChanged(thumb!)
             }

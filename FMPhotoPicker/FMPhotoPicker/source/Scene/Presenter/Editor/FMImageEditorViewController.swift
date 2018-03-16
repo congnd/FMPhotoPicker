@@ -29,7 +29,7 @@ class FMImageEditorViewController: UIViewController {
     
     
     lazy private var filterSubMenuView: FMFiltersMenuView = {
-       let filterSubMenuView = FMFiltersMenuView(withImage: originalThumb, appliedFilter: photo.getAppliedFilter())
+       let filterSubMenuView = FMFiltersMenuView(withImage: originalThumb, appliedFilter: fmPhotoAsset.getAppliedFilter())
         filterSubMenuView.didSelectFilter = { [unowned self] filter in
             self.selectedFilter = filter
             FMLoadingView.shared.show()
@@ -62,21 +62,36 @@ class FMImageEditorViewController: UIViewController {
     
     private var cropView: FMCropView!
     
-    public var photo: FMPhotoAsset
+    public var fmPhotoAsset: FMPhotoAsset
+    
+    // the original thumbnail image
+    // used to preview filters
     private var originalThumb: UIImage
+    
+    // the full size image that is applied filter
+    private var filteredImage: UIImage
+    
+    // the original image without any filter or crop
     private var originalImage: UIImage
     
     private var selectedFilter: FMFilterable?
     private var selectedCrop: FMCroppable = kDefaultCropName
     
     // MARK - Init
-    public init(withPhoto photo: FMPhotoAsset, preloadImage: UIImage, originalThumb: UIImage) {
-        self.photo = photo
+    public init(fmPhotoAsset: FMPhotoAsset, filteredImage: UIImage, originalThumb: UIImage) {
+        self.fmPhotoAsset = fmPhotoAsset
+        
         self.originalThumb = originalThumb
-        self.originalImage = preloadImage
-        if let appliedCrop = photo.getAppliedCrop() {
+        
+        // set to filteredImage until the load original image done
+        self.originalImage = filteredImage
+        
+        self.filteredImage = filteredImage
+        
+        if let appliedCrop = self.fmPhotoAsset.getAppliedCrop() {
             selectedCrop = appliedCrop
         }
+        selectedFilter = fmPhotoAsset.getAppliedFilter()
         
         super.init(nibName: "FMImageEditorViewController", bundle: Bundle(for: FMImageEditorViewController.self))
         
@@ -108,16 +123,23 @@ class FMImageEditorViewController: UIViewController {
             
             self.cropMenuButton.setTitleColor(kBlackColor, for: .normal)
             self.cropMenuIcon.tintColor = kBlackColor
+            
+            // get full size original image without any crop or filter applied
+            self.fmPhotoAsset.requestFullSizePhoto(cropState: .original, filterState: .original) { [weak self] image in
+                guard let strongSelf = self,
+                    let image = image else { return }
+                strongSelf.originalImage = image
+            }
         }
         
         subMenuContainer.isHidden = true
         filterSubMenuView.isHidden = true
         cropSubMenuView.isHidden = true
         
-        cropView = FMCropView(image: originalImage,
-                              appliedCrop: photo.getAppliedCrop(),
-                              appliedCropArea: photo.getAppliedCropArea(),
-                              zoomScale: photo.getAppliedZoomScale())
+        cropView = FMCropView(image: filteredImage,
+                              appliedCrop: fmPhotoAsset.getAppliedCrop(),
+                              appliedCropArea: fmPhotoAsset.getAppliedCropArea(),
+                              zoomScale: fmPhotoAsset.getAppliedZoomScale())
         
         self.view.addSubview(self.cropView)
         self.view.sendSubview(toBack: self.cropView)
@@ -178,10 +200,10 @@ class FMImageEditorViewController: UIViewController {
         // get crop data:
         let cropArea = cropView.getCropArea()
         
-        photo.apply(filter: selectedFilter,
-                    crop: selectedCrop,
-                    cropArea: cropArea,
-                    zoomScale: cropView.scrollView.zoomScale)
+        fmPhotoAsset.apply(filter: selectedFilter,
+                           crop: selectedCrop,
+                           cropArea: cropArea,
+                           zoomScale: cropView.scrollView.zoomScale)
         
         hideAnimatedMenu {
             self.dismiss(animated: false, completion: nil)
