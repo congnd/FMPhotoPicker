@@ -32,7 +32,14 @@ class FMImageEditorViewController: UIViewController {
        let filterSubMenuView = FMFiltersMenuView(withImage: originalThumb, appliedFilter: photo.getAppliedFilter())
         filterSubMenuView.didSelectFilter = { [unowned self] filter in
             self.selectedFilter = filter
-            self.cropView.image = filter.filter(image: self.originalImage)
+            FMLoadingView.shared.show()
+            DispatchQueue.global(qos: .utility).async {
+                let output = filter.filter(image: self.originalImage)
+                DispatchQueue.main.sync {
+                    self.cropView.image = output
+                    FMLoadingView.shared.hide()
+                }
+            }
         }
         return filterSubMenuView
     }()
