@@ -29,6 +29,9 @@ class ViewController: UIViewController, FMPhotoPickerViewControllerDelegate {
         self.maxImageLB.text = "\(self.maxImage)"
         self.maxVideoLB.text = "\(self.maxVideo)"
         
+        // video off by default
+        self.allowVideo.isOn = false
+        
         self.selectMode.selectedSegmentIndex = 1
         // Do any additional setup after loading the view, typically from a nib.
     }
