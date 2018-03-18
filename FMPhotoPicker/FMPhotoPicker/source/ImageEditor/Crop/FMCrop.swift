@@ -34,10 +34,32 @@ public enum FMCrop: FMCroppable {
     }
     
     public func crop(image: UIImage, toRect rect: CGRect) -> UIImage {
-        if let croppedCGImage = image.cgImage?.cropping(to: rect) {
-            let originalOrientation = image.imageOrientation
-            let originalScale = image.scale
-            return UIImage(cgImage: croppedCGImage, scale: originalScale, orientation: originalOrientation)
+        let orientation = image.imageOrientation
+        let scale = image.scale
+        var targetRect = CGRect()
+        
+        switch orientation {
+        case .down:
+            targetRect.origin.x = image.size.width - rect.maxX * scale
+            targetRect.origin.y = image.size.height - rect.maxY * scale
+            targetRect.size.width = rect.width * scale
+            targetRect.size.height = rect.height * scale
+        case .right:
+            targetRect.origin.x = rect.minY * scale
+            targetRect.origin.y = image.size.width - rect.maxX * scale
+            targetRect.size.width = rect.height
+            targetRect.size.height = rect.width
+        case .left:
+            targetRect.origin.x = image.size.height - rect.maxY * scale
+            targetRect.origin.y = rect.minX * scale
+            targetRect.size.width = rect.height
+            targetRect.size.height = rect.width
+        default:
+            targetRect = rect
+        }
+        
+        if let croppedCGImage = image.cgImage?.cropping(to: targetRect) {
+            return UIImage(cgImage: croppedCGImage, scale: scale, orientation: orientation)
         }
         
         return image
