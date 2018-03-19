@@ -307,6 +307,8 @@ class FMCropView: UIView {
         cropFrame.origin = CGPoint(x: (contentFrame.width - cropFrame.width) / 2 + contentFrame.origin.x,
                                    y: (contentFrame.height - cropFrame.height) / 2 + contentFrame.origin.y)
         
+        self.scrollView.minimumZoomScale = max(cropFrame.width / image.size.width, cropFrame.height / image.size.height)
+        
         UIView.animate(withDuration: kComplexAnimationDuration,
                        delay: 0,
                        usingSpringWithDamping: 1.0,
