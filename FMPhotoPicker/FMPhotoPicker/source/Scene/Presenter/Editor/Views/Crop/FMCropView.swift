@@ -181,9 +181,6 @@ class FMCropView: UIView {
         var scrollViewScale: CGFloat
         let targetOffset: CGPoint
         
-        //The scale we need to scale up the crop box to fit full screen
-        let cropBoxScale = min(contentFrame.width / cropFrame.width, contentFrame.height / cropFrame.height)
-        
         // center point of cropBoxView in CropView coordination system
         let originFocusPointInCropViewCoordination = CGPoint(x: cropBoxView.frame.midX, y: cropBoxView.frame.midY)
         
@@ -198,6 +195,9 @@ class FMCropView: UIView {
             // correct ratio only
             cropFrame.size.height = cropFrame.size.width * ratio
         }
+        
+        //The scale we need to scale up the crop box to fit full screen
+        let cropBoxScale = min(contentFrame.width / cropFrame.width, contentFrame.height / cropFrame.height) 
         
         // calculate new cropFrame that is translated to center of contentBound
         cropFrame.size.width = ceil(cropFrame.size.width * cropBoxScale)
