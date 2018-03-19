@@ -13,7 +13,7 @@ class FMCropForegroundView: UIView {
     
     override var frame: CGRect {
         didSet {
-            self.imageView.frame = self.frame
+//            self.imageView.frame = self.frame
         }
     }
 
