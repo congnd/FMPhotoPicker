@@ -131,4 +131,9 @@ public class FMPhotoAsset {
             }
         }
     }
+    
+    public func isEdited() -> Bool {
+        return editor.crop != nil ||
+            editor.filter != nil
+    }
 }
