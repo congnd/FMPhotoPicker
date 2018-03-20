@@ -9,7 +9,6 @@
 import UIKit
 
 let kContentFrameSpacing: CGFloat = 22.0
-let kDefaultCropName: FMCrop = .ratioCustom
 
 class FMImageEditorViewController: UIViewController {
     
@@ -74,8 +73,8 @@ class FMImageEditorViewController: UIViewController {
     // the original image without any filter or crop
     private var originalImage: UIImage
     
-    private var selectedFilter: FMFilterable?
-    private var selectedCrop: FMCroppable = kDefaultCropName
+    private var selectedFilter: FMFilterable
+    private var selectedCrop: FMCroppable
     
     // MARK - Init
     public init(fmPhotoAsset: FMPhotoAsset, filteredImage: UIImage, originalThumb: UIImage) {
@@ -88,10 +87,8 @@ class FMImageEditorViewController: UIViewController {
         
         self.filteredImage = filteredImage
         
-        if let appliedCrop = self.fmPhotoAsset.getAppliedCrop() {
-            selectedCrop = appliedCrop
-        }
         selectedFilter = fmPhotoAsset.getAppliedFilter()
+        selectedCrop = fmPhotoAsset.getAppliedCrop()
         
         super.init(nibName: "FMImageEditorViewController", bundle: Bundle(for: FMImageEditorViewController.self))
         

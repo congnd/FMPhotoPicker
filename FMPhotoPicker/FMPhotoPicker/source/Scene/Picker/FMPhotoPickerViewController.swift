@@ -21,6 +21,11 @@ internal let kBackgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/
 internal let kTransparentBackgroundColor = UIColor(white: 1, alpha: 0.9)
 internal let kBorderColor = UIColor(red: 221/255, green: 221/255, blue: 221/255, alpha: 1)
 
+internal let kDefaultFilter = FMFilter.None
+internal let kDefaultCrop = FMCrop.ratioCustom
+
+internal let kEpsilon: CGFloat = 0.01
+
 // MARK: - Delegate protocol
 public protocol FMPhotoPickerViewControllerDelegate: class {
     func fmPhotoPickerController(_ picker: FMPhotoPickerViewController, didFinishPickingPhotoWith photos: [UIImage])

@@ -22,7 +22,7 @@ class FMCropView: UIView {
     private let cornersView: FMCropCropBoxCornersView
     private let whiteBackgroundView: UIView
     
-    public var crop: FMCroppable = kDefaultCropName {
+    public var crop: FMCroppable {
         didSet {
             moveCroppedContentToCenterAnimated()
             cropBoxView.cropRatio = cropRatio(forCrop: crop)
@@ -65,11 +65,10 @@ class FMCropView: UIView {
         }
     }
 
-    init(image: UIImage, appliedCrop: FMCroppable?, appliedCropArea: FMCropArea?, zoomScale: CGFloat?) {
+    init(image: UIImage, appliedCrop: FMCroppable, appliedCropArea: FMCropArea?, zoomScale: CGFloat?) {
         self.image = image
-        if let appliedCrop = appliedCrop {
-            crop = appliedCrop
-        }
+
+        crop = appliedCrop
         cropArea = appliedCropArea
         self.zoomScale = zoomScale
         
@@ -321,7 +320,6 @@ class FMCropView: UIView {
                         self.cropboxViewFrameDidChange(rect: cropFrame)
         },
                        completion: { _ in
-                        self.crop = kDefaultCropName
                         self.translucencyView.safetyShow()
         })
     }
@@ -335,11 +333,6 @@ class FMCropView: UIView {
         let scaleY = (cropBoxView.frame.minY + scrollView.contentOffset.y) / scrollView.contentSize.height
         let scaleW = cropBoxView.frame.width / scrollView.contentSize.width
         let scaleH = cropBoxView.frame.height / scrollView.contentSize.height
-        
-        debugPrint(scrollView.contentSize)
-        debugPrint(scrollView.contentOffset)
-        debugPrint(scrollView.zoomScale)
-        debugPrint(cropBoxView.frame)
         
         return FMCropArea(scaleX: scaleX, scaleY: scaleY, scaleW: scaleW, scaleH: scaleH)
     }

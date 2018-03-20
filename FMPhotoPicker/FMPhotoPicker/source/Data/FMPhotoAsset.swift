@@ -102,11 +102,11 @@ public class FMPhotoAsset {
         }
     }
     
-    public func getAppliedFilter() -> FMFilterable? {
+    public func getAppliedFilter() -> FMFilterable {
         return editor.filter
     }
     
-    public func getAppliedCrop() -> FMCroppable? {
+    public func getAppliedCrop() -> FMCroppable {
         return editor.crop
     }
     
@@ -118,7 +118,7 @@ public class FMPhotoAsset {
         return editor.zoomScale
     }
     
-    public func apply(filter: FMFilterable?, crop: FMCroppable?, cropArea: FMCropArea?, zoomScale: CGFloat) {
+    public func apply(filter: FMFilterable, crop: FMCroppable, cropArea: FMCropArea, zoomScale: CGFloat) {
         editor.filter = filter
         editor.crop = crop
         editor.cropArea = cropArea
@@ -133,7 +133,9 @@ public class FMPhotoAsset {
     }
     
     public func isEdited() -> Bool {
-        return editor.crop != nil ||
-            editor.filter != nil
+        if editor.filter as? FMFilter != FMFilter.None { return true }
+        if !editor.cropArea.isApproximatelyEqualToOriginal() { return true }
+        
+        return false
     }
 }

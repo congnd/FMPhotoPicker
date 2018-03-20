@@ -132,7 +132,7 @@ extension FMCropMenuView: UICollectionViewDelegate {
         if indexPath.section == 0 {
             if indexPath.row == 0 {
                 didReceiveCropControl(.reset)
-                selectedCrop = kDefaultCropName
+                selectedCrop = kDefaultCrop
                 collectionView.reloadData()
             } else if indexPath.row == 1 {
                 didReceiveCropControl(.rotate)
