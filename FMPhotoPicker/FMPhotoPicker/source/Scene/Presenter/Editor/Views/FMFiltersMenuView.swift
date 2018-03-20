@@ -8,17 +8,6 @@
 
 import UIKit
 
-
-class NoEffect: FMFilterable {
-    func filter(image: UIImage) -> UIImage {
-        return image
-    }
-    
-    func filterName() -> String {
-        return "Original"
-    }
-}
-
 class FMFiltersMenuView: UIView {
     private let collectionView: UICollectionView
     private var availableFilters: [FMFilterable]
@@ -34,7 +23,6 @@ class FMFiltersMenuView: UIView {
         }
     }
     
-    
     init(withImage image: UIImage, appliedFilter: FMFilterable?) {
         self.image = image
         
@@ -43,8 +31,27 @@ class FMFiltersMenuView: UIView {
         layout.minimumLineSpacing = 0
         layout.scrollDirection = .horizontal
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        availableFilters = FMFilterName.allValues.map { return FMFilter(name: $0) }
-        availableFilters.insert(NoEffect(), at: 0)
+        availableFilters = [
+            FMFilter.None,
+            FMFilter.CIColorCrossPolynomial,
+            FMFilter.CIColorCube,
+            FMFilter.CIColorCubeWithColorSpace,
+            FMFilter.CIColorInvert,
+            FMFilter.CIColorMonochrome,
+            FMFilter.CIColorPosterize,
+            FMFilter.CIFalseColor,
+            FMFilter.CIMinimumComponent,
+            FMFilter.CIPhotoEffectChrome,
+            FMFilter.CIPhotoEffectFade,
+            FMFilter.CIPhotoEffectInstant,
+            FMFilter.CIPhotoEffectMono,
+            FMFilter.CIPhotoEffectNoir,
+            FMFilter.CIPhotoEffectProcess,
+            FMFilter.CIPhotoEffectTonal,
+            FMFilter.CIPhotoEffectTransfer,
+            FMFilter.CISepiaTone,
+            FMFilter.CIVignette
+        ]
         
         super.init(frame: .zero)
         

@@ -42,7 +42,6 @@
 		CED2E99420455B8F00AB8206 /* FMFilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED2E99320455B8F00AB8206 /* FMFilterCell.swift */; };
 		CED2E9992047D1E100AB8206 /* FMFilterable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED2E9982047D1E100AB8206 /* FMFilterable.swift */; };
 		CED2E99B2047D25400AB8206 /* FMFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED2E99A2047D25400AB8206 /* FMFilter.swift */; };
-		CED2E99D2047D3C400AB8206 /* FMFilterName.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED2E99C2047D3C400AB8206 /* FMFilterName.swift */; };
 		CED2E9A32048E6D800AB8206 /* FMImageEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED2E9A22048E6D800AB8206 /* FMImageEditor.swift */; };
 		CED2E9A5204CE8B800AB8206 /* FMCropMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED2E9A4204CE8B800AB8206 /* FMCropMenuView.swift */; };
 		CEDF9C3B203AC6AE0048D182 /* FMPresenterBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDF9C3A203AC6AE0048D182 /* FMPresenterBottomView.swift */; };
@@ -112,7 +111,6 @@
 		CED2E99320455B8F00AB8206 /* FMFilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMFilterCell.swift; sourceTree = "<group>"; };
 		CED2E9982047D1E100AB8206 /* FMFilterable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMFilterable.swift; sourceTree = "<group>"; };
 		CED2E99A2047D25400AB8206 /* FMFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMFilter.swift; sourceTree = "<group>"; };
-		CED2E99C2047D3C400AB8206 /* FMFilterName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMFilterName.swift; sourceTree = "<group>"; };
 		CED2E9A22048E6D800AB8206 /* FMImageEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMImageEditor.swift; sourceTree = "<group>"; };
 		CED2E9A4204CE8B800AB8206 /* FMCropMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMCropMenuView.swift; sourceTree = "<group>"; };
 		CEDF9C3A203AC6AE0048D182 /* FMPresenterBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMPresenterBottomView.swift; sourceTree = "<group>"; };
@@ -286,7 +284,6 @@
 			children = (
 				CED2E9982047D1E100AB8206 /* FMFilterable.swift */,
 				CED2E99A2047D25400AB8206 /* FMFilter.swift */,
-				CED2E99C2047D3C400AB8206 /* FMFilterName.swift */,
 			);
 			path = Filter;
 			sourceTree = "<group>";
@@ -542,7 +539,6 @@
 				CEE50D2C20196E45005AE708 /* Helper.swift in Sources */,
 				CED2E9992047D1E100AB8206 /* FMFilterable.swift in Sources */,
 				CEDF9C3F203ADB0E0048D182 /* FMPlaybackControlView.swift in Sources */,
-				CED2E99D2047D3C400AB8206 /* FMFilterName.swift in Sources */,
 				CE1A5BCC204D3F6E009EA821 /* FMCropBackgroundView.swift in Sources */,
 				CE1A5BC8204D3E91009EA821 /* FMCropScrollView.swift in Sources */,
 				CE27EFFD2036CC4600B17BA7 /* TimeInterval+Extension.swift in Sources */,
