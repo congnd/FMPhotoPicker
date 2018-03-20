@@ -215,13 +215,22 @@ class FMImageEditorViewController: UIViewController {
     }
     
     @IBAction func onTapCancel(_ sender: Any) {
-        hideAnimatedMenu {
-            self.dismiss(animated: false, completion: nil)
+        let doCancelBlock = {
+            self.hideAnimatedMenu {
+                self.dismiss(animated: false, completion: nil)
+            }
+            
+            self.cropView.contentFrame = self.contentFrameFullScreen()
+            self.cropView.moveCropBoxToAspectFillContentFrame()
+            self.cropView.isCropping = false
         }
         
-        cropView.contentFrame = contentFrameFullScreen()
-        cropView.moveCropBoxToAspectFillContentFrame()
-        cropView.isCropping = false
+        if fmPhotoAsset.getAppliedFilter().filterName() == selectedFilter.filterName() &&
+            cropView.getCropArea().isApproximatelyEqual(to: fmPhotoAsset.getAppliedCropArea()) {
+            doCancelBlock()
+        } else {
+            FMAlert().show(in: self, ok: doCancelBlock, cancel: {})
+        }
     }
     @IBAction func onTapOpenFilter(_ sender: Any) {
         filterMenuIcon.tintColor = kRedColor

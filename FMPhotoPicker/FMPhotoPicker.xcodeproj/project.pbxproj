@@ -29,6 +29,7 @@
 		CE42F59C20521239006D2DC5 /* FMCropCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE42F59B20521239006D2DC5 /* FMCropCell.swift */; };
 		CE42F5A020521CDA006D2DC5 /* FMCrop.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE42F59F20521CDA006D2DC5 /* FMCrop.swift */; };
 		CE510905202AFD80003CBFA5 /* FMPhotoPickerBatchSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE510904202AFD80003CBFA5 /* FMPhotoPickerBatchSelector.swift */; };
+		CE762F142060DE54002D6E31 /* FMAlertable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE762F132060DE54002D6E31 /* FMAlertable.swift */; };
 		CE7D2E94202D8C4500554DE0 /* FMPhotoPickerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7D2E93202D8C4500554DE0 /* FMPhotoPickerConfig.swift */; };
 		CE91C3CF2057F4DD00B14997 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE91C3CE2057F4DC00B14997 /* UIImage+Extensions.swift */; };
 		CE91C3D42058BB0800B14997 /* FMCroppable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE91C3D32058BB0800B14997 /* FMCroppable.swift */; };
@@ -97,6 +98,7 @@
 		CE42F59B20521239006D2DC5 /* FMCropCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMCropCell.swift; sourceTree = "<group>"; };
 		CE42F59F20521CDA006D2DC5 /* FMCrop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMCrop.swift; sourceTree = "<group>"; };
 		CE510904202AFD80003CBFA5 /* FMPhotoPickerBatchSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMPhotoPickerBatchSelector.swift; sourceTree = "<group>"; };
+		CE762F132060DE54002D6E31 /* FMAlertable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMAlertable.swift; sourceTree = "<group>"; };
 		CE7D2E93202D8C4500554DE0 /* FMPhotoPickerConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMPhotoPickerConfig.swift; sourceTree = "<group>"; };
 		CE91C3CE2057F4DC00B14997 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		CE91C3D32058BB0800B14997 /* FMCroppable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMCroppable.swift; sourceTree = "<group>"; };
@@ -251,6 +253,7 @@
 				CEDF9C4E203E585F0048D182 /* AVPlayer+Extension.swift */,
 				CE1A5BD1204E1FA5009EA821 /* InsertableUIView.swift */,
 				CE91C3CE2057F4DC00B14997 /* UIImage+Extensions.swift */,
+				CE762F132060DE54002D6E31 /* FMAlertable.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -521,6 +524,7 @@
 				CE1D3C592019C25700154980 /* FMPhotoAsset.swift in Sources */,
 				CEDF9C4F203E585F0048D182 /* AVPlayer+Extension.swift in Sources */,
 				CEDF9C4A203D5E510048D182 /* FMVideoViewController.swift in Sources */,
+				CE762F142060DE54002D6E31 /* FMAlertable.swift in Sources */,
 				CE42F59C20521239006D2DC5 /* FMCropCell.swift in Sources */,
 				CED2E9A5204CE8B800AB8206 /* FMCropMenuView.swift in Sources */,
 				CE238A09201EB68500CEBCB5 /* FMPhotoViewController.swift in Sources */,

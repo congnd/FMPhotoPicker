@@ -110,7 +110,7 @@ public class FMPhotoAsset {
         return editor.crop
     }
     
-    public func getAppliedCropArea() -> FMCropArea? {
+    public func getAppliedCropArea() -> FMCropArea {
         return editor.cropArea
     }
     

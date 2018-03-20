@@ -33,6 +33,14 @@ public struct FMCropArea {
         if 1.0 - scaleH > kEpsilon { return false }
         return true
     }
+    
+    func isApproximatelyEqual(to cropArea: FMCropArea) -> Bool {
+        if abs(cropArea.scaleX - scaleX) > kEpsilon { return false }
+        if abs(cropArea.scaleY - scaleY) > kEpsilon { return false }
+        if abs(cropArea.scaleW - scaleW) > kEpsilon { return false }
+        if abs(cropArea.scaleH - scaleH) > kEpsilon { return false }
+        return true
+    }
 }
 
 struct FMImageEditor {
