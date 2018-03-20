@@ -31,7 +31,7 @@ enum FMCropControl {
 
 class FMCropMenuView: UIView {
     private let collectionView: UICollectionView
-    private let menuItems: [FMCropControl]
+    private let menuItems: [FMCropControl] = [.reset, .rotate]
     private let cropItems: [FMCroppable]
     
     public var didSelectCrop: (FMCroppable) -> Void = { _ in }
@@ -45,17 +45,15 @@ class FMCropMenuView: UIView {
         }
     }
     
-    init(appliedCrop: FMCroppable?) {
+    init(appliedCrop: FMCroppable?, availableCrops: [FMCroppable]) {
         selectedCrop = appliedCrop
+        cropItems = availableCrops.count == 0 ? kDefaultAvailableCrops : availableCrops
         
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 52, height: 64)
         layout.minimumLineSpacing = 0
         layout.scrollDirection = .horizontal
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        
-        cropItems = [FMCrop.ratioCustom, FMCrop.ratioOrigin, FMCrop.ratioSquare, FMCrop.ratio4x3, FMCrop.ratio16x9]
-        menuItems = [.reset, .rotate]
         
         super.init(frame: .zero)
         

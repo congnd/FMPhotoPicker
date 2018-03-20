@@ -38,7 +38,7 @@ class FMPhotoPresenterViewController: UIViewController {
     
     private var dataSource: FMPhotosDataSource
     
-    private var selectMode: FMSelectMode!
+    private var config: FMPhotoPickerConfig
     
     private var currentPhotoViewController: FMPhotoViewController? {
         return pageViewController.viewControllers?.first as? FMPhotoViewController
@@ -56,8 +56,8 @@ class FMPhotoPresenterViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public init(selectMode: FMSelectMode, dataSource: FMPhotosDataSource, initialPhotoIndex: Int) {
-        self.selectMode = selectMode
+    public init(config: FMPhotoPickerConfig, dataSource: FMPhotosDataSource, initialPhotoIndex: Int) {
+        self.config = config
         self.dataSource = dataSource
         self.currentPhotoIndex = initialPhotoIndex
         
@@ -120,7 +120,8 @@ class FMPhotoPresenterViewController: UIViewController {
                 let originalThumb = photo.originalThumb,
                 let filteredImage = vc.getFilteredImage()
                 else { return }
-            let editorVC = FMImageEditorViewController(fmPhotoAsset: photo,
+            let editorVC = FMImageEditorViewController(config: self.config,
+                                                       fmPhotoAsset: photo,
                                                        filteredImage: filteredImage,
                                                        originalThumb: originalThumb)
             editorVC.didEndEditting = { [unowned self] in
@@ -166,7 +167,7 @@ class FMPhotoPresenterViewController: UIViewController {
         if let selectedIndex = self.dataSource.selectedIndexOfPhoto(atIndex: self.currentPhotoIndex) {
             
             self.selectedContainer.isHidden = false
-            if self.selectMode == .multiple {
+            if self.config.selectMode == .multiple {
                 self.selectedIndex.text = "\(selectedIndex + 1)"
                 self.selectedIcon.image = UIImage(named: "check_on", in: Bundle(for: self.classForCoder), compatibleWith: nil)
             } else {
@@ -202,12 +203,12 @@ class FMPhotoPresenterViewController: UIViewController {
     
     private func initializaPhotoViewController(forPhoto photo: FMPhotoAsset) -> FMPhotoViewController {
         if photo.mediaType == .image {
-            let imageViewController = FMImageViewController(withPhoto: photo)
+            let imageViewController = FMImageViewController(withPhoto: photo, config: self.config)
             imageViewController.dataSource = self.dataSource
         
             return imageViewController
         } else {
-            let videoViewController = FMVideoViewController(withPhoto: photo)
+            let videoViewController = FMVideoViewController(withPhoto: photo, config: self.config)
             videoViewController.dataSource = self.dataSource
             videoViewController.playerProgressDidChange = bottomView.playerProgressDidChange
             

@@ -28,7 +28,7 @@ class FMImageEditorViewController: UIViewController {
     
     
     lazy private var filterSubMenuView: FMFiltersMenuView = {
-       let filterSubMenuView = FMFiltersMenuView(withImage: originalThumb, appliedFilter: fmPhotoAsset.getAppliedFilter())
+        let filterSubMenuView = FMFiltersMenuView(withImage: originalThumb, appliedFilter: fmPhotoAsset.getAppliedFilter(), availableFilters: config.availableFilters)
         filterSubMenuView.didSelectFilter = { [unowned self] filter in
             self.selectedFilter = filter
             FMLoadingView.shared.show()
@@ -44,7 +44,7 @@ class FMImageEditorViewController: UIViewController {
     }()
     
     lazy private var cropSubMenuView: FMCropMenuView = {
-        let cropSubMenuView = FMCropMenuView(appliedCrop: selectedCrop)
+        let cropSubMenuView = FMCropMenuView(appliedCrop: selectedCrop, availableCrops: config.availableCrops)
         cropSubMenuView.didSelectCrop = { [unowned self] crop in
             self.selectedCrop = crop
             self.cropView.crop = crop
@@ -76,8 +76,12 @@ class FMImageEditorViewController: UIViewController {
     private var selectedFilter: FMFilterable
     private var selectedCrop: FMCroppable
     
+    private var config: FMPhotoPickerConfig
+    
     // MARK - Init
-    public init(fmPhotoAsset: FMPhotoAsset, filteredImage: UIImage, originalThumb: UIImage) {
+    public init(config: FMPhotoPickerConfig, fmPhotoAsset: FMPhotoAsset, filteredImage: UIImage, originalThumb: UIImage) {
+        self.config = config
+        
         self.fmPhotoAsset = fmPhotoAsset
         
         self.originalThumb = originalThumb

@@ -23,7 +23,7 @@ class FMFiltersMenuView: UIView {
         }
     }
     
-    init(withImage image: UIImage, appliedFilter: FMFilterable?) {
+    init(withImage image: UIImage, appliedFilter: FMFilterable?, availableFilters: [FMFilterable]) {
         self.image = image
         
         let layout = UICollectionViewFlowLayout()
@@ -31,27 +31,7 @@ class FMFiltersMenuView: UIView {
         layout.minimumLineSpacing = 0
         layout.scrollDirection = .horizontal
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        availableFilters = [
-            FMFilter.None,
-            FMFilter.CIColorCrossPolynomial,
-            FMFilter.CIColorCube,
-            FMFilter.CIColorCubeWithColorSpace,
-            FMFilter.CIColorInvert,
-            FMFilter.CIColorMonochrome,
-            FMFilter.CIColorPosterize,
-            FMFilter.CIFalseColor,
-            FMFilter.CIMinimumComponent,
-            FMFilter.CIPhotoEffectChrome,
-            FMFilter.CIPhotoEffectFade,
-            FMFilter.CIPhotoEffectInstant,
-            FMFilter.CIPhotoEffectMono,
-            FMFilter.CIPhotoEffectNoir,
-            FMFilter.CIPhotoEffectProcess,
-            FMFilter.CIPhotoEffectTonal,
-            FMFilter.CIPhotoEffectTransfer,
-            FMFilter.CISepiaTone,
-            FMFilter.CIVignette
-        ]
+        self.availableFilters = availableFilters.count == 0 ? kDefaultAvailableFilters : availableFilters
         
         super.init(frame: .zero)
         

@@ -26,6 +26,36 @@ internal let kDefaultCrop = FMCrop.ratioCustom
 
 internal let kEpsilon: CGFloat = 0.01
 
+internal let kDefaultAvailableFilters = [
+    FMFilter.None,
+    FMFilter.CIPhotoEffectChrome,
+    FMFilter.CIPhotoEffectInstant,
+    FMFilter.CIPhotoEffectMono,
+    FMFilter.CIPhotoEffectProcess,
+    FMFilter.CIPhotoEffectTransfer,
+    FMFilter.CISepiaTone,
+    FMFilter.CIPhotoEffectNoir,
+    FMFilter.CIMinimumComponent,
+    FMFilter.CIColorPosterize,
+    FMFilter.CIColorMonochrome,
+    FMFilter.CIColorCrossPolynomial,
+    FMFilter.CIColorCube,
+    FMFilter.CIColorCubeWithColorSpace,
+    FMFilter.CIColorInvert,
+    FMFilter.CIFalseColor,
+    FMFilter.CIPhotoEffectFade,
+    FMFilter.CIPhotoEffectTonal,
+    FMFilter.CIVignette
+]
+
+internal let kDefaultAvailableCrops = [
+    FMCrop.ratioCustom,
+    FMCrop.ratioOrigin,
+    FMCrop.ratioSquare,
+    FMCrop.ratio4x3,
+    FMCrop.ratio16x9
+]
+
 // MARK: - Delegate protocol
 public protocol FMPhotoPickerViewControllerDelegate: class {
     func fmPhotoPickerController(_ picker: FMPhotoPickerViewController, didFinishPickingPhotoWith photos: [UIImage])
@@ -276,7 +306,7 @@ extension FMPhotoPickerViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 extension FMPhotoPickerViewController: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = FMPhotoPresenterViewController(selectMode: self.config.selectMode, dataSource: self.dataSource, initialPhotoIndex: indexPath.item)
+        let vc = FMPhotoPresenterViewController(config: self.config, dataSource: self.dataSource, initialPhotoIndex: indexPath.item)
         
         self.presentedPhotoIndex = indexPath.item
         
