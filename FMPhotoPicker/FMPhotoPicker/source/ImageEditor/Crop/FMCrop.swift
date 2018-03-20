@@ -72,8 +72,6 @@ public enum FMCrop: FMCroppable {
         case .ratioCustom: return "カスタム"
         case .ratioOrigin: return "元の比率"
         case .ratioSquare: return "正方形"
-        default:
-            return ""
         }
     }
     
@@ -90,8 +88,6 @@ public enum FMCrop: FMCroppable {
             icon = UIImage(named: "icon_crop_origin_ratio", in: Bundle(for: FMPhotoPickerViewController.self), compatibleWith: nil)
         case .ratioSquare:
             icon = UIImage(named: "icon_crop_square", in: Bundle(for: FMPhotoPickerViewController.self), compatibleWith: nil)
-        default:
-            icon = UIImage()
         }
         if icon != nil {
             return icon!
