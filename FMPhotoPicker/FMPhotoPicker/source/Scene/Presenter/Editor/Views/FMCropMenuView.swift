@@ -11,11 +11,27 @@ import UIKit
 enum FMCropControl {
     case reset
     case rotate
+    
+    func name() -> String {
+        switch self {
+        case .reset: return "リセット"
+        case .rotate: return "回転"
+        }
+    }
+    
+    func icon() -> UIImage? {
+        switch self {
+        case .reset:
+            return UIImage(named: "icon_crop_reset", in: Bundle(for: FMPhotoPickerViewController.self), compatibleWith: nil)
+        case .rotate:
+            return UIImage(named: "icon_crop_rotation", in: Bundle(for: FMPhotoPickerViewController.self), compatibleWith: nil)
+        }
+    }
 }
 
 class FMCropMenuView: UIView {
     private let collectionView: UICollectionView
-    private let menuItems: [FMCropMenuItem]
+    private let menuItems: [FMCropControl]
     private let cropItems: [FMCroppable]
     
     public var didSelectCrop: (FMCroppable) -> Void = { _ in }
@@ -39,7 +55,7 @@ class FMCropMenuView: UIView {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
         cropItems = [FMCrop.ratioCustom, FMCrop.ratioOrigin, FMCrop.ratioSquare, FMCrop.ratio4x3, FMCrop.ratio16x9]
-        menuItems = [.cropReset, .cropRotation]
+        menuItems = [.reset, .rotate]
         
         super.init(frame: .zero)
         
@@ -95,7 +111,7 @@ extension FMCropMenuView: UICollectionViewDataSource {
         
         if indexPath.section == 0 {
             // menu items
-            cell.name.text = menuItems[indexPath.row].rawValue
+            cell.name.text = menuItems[indexPath.row].name()
             cell.imageView.image = menuItems[indexPath.row].icon()
         } else if indexPath.section == 1 {
             // crop items
