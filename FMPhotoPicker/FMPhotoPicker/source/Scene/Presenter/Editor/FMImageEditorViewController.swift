@@ -111,6 +111,18 @@ class FMImageEditorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        subMenuContainer.isHidden = true
+        filterSubMenuView.isHidden = true
+        cropSubMenuView.isHidden = true
+        
+        cropView = FMCropView(image: filteredImage,
+                              appliedCrop: fmPhotoAsset.getAppliedCrop(),
+                              appliedCropArea: fmPhotoAsset.getAppliedCropArea(),
+                              zoomScale: fmPhotoAsset.getAppliedZoomScale())
+        
+        self.view.addSubview(self.cropView)
+        self.view.sendSubview(toBack: self.cropView)
+        
         DispatchQueue.main.async {
             self.filterSubMenuView.insert(toView: self.subMenuContainer)
             self.cropSubMenuView.insert(toView: self.subMenuContainer)
@@ -134,23 +146,9 @@ class FMImageEditorViewController: UIViewController {
                 guard let strongSelf = self,
                     let image = image else { return }
                 strongSelf.originalImage = image
+                strongSelf.cropView.foregroundView.compareView.image = image
             }
         }
-        
-        subMenuContainer.isHidden = true
-        filterSubMenuView.isHidden = true
-        cropSubMenuView.isHidden = true
-        
-        cropView = FMCropView(image: filteredImage,
-                              originalImage: originalImage,
-                              appliedCrop: fmPhotoAsset.getAppliedCrop(),
-                              appliedCropArea: fmPhotoAsset.getAppliedCropArea(),
-                              zoomScale: fmPhotoAsset.getAppliedZoomScale())
-        
-        self.view.addSubview(self.cropView)
-        self.view.sendSubview(toBack: self.cropView)
-        
-        self.view.backgroundColor = .black
         
         // hide the view until the crop view image is located
         view.isHidden = true

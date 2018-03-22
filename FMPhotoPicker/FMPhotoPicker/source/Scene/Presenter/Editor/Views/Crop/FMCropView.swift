@@ -65,7 +65,7 @@ class FMCropView: UIView {
         }
     }
 
-    init(image: UIImage, originalImage: UIImage, appliedCrop: FMCroppable, appliedCropArea: FMCropArea?, zoomScale: CGFloat?) {
+    init(image: UIImage, appliedCrop: FMCroppable, appliedCropArea: FMCropArea?, zoomScale: CGFloat?) {
         self.image = image
 
         crop = appliedCrop
@@ -76,7 +76,7 @@ class FMCropView: UIView {
         
         cropBoxView = FMCropCropBoxView(cropRatio: nil)
         
-        foregroundView = FMCropForegroundView(image: image, originalImage: originalImage)
+        foregroundView = FMCropForegroundView(image: image)
         translucencyView = FMCropTranslucencyView(effect: UIBlurEffect(style: .light))
         
         cornersView = FMCropCropBoxCornersView()
