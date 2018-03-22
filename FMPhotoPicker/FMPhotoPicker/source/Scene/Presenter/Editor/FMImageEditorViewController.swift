@@ -138,6 +138,7 @@ class FMImageEditorViewController: UIViewController {
         cropSubMenuView.isHidden = true
         
         cropView = FMCropView(image: filteredImage,
+                              originalImage: originalImage,
                               appliedCrop: fmPhotoAsset.getAppliedCrop(),
                               appliedCropArea: fmPhotoAsset.getAppliedCropArea(),
                               zoomScale: fmPhotoAsset.getAppliedZoomScale())
@@ -248,6 +249,9 @@ class FMImageEditorViewController: UIViewController {
         cropView.moveCropBoxToAspectFillContentFrame()
         cropView.isCropping = false
         
+        // enable foreground touches to control show/hide compareView
+        cropView.foregroundView.isEnabledTouches = true
+        
         filterSubMenuView.image = cropView.getCroppedImage()
     }
     @IBAction func onTapOpenCrop(_ sender: Any) {
@@ -261,6 +265,9 @@ class FMImageEditorViewController: UIViewController {
         cropView.contentFrame = contentFrameCrop()
         cropView.moveCropBoxToAspectFillContentFrame()
         cropView.isCropping = true
+        
+        // disable foreground touches to return control to scrollview
+        cropView.foregroundView.isEnabledTouches = false
     }
     
     // MARK: - Animation
