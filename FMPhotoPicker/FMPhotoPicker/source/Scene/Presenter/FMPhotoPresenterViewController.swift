@@ -38,7 +38,7 @@ class FMPhotoPresenterViewController: UIViewController {
     
     private var dataSource: FMPhotosDataSource
     
-    private var selectMode: FMSelectMode!
+    private var config: FMPhotoPickerConfig
     
     private var currentPhotoViewController: FMPhotoViewController? {
         return pageViewController.viewControllers?.first as? FMPhotoViewController
@@ -56,8 +56,8 @@ class FMPhotoPresenterViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public init(selectMode: FMSelectMode, dataSource: FMPhotosDataSource, initialPhotoIndex: Int) {
-        self.selectMode = selectMode
+    public init(config: FMPhotoPickerConfig, dataSource: FMPhotosDataSource, initialPhotoIndex: Int) {
+        self.config = config
         self.dataSource = dataSource
         self.currentPhotoIndex = initialPhotoIndex
         
@@ -114,18 +114,35 @@ class FMPhotoPresenterViewController: UIViewController {
         self.bottomView.touchEnded = { [unowned self] in
             self.swipeInteractionController?.enable()
         }
+        self.bottomView.onTapEditButton = { [unowned self] in
+            guard let photo = self.dataSource.photo(atIndex: self.currentPhotoIndex),
+                let vc = self.pageViewController.viewControllers?.first as? FMPhotoViewController,
+                let originalThumb = photo.originalThumb,
+                let filteredImage = vc.getFilteredImage()
+                else { return }
+            let editorVC = FMImageEditorViewController(config: self.config,
+                                                       fmPhotoAsset: photo,
+                                                       filteredImage: filteredImage,
+                                                       originalThumb: originalThumb)
+            editorVC.didEndEditting = { [unowned self] in
+                if let photoVC = self.pageViewController.viewControllers?.first as? FMPhotoViewController {
+                    photoVC.reloadPhoto()
+                }
+            }
+            self.present(editorVC, animated: false, completion: nil)
+        }
         
         self.view.addSubview(bottomView)
         self.bottomView.translatesAutoresizingMaskIntoConstraints = false
         self.bottomView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         self.bottomView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         self.bottomView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        self.bottomView.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        self.bottomView.heightAnchor.constraint(equalToConstant: 46).isActive = true
         
         self.pageViewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.pageViewController.didMove(toParentViewController: self)
         
-        self.view.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
+        self.view.backgroundColor = kBackgroundColor
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -150,7 +167,7 @@ class FMPhotoPresenterViewController: UIViewController {
         if let selectedIndex = self.dataSource.selectedIndexOfPhoto(atIndex: self.currentPhotoIndex) {
             
             self.selectedContainer.isHidden = false
-            if self.selectMode == .multiple {
+            if self.config.selectMode == .multiple {
                 self.selectedIndex.text = "\(selectedIndex + 1)"
                 self.selectedIcon.image = UIImage(named: "check_on", in: Bundle(for: self.classForCoder), compatibleWith: nil)
             } else {
@@ -186,12 +203,12 @@ class FMPhotoPresenterViewController: UIViewController {
     
     private func initializaPhotoViewController(forPhoto photo: FMPhotoAsset) -> FMPhotoViewController {
         if photo.mediaType == .image {
-            let imageViewController = FMImageViewController(withPhoto: photo)
+            let imageViewController = FMImageViewController(withPhoto: photo, config: self.config)
             imageViewController.dataSource = self.dataSource
         
             return imageViewController
         } else {
-            let videoViewController = FMVideoViewController(withPhoto: photo)
+            let videoViewController = FMVideoViewController(withPhoto: photo, config: self.config)
             videoViewController.dataSource = self.dataSource
             videoViewController.playerProgressDidChange = bottomView.playerProgressDidChange
             
@@ -203,12 +220,12 @@ class FMPhotoPresenterViewController: UIViewController {
         guard let fmAsset = dataSource.photo(atIndex: currentPhotoIndex) else { return }
         
         if fmAsset.mediaType == .video {
-            bottomView.show()
+            bottomView.videoMode()
             fmAsset.requestVideoFrames { cgImages in
                 self.bottomView.resetPlaybackControl(cgImages: cgImages, duration: fmAsset.asset.duration)
             }
         } else {
-            bottomView.hide()
+            bottomView.imageMode()
         }
     }
     

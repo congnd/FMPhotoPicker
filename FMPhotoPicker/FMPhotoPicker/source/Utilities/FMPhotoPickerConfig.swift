@@ -43,18 +43,14 @@ public enum FMMediaType {
 }
 
 public struct FMPhotoPickerConfig {
-    var mediaTypes: [FMMediaType]
-    var selectMode: FMSelectMode
-    var maxImage: Int
-    var maxVideo: Int
+    public var mediaTypes: [FMMediaType] = [.image]
+    public var selectMode: FMSelectMode = .multiple
+    public var maxImage: Int = 10
+    public var maxVideo: Int = 10
+    public var availableFilters: [FMFilterable] = kDefaultAvailableFilters
+    public var availableCrops: [FMCroppable] = kDefaultAvailableCrops
     
-    public init(selectMode: FMSelectMode = .multiple,
-                mediaTypes: [FMMediaType] = [.image],
-                maxImage: Int = 10,
-                maxVideo: Int = 10) {
-        self.mediaTypes = mediaTypes
-        self.maxImage = maxImage
-        self.maxVideo = maxVideo
-        self.selectMode = selectMode
-    }   
+    public init() {
+        
+    }
 }

@@ -9,6 +9,53 @@
 import UIKit
 import Photos
 
+internal let kComplexAnimationDuration: Double = 0.375
+internal let kEnteringAnimationDuration: Double = 0.225
+internal let kLeavingAnimationDuration: Double = 0.195
+internal let kKeyframeAnimationDuration: Double = 2.0
+
+internal let kRedColor = UIColor(red: 1, green: 81/255, blue: 81/255, alpha: 1)
+internal let kGrayColor = UIColor(red: 114/255, green: 114/255, blue: 114/255, alpha: 1)
+internal let kBlackColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
+internal let kBackgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
+internal let kTransparentBackgroundColor = UIColor(white: 1, alpha: 0.9)
+internal let kBorderColor = UIColor(red: 221/255, green: 221/255, blue: 221/255, alpha: 1)
+
+internal let kDefaultFilter = FMFilter.None
+internal let kDefaultCrop = FMCrop.ratioCustom
+
+internal let kEpsilon: CGFloat = 0.01
+
+internal let kDefaultAvailableFilters = [
+    FMFilter.None,
+    FMFilter.CIPhotoEffectChrome,
+    FMFilter.CIPhotoEffectInstant,
+    FMFilter.CIPhotoEffectMono,
+    FMFilter.CIPhotoEffectProcess,
+    FMFilter.CIPhotoEffectTransfer,
+    FMFilter.CISepiaTone,
+    FMFilter.CIPhotoEffectNoir,
+    FMFilter.CIMinimumComponent,
+    FMFilter.CIColorPosterize,
+    FMFilter.CIColorMonochrome,
+    FMFilter.CIColorCrossPolynomial,
+    FMFilter.CIColorCube,
+    FMFilter.CIColorCubeWithColorSpace,
+    FMFilter.CIColorInvert,
+    FMFilter.CIFalseColor,
+    FMFilter.CIPhotoEffectFade,
+    FMFilter.CIPhotoEffectTonal,
+    FMFilter.CIVignette
+]
+
+internal let kDefaultAvailableCrops = [
+    FMCrop.ratioCustom,
+    FMCrop.ratioOrigin,
+    FMCrop.ratioSquare,
+    FMCrop.ratio4x3,
+    FMCrop.ratio16x9
+]
+
 // MARK: - Delegate protocol
 public protocol FMPhotoPickerViewControllerDelegate: class {
     func fmPhotoPickerController(_ picker: FMPhotoPickerViewController, didFinishPickingPhotoWith photos: [UIImage])
@@ -106,7 +153,7 @@ public class FMPhotoPickerViewController: UIViewController {
             let multiTask = DispatchGroup()
             for (index, element) in self.dataSource.getSelectedPhotos().enumerated() {
                 multiTask.enter()
-                element.requestFullSizePhoto() {
+                element.requestFullSizePhoto(cropState: .edited, filterState: .edited) {
                     guard let image = $0 else { return }
                     dict[index] = image
                     multiTask.leave()
@@ -259,7 +306,7 @@ extension FMPhotoPickerViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 extension FMPhotoPickerViewController: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = FMPhotoPresenterViewController(selectMode: self.config.selectMode, dataSource: self.dataSource, initialPhotoIndex: indexPath.item)
+        let vc = FMPhotoPresenterViewController(config: self.config, dataSource: self.dataSource, initialPhotoIndex: indexPath.item)
         
         self.presentedPhotoIndex = indexPath.item
         

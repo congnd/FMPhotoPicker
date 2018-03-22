@@ -20,6 +20,7 @@ class FMPhotoPickerImageCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var selectedIndex: UILabel!
     @IBOutlet weak var videoInfoView: UIView!
     @IBOutlet weak var videoLengthLabel: UILabel!
+    @IBOutlet weak var editedMarkImageView: UIImageView!
     
     private weak var photoAsset: FMPhotoAsset?
     
@@ -29,7 +30,7 @@ class FMPhotoPickerImageCollectionViewCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.cellFilterContainer.layer.borderColor = UIColor(red: 255/255, green: 81/255, blue: 81/255, alpha: 1).cgColor
+        self.cellFilterContainer.layer.borderColor = kRedColor.cgColor
         self.cellFilterContainer.layer.borderWidth = 2
         self.cellFilterContainer.isHidden = true
         self.videoInfoView.isHidden = true
@@ -53,10 +54,18 @@ class FMPhotoPickerImageCollectionViewCell: UICollectionViewCell {
             self.imageView.image = image
         }
         
+        photoAsset.thumbChanged = { [weak self] image in
+            guard let strongSelf = self else { return }
+            strongSelf.imageView.image = image
+            strongSelf.editedMarkImageView.isHidden = !photoAsset.isEdited()
+        }
+        
         if photoAsset.mediaType == .video {
             self.videoInfoView.isHidden = false
             self.videoLengthLabel.text = photoAsset.asset.duration.stringTime
         }
+        
+        self.editedMarkImageView.isHidden = !photoAsset.isEdited()
         
         self.performSelectionAnimation(selectedIndex: selectedIndex)
     }

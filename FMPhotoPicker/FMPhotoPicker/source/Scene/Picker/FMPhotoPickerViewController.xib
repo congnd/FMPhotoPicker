@@ -29,7 +29,7 @@
                     <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rww-s4-oBC">
-                            <rect key="frame" x="15" y="2" width="72" height="40"/>
+                            <rect key="frame" x="16" y="2" width="72" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="KAv-pD-p36"/>
                             </constraints>
@@ -39,11 +39,11 @@
                                 <action selector="onTapDismiss:" destination="-1" eventType="touchUpInside" id="PDR-ri-pYg"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H3N-tL-aam">
-                            <rect key="frame" x="300" y="2" width="60" height="40"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H3N-tL-aam">
+                            <rect key="frame" x="319" y="2" width="40" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="QwK-26-jMi"/>
-                                <constraint firstAttribute="width" constant="60" id="bCk-Db-psT"/>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="bCk-Db-psT"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <state key="normal" title="決定"/>
@@ -59,7 +59,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sev-Wd-rWB">
-                            <rect key="frame" x="256" y="8.5" width="28" height="28"/>
+                            <rect key="frame" x="275" y="8.5" width="28" height="28"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WUE-Oy-OeG">
                                     <rect key="frame" x="0.0" y="0.0" width="28" height="28"/>
@@ -84,9 +84,9 @@
                         <constraint firstItem="H3N-tL-aam" firstAttribute="centerY" secondItem="mWw-fw-Ht8" secondAttribute="centerY" id="1pv-kR-UgF"/>
                         <constraint firstItem="Sev-Wd-rWB" firstAttribute="centerY" secondItem="H3N-tL-aam" secondAttribute="centerY" id="DDN-Sb-kfO"/>
                         <constraint firstItem="rww-s4-oBC" firstAttribute="centerY" secondItem="mWw-fw-Ht8" secondAttribute="centerY" id="FuB-sZ-gfA"/>
-                        <constraint firstAttribute="trailing" secondItem="H3N-tL-aam" secondAttribute="trailing" constant="15" id="NHF-Pi-wfv"/>
+                        <constraint firstAttribute="trailing" secondItem="H3N-tL-aam" secondAttribute="trailing" constant="16" id="NHF-Pi-wfv"/>
                         <constraint firstAttribute="trailing" secondItem="Nuy-qK-tEa" secondAttribute="trailing" id="Rnr-ti-N7u"/>
-                        <constraint firstItem="rww-s4-oBC" firstAttribute="leading" secondItem="mWw-fw-Ht8" secondAttribute="leading" constant="15" id="TDf-Ee-gOL"/>
+                        <constraint firstItem="rww-s4-oBC" firstAttribute="leading" secondItem="mWw-fw-Ht8" secondAttribute="leading" constant="16" id="TDf-Ee-gOL"/>
                         <constraint firstAttribute="bottom" secondItem="Nuy-qK-tEa" secondAttribute="bottom" id="Tzw-BN-g16"/>
                         <constraint firstItem="Nuy-qK-tEa" firstAttribute="leading" secondItem="mWw-fw-Ht8" secondAttribute="leading" id="UfX-h1-B4W"/>
                         <constraint firstAttribute="height" constant="44" id="fbf-ig-YUX"/>

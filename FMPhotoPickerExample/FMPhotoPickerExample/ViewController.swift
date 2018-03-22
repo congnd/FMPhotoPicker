@@ -29,6 +29,9 @@ class ViewController: UIViewController, FMPhotoPickerViewControllerDelegate {
         self.maxImageLB.text = "\(self.maxImage)"
         self.maxVideoLB.text = "\(self.maxVideo)"
         
+        // video off by default
+        self.allowVideo.isOn = false
+        
         self.selectMode.selectedSegmentIndex = 1
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -67,10 +70,18 @@ class ViewController: UIViewController, FMPhotoPickerViewControllerDelegate {
         if self.allowImage.isOn { mediaTypes.append(.image) }
         if self.allowVideo.isOn { mediaTypes.append(.video) }
         
-        let config = FMPhotoPickerConfig(selectMode: selectMode,
-                                         mediaTypes: mediaTypes,
-                                         maxImage: self.maxImage,
-                                         maxVideo: self.maxVideo)
+        var config = FMPhotoPickerConfig()
+        
+        config.selectMode = selectMode
+        config.mediaTypes = mediaTypes
+        config.maxImage = self.maxImage
+        config.maxVideo = self.maxVideo
+        
+        // all available crops will be used
+        config.availableCrops = []
+        
+        // all available filters will be used
+        config.availableFilters = []
         
         let vc = FMPhotoPickerViewController(config: config)
         vc.delegate = self

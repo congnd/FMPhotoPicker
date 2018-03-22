@@ -33,7 +33,7 @@ class FMWarningView {
         self.containerView.isUserInteractionEnabled = false
         
         self.contentView = UIView()
-        self.contentView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.9)
+        self.contentView.backgroundColor = UIColor(white: 0, alpha: 0.9)
         self.contentView.layer.cornerRadius = 10
         
         self.containerView.addSubview(self.contentView)
@@ -65,7 +65,7 @@ class FMWarningView {
         self.containerView.isHidden = false
         self.containerView.alpha = 0
         
-        UIView.animateKeyframes(withDuration: 2,
+        UIView.animateKeyframes(withDuration: kKeyframeAnimationDuration,
                                 delay: 0,
                                 options: .calculationModeCubic,
                                 animations: {

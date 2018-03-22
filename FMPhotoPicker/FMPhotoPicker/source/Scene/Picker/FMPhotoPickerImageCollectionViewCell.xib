@@ -64,6 +64,13 @@
                             <constraint firstAttribute="trailing" secondItem="zzB-oR-fQy" secondAttribute="trailing" id="pM1-e8-TOa"/>
                         </constraints>
                     </view>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_edited" translatesAutoresizingMaskIntoConstraints="NO" id="Fzu-dX-bHq">
+                        <rect key="frame" x="80" y="38" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="Gbu-G7-Ajm"/>
+                            <constraint firstAttribute="height" constant="20" id="WXW-xs-MxA"/>
+                        </constraints>
+                    </imageView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZC5-d6-QI8" userLabel="Select">
                         <rect key="frame" x="70" y="0.0" width="40" height="40"/>
                         <constraints>
@@ -101,13 +108,16 @@
                 <constraint firstItem="Icb-4g-uv2" firstAttribute="centerY" secondItem="ZC5-d6-QI8" secondAttribute="centerY" id="pgY-o3-nbk"/>
                 <constraint firstItem="I7p-nR-O3g" firstAttribute="leading" secondItem="0vU-qm-UbG" secondAttribute="leading" id="tcC-Nh-Qes"/>
                 <constraint firstItem="I7p-nR-O3g" firstAttribute="top" secondItem="0vU-qm-UbG" secondAttribute="top" id="v3b-0X-Jnm"/>
+                <constraint firstItem="Fzu-dX-bHq" firstAttribute="top" secondItem="Icb-4g-uv2" secondAttribute="bottom" constant="4" id="wFj-eU-tUt"/>
                 <constraint firstAttribute="trailing" secondItem="I7p-nR-O3g" secondAttribute="trailing" id="win-D6-Yu0"/>
+                <constraint firstItem="Fzu-dX-bHq" firstAttribute="centerX" secondItem="Icb-4g-uv2" secondAttribute="centerX" id="xGx-9h-PqO"/>
                 <constraint firstItem="Icb-4g-uv2" firstAttribute="centerX" secondItem="ZC5-d6-QI8" secondAttribute="centerX" id="zP0-Dg-I13"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="4Gr-6j-qle"/>
             <size key="customSize" width="50" height="58"/>
             <connections>
                 <outlet property="cellFilterContainer" destination="bx6-ny-VEQ" id="26H-0Z-UB2"/>
+                <outlet property="editedMarkImageView" destination="Fzu-dX-bHq" id="Kmb-Ku-91t"/>
                 <outlet property="imageView" destination="I7p-nR-O3g" id="EeJ-3G-BRq"/>
                 <outlet property="selectButton" destination="ZC5-d6-QI8" id="bBi-Hh-Rz9"/>
                 <outlet property="selectedIndex" destination="Icb-4g-uv2" id="nOH-86-kFi"/>
@@ -119,6 +129,7 @@
     </objects>
     <resources>
         <image name="check_on" width="28" height="28"/>
+        <image name="icon_edited" width="14" height="13"/>
         <image name="video_icon" width="16" height="8"/>
     </resources>
 </document>

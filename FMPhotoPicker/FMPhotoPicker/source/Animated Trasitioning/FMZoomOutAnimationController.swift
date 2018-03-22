@@ -20,7 +20,7 @@ class FMZoomOutAnimationController: NSObject, UIViewControllerAnimatedTransition
     }
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return 0.375
+        return kComplexAnimationDuration
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {

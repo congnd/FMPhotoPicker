@@ -11,6 +11,10 @@ import UIKit
 class FMImageViewController: FMPhotoViewController {
     // MARK: - Public
     public var scalingImageView: FMScalingImageView!
+    public var smallImage: UIImage?
+    
+    // the full size image with filter applied
+    public var filteredImage: UIImage?
     
     // MARK: - Private
     lazy private(set) var doubleTapGestureRecognizer: UITapGestureRecognizer = {
@@ -18,11 +22,7 @@ class FMImageViewController: FMPhotoViewController {
         gesture.numberOfTapsRequired = 2
         return gesture
     }()
-    
-//    required init?(coder aDecoder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-    
+
     deinit {
         self.photo.cancelAllRequest()
     }
@@ -40,6 +40,7 @@ class FMImageViewController: FMPhotoViewController {
         self.view.addSubview(self.scalingImageView)
         
         self.photo.requestThumb() { image in
+            self.smallImage = image
             self.scalingImageView.image = image
         }
         
@@ -47,11 +48,7 @@ class FMImageViewController: FMPhotoViewController {
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.photo.requestFullSizePhoto() { fullSizeImage in
-            if let fullSizeImage = fullSizeImage {
-                self.scalingImageView.image = fullSizeImage
-            }
-        }
+        reloadPhoto()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -98,6 +95,35 @@ class FMImageViewController: FMPhotoViewController {
     
     override func viewToSnapshot() -> UIView {
         return self.scalingImageView.imageView
+    }
+    
+    override func displayingImage() -> UIImage? {
+        return self.scalingImageView.image
+    }
+
+    override func getFilteredImage() -> UIImage? {
+        return filteredImage
+    }
+    
+    override func thumbImage() -> UIImage? {
+        return self.smallImage
+    }
+    
+    override func reloadPhoto() {
+        self.photo.requestFullSizePhoto(cropState: .edited, filterState: .edited) { [weak self] image in
+            guard let strongSelf = self,
+                let image = image else { return }
+            strongSelf.scalingImageView.image = image
+        }
+        
+        // get filtered image
+        // prepare to show in edit screen
+        self.photo.requestFullSizePhoto(cropState: .original, filterState: .edited) { [weak self] image in
+            guard let strongSelf = self,
+                let image = image else { return }
+            
+            strongSelf.filteredImage = image
+        }
     }
 }
 

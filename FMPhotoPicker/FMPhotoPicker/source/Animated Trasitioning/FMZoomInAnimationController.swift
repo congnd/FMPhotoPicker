@@ -12,7 +12,7 @@ class FMZoomInAnimationController: NSObject, UIViewControllerAnimatedTransitioni
     var getOriginFrame: (() -> CGRect)!
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return 0.375
+        return kComplexAnimationDuration
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
@@ -35,7 +35,7 @@ class FMZoomInAnimationController: NSObject, UIViewControllerAnimatedTransitioni
         toVC.view.isHidden = true
         
         snapshot.alpha = 0
-        bgView.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
+        bgView.backgroundColor = kBackgroundColor
         bgView.alpha = 0
         
         let duration = transitionDuration(using: transitionContext)

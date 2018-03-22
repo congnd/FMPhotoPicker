@@ -15,9 +15,12 @@ class FMPhotoViewController: UIViewController {
     
     public var dataSource: FMPhotosDataSource!
     
+    public var config: FMPhotoPickerConfig
+    
     // MARK: - Init
-    public init(withPhoto photo: FMPhotoAsset) {
+    public init(withPhoto photo: FMPhotoAsset, config: FMPhotoPickerConfig) {
         self.photo = photo
+        self.config = config
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -31,5 +34,21 @@ class FMPhotoViewController: UIViewController {
     
     public func viewToSnapshot() -> UIView {
         return self.view
+    }
+    
+    public func displayingImage() -> UIImage? {
+        return nil
+    }
+    
+    public func getFilteredImage() -> UIImage? {
+        return nil
+    }
+    
+    public func thumbImage() -> UIImage? {
+        return nil
+    }
+    
+    public func reloadPhoto() {
+        
     }
 }

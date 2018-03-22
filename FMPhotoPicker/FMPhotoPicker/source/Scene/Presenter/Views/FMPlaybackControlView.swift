@@ -91,7 +91,7 @@ class FMPlaybackControlView: UIView {
         playButton.addTarget(self, action: #selector(onTapPlayButton), for: .touchUpInside)
         playButton.isHidden = true
         
-        self.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.9)
+        self.backgroundColor = kTransparentBackgroundColor
         addPlayerObservers()
     }
     

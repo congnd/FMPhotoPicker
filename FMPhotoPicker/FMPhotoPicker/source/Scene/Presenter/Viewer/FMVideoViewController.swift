@@ -51,7 +51,7 @@ class FMVideoViewController: FMPhotoViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        photo.requestFullSizePhoto() { fullSizeImage in
+        photo.requestFullSizePhoto(cropState: .edited, filterState: .edited) { fullSizeImage in
             if self.shouldUpdateView == false { return }
             if let fullSizeImage = fullSizeImage {
                 self.thumbImageView.image = fullSizeImage
