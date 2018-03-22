@@ -31,7 +31,7 @@ enum FMCropControl {
 
 class FMCropMenuView: UIView {
     private let collectionView: UICollectionView
-    private let menuItems: [FMCropControl] = [.reset, .rotate]
+    private let menuItems: [FMCropControl] = [.reset] // TODO: support rotation function
     private let cropItems: [FMCroppable]
     
     public var didSelectCrop: (FMCroppable) -> Void = { _ in }
