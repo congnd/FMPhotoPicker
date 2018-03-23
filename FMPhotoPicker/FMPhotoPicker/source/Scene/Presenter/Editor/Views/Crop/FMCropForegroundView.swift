@@ -10,7 +10,7 @@ import UIKit
 
 class FMCropForegroundView: UIView {
     public let imageView: UIImageView
-    private var compareView: UIImageView
+    public var compareView: UIImageView
     public var isEnabledTouches = true {
         didSet {
             isUserInteractionEnabled = isEnabledTouches
@@ -23,7 +23,7 @@ class FMCropForegroundView: UIView {
         }
     }
 
-    init(image: UIImage, originalImage: UIImage) {
+    init(image: UIImage) {
         imageView = UIImageView(frame: .zero)
         compareView = UIImageView(frame: .zero)
         
@@ -33,7 +33,6 @@ class FMCropForegroundView: UIView {
         imageView.contentMode = .scaleAspectFit
         addSubview(imageView)
         
-        compareView.image = originalImage
         compareView.contentMode = .scaleAspectFit
         addSubview(compareView)
         

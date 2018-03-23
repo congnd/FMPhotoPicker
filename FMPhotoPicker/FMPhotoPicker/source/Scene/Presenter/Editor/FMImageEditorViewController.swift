@@ -103,13 +103,21 @@ class FMImageEditorViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    deinit {
-        UIApplication.shared.isStatusBarHidden = false
-    }
-    
     // MARK - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        subMenuContainer.isHidden = true
+        filterSubMenuView.isHidden = true
+        cropSubMenuView.isHidden = true
+        
+        cropView = FMCropView(image: filteredImage,
+                              appliedCrop: fmPhotoAsset.getAppliedCrop(),
+                              appliedCropArea: fmPhotoAsset.getAppliedCropArea(),
+                              zoomScale: fmPhotoAsset.getAppliedZoomScale())
+        
+        self.view.addSubview(self.cropView)
+        self.view.sendSubview(toBack: self.cropView)
         
         DispatchQueue.main.async {
             self.filterSubMenuView.insert(toView: self.subMenuContainer)
@@ -134,28 +142,12 @@ class FMImageEditorViewController: UIViewController {
                 guard let strongSelf = self,
                     let image = image else { return }
                 strongSelf.originalImage = image
+                strongSelf.cropView.foregroundView.compareView.image = image
             }
         }
         
-        subMenuContainer.isHidden = true
-        filterSubMenuView.isHidden = true
-        cropSubMenuView.isHidden = true
-        
-        cropView = FMCropView(image: filteredImage,
-                              originalImage: originalImage,
-                              appliedCrop: fmPhotoAsset.getAppliedCrop(),
-                              appliedCropArea: fmPhotoAsset.getAppliedCropArea(),
-                              zoomScale: fmPhotoAsset.getAppliedZoomScale())
-        
-        self.view.addSubview(self.cropView)
-        self.view.sendSubview(toBack: self.cropView)
-        
-        self.view.backgroundColor = .black
-        
         // hide the view until the crop view image is located
         view.isHidden = true
-        
-        UIApplication.shared.isStatusBarHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -191,10 +183,17 @@ class FMImageEditorViewController: UIViewController {
         
         // dissable pan and pinch gestures
         cropView.isCropping = false
+        
+        UIApplication.shared.statusBarView?.isHidden = true
     }
     
     override func viewDidLayoutSubviews() {
         cropView.frame = view.frame
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        UIApplication.shared.statusBarView?.isHidden = false
     }
 
     override func didReceiveMemoryWarning() {
