@@ -103,10 +103,6 @@ class FMImageEditorViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    deinit {
-        UIApplication.shared.isStatusBarHidden = false
-    }
-    
     // MARK - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -152,8 +148,6 @@ class FMImageEditorViewController: UIViewController {
         
         // hide the view until the crop view image is located
         view.isHidden = true
-        
-        UIApplication.shared.isStatusBarHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -189,10 +183,17 @@ class FMImageEditorViewController: UIViewController {
         
         // dissable pan and pinch gestures
         cropView.isCropping = false
+        
+        UIApplication.shared.isStatusBarHidden = true
     }
     
     override func viewDidLayoutSubviews() {
         cropView.frame = view.frame
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        UIApplication.shared.isStatusBarHidden = false
     }
 
     override func didReceiveMemoryWarning() {
