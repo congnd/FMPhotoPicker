@@ -184,7 +184,7 @@ class FMImageEditorViewController: UIViewController {
         // dissable pan and pinch gestures
         cropView.isCropping = false
         
-        UIApplication.shared.isStatusBarHidden = true
+        UIApplication.shared.statusBarView?.isHidden = true
     }
     
     override func viewDidLayoutSubviews() {
@@ -193,7 +193,7 @@ class FMImageEditorViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        UIApplication.shared.isStatusBarHidden = false
+        UIApplication.shared.statusBarView?.isHidden = false
     }
 
     override func didReceiveMemoryWarning() {

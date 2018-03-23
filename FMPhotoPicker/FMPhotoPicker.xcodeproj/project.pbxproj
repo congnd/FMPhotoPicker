@@ -35,6 +35,7 @@
 		CE91C3D42058BB0800B14997 /* FMCroppable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE91C3D32058BB0800B14997 /* FMCroppable.swift */; };
 		CEC8EE792029413E001FD282 /* UIView+FMPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC8EE782029413E001FD282 /* UIView+FMPhotoView.swift */; };
 		CEC8EE7B20294338001FD282 /* FMPhotoInteractionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC8EE7A20294338001FD282 /* FMPhotoInteractionAnimator.swift */; };
+		CECD3D2C20650D72000E1E89 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECD3D2B20650D72000E1E89 /* UIApplication+Extensions.swift */; };
 		CED2E98C20453D8F00AB8206 /* FMImageEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED2E98A20453D8F00AB8206 /* FMImageEditorViewController.swift */; };
 		CED2E98D20453D8F00AB8206 /* FMImageEditorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CED2E98B20453D8F00AB8206 /* FMImageEditorViewController.xib */; };
 		CED2E98F2045410D00AB8206 /* FMPresenterEditMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED2E98E2045410D00AB8206 /* FMPresenterEditMenuView.swift */; };
@@ -104,6 +105,7 @@
 		CE91C3D32058BB0800B14997 /* FMCroppable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMCroppable.swift; sourceTree = "<group>"; };
 		CEC8EE782029413E001FD282 /* UIView+FMPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+FMPhotoView.swift"; sourceTree = "<group>"; };
 		CEC8EE7A20294338001FD282 /* FMPhotoInteractionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMPhotoInteractionAnimator.swift; sourceTree = "<group>"; };
+		CECD3D2B20650D72000E1E89 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		CED2E98A20453D8F00AB8206 /* FMImageEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMImageEditorViewController.swift; sourceTree = "<group>"; };
 		CED2E98B20453D8F00AB8206 /* FMImageEditorViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FMImageEditorViewController.xib; sourceTree = "<group>"; };
 		CED2E98E2045410D00AB8206 /* FMPresenterEditMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMPresenterEditMenuView.swift; sourceTree = "<group>"; };
@@ -254,6 +256,7 @@
 				CE1A5BD1204E1FA5009EA821 /* InsertableUIView.swift */,
 				CE91C3CE2057F4DC00B14997 /* UIImage+Extensions.swift */,
 				CE762F132060DE54002D6E31 /* FMAlertable.swift */,
+				CECD3D2B20650D72000E1E89 /* UIApplication+Extensions.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -538,6 +541,7 @@
 				CE1A5BC4204D3E6A009EA821 /* FMCropView.swift in Sources */,
 				CEE50D2C20196E45005AE708 /* Helper.swift in Sources */,
 				CED2E9992047D1E100AB8206 /* FMFilterable.swift in Sources */,
+				CECD3D2C20650D72000E1E89 /* UIApplication+Extensions.swift in Sources */,
 				CEDF9C3F203ADB0E0048D182 /* FMPlaybackControlView.swift in Sources */,
 				CE1A5BCC204D3F6E009EA821 /* FMCropBackgroundView.swift in Sources */,
 				CE1A5BC8204D3E91009EA821 /* FMCropScrollView.swift in Sources */,
