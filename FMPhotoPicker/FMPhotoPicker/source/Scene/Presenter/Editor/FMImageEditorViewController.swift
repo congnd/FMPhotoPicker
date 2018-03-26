@@ -199,24 +199,26 @@ class FMImageEditorViewController: UIViewController {
 
     // MARK: - IBActions
     @IBAction func onTapDone(_ sender: Any) {
-        // get crop data:
-        let cropArea = cropView.getCropArea()
-        
-        fmPhotoAsset.apply(filter: selectedFilter,
-                           crop: selectedCrop,
-                           cropArea: cropArea,
-                           zoomScale: cropView.scrollView.zoomScale)
-        
-        hideAnimatedMenu {
-            self.dismiss(animated: false, completion: nil)
-        }
-        
-        cropView.contentFrame = contentFrameFullScreen()
-        cropView.moveCropBoxToAspectFillContentFrame()
         cropView.isCropping = false
         
-        // notify PresenterViewController to update it's image
-        didEndEditting()
+        cropView.contentFrame = contentFrameFullScreen()
+        cropView.moveCropBoxToAspectFillContentFrame() {
+            // get crop data:
+            let cropArea = self.cropView.getCropArea()
+            
+            self.fmPhotoAsset.apply(filter: self.selectedFilter,
+                                    crop: self.selectedCrop,
+                                    cropArea: cropArea,
+                                    zoomScale: self.cropView.scrollView.zoomScale)
+            
+            
+            // notify PresenterViewController to update it's image
+            self.didEndEditting()
+            
+            self.hideAnimatedMenu {
+                self.dismiss(animated: false, completion: nil)
+            }
+        }
     }
     
     @IBAction func onTapCancel(_ sender: Any) {
