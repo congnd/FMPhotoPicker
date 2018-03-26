@@ -30,14 +30,14 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zK2-M3-1gG" userLabel="Top View">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
                     <subviews>
                         <view alpha="0.90000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gEB-SN-gOa" userLabel="transparent-alpha-0.9">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cso-Cz-tup" userLabel="transparent-alpha-0">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                            <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oky-8O-GsR">
                                     <rect key="frame" x="16" y="2" width="77" height="40"/>
@@ -86,7 +86,7 @@
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="Cso-Cz-tup" secondAttribute="bottom" id="6bb-8F-dS2"/>
                         <constraint firstItem="Cso-Cz-tup" firstAttribute="leading" secondItem="zK2-M3-1gG" secondAttribute="leading" id="8sj-g4-PFo"/>
-                        <constraint firstAttribute="height" constant="44" id="PP1-Rk-FOI"/>
+                        <constraint firstAttribute="height" constant="64" id="PP1-Rk-FOI"/>
                         <constraint firstAttribute="trailing" secondItem="Cso-Cz-tup" secondAttribute="trailing" id="Yca-uj-ayJ"/>
                         <constraint firstItem="gEB-SN-gOa" firstAttribute="top" secondItem="zK2-M3-1gG" secondAttribute="top" id="ZSq-B6-jeQ"/>
                         <constraint firstItem="gEB-SN-gOa" firstAttribute="leading" secondItem="zK2-M3-1gG" secondAttribute="leading" id="ZTs-wW-PQL"/>
