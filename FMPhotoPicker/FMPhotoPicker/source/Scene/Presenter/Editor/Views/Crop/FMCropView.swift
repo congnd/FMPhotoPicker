@@ -137,11 +137,11 @@ class FMCropView: UIView {
         translucencyView.isHidden = !translucencyView.isHidden
     }
     
-    public func moveCropBoxToAspectFillContentFrame() {
+    public func moveCropBoxToAspectFillContentFrame(complete: (() -> Void)? = nil) {
         // correct minimumZoomScale before moving
         scrollView.minimumZoomScale *= min(contentFrame.width / cropBoxView.frame.width, contentFrame.height / cropBoxView.frame.height)
         
-        moveCroppedContentToCenterAnimated()
+        moveCroppedContentToCenterAnimated(complete: complete)
     }
     
     public func restoreFromPreviousEdittingSection() {
@@ -173,7 +173,7 @@ class FMCropView: UIView {
         }
     }
     
-    private func moveCroppedContentToCenterAnimated() {
+    private func moveCroppedContentToCenterAnimated(complete: (() -> Void)? = nil) {
         var cropFrame = cropBoxView.frame
         let cropRatio = crop.ratio()
         
@@ -227,6 +227,7 @@ class FMCropView: UIView {
         },
                        completion: { _ in
                         self.translucencyView.safetyShow()
+                        complete?()
         })
     }
     
