@@ -236,7 +236,7 @@ class FMImageEditorViewController: UIViewController {
             cropView.getCropArea().isApproximatelyEqual(to: fmPhotoAsset.getAppliedCropArea()) {
             doCancelBlock()
         } else {
-            FMAlert().show(in: self, ok: doCancelBlock, cancel: {})
+            config.alertController.show(in: self, ok: doCancelBlock, cancel: {})
         }
     }
     @IBAction func onTapOpenFilter(_ sender: Any) {
