@@ -49,7 +49,7 @@ public struct FMPhotoPickerConfig {
     public var maxVideo: Int = 10
     public var availableFilters: [FMFilterable] = kDefaultAvailableFilters
     public var availableCrops: [FMCroppable] = kDefaultAvailableCrops
-    public var alertController: FMAlertable { return FMAlert() }
+    public var alertController: FMAlertable = FMAlert()
     
     public init() {
         
