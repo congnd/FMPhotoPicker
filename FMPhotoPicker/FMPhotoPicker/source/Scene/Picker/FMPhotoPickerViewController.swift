@@ -258,9 +258,8 @@ extension FMPhotoPickerViewController: UICollectionViewDataSource {
      */
     public func tryToAddPhotoToSelectedList(photoIndex index: Int) {
         if self.config.selectMode == .multiple {
-            guard let phMediaType = self.dataSource.mediaTypeForPhoto(atIndex: index) else { return }
-            
-            let fmMediaType = FMMediaType(withPHAssetMediaType: phMediaType)
+            guard let fmMediaType = self.dataSource.mediaTypeForPhoto(atIndex: index) else { return }
+
             var canBeAdded = true
             
             switch fmMediaType {

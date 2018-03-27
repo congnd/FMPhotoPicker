@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CED345E92069E563000ED8F7 /* file0001608482449.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CED345E72069E563000ED8F7 /* file0001608482449.jpg */; };
 		CEE50D492019745C005AE708 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE50D482019745C005AE708 /* AppDelegate.swift */; };
 		CEE50D4B2019745C005AE708 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE50D4A2019745C005AE708 /* ViewController.swift */; };
 		CEE50D4E2019745C005AE708 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEE50D4C2019745C005AE708 /* Main.storyboard */; };
@@ -55,6 +56,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		CED345E72069E563000ED8F7 /* file0001608482449.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = file0001608482449.jpg; sourceTree = "<group>"; };
 		CEE50D452019745C005AE708 /* FMPhotoPickerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FMPhotoPickerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEE50D482019745C005AE708 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CEE50D4A2019745C005AE708 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 		CEE50D472019745C005AE708 /* FMPhotoPickerExample */ = {
 			isa = PBXGroup;
 			children = (
+				CED345E72069E563000ED8F7 /* file0001608482449.jpg */,
 				CEE50D482019745C005AE708 /* AppDelegate.swift */,
 				CEE50D4A2019745C005AE708 /* ViewController.swift */,
 				CEE50D4C2019745C005AE708 /* Main.storyboard */,
@@ -202,6 +205,7 @@
 			files = (
 				CEE50D532019745C005AE708 /* LaunchScreen.storyboard in Resources */,
 				CEE50D502019745C005AE708 /* Assets.xcassets in Resources */,
+				CED345E92069E563000ED8F7 /* file0001608482449.jpg in Resources */,
 				CEE50D4E2019745C005AE708 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

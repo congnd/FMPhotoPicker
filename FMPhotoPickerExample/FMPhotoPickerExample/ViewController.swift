@@ -9,7 +9,11 @@
 import UIKit
 import FMPhotoPicker
 
-class ViewController: UIViewController, FMPhotoPickerViewControllerDelegate {
+class ViewController: UIViewController, FMPhotoPickerViewControllerDelegate, FMImageEditorViewControllerDelegate {
+    func fmImageEditorViewController(_ editor: FMImageEditorViewController, didFinishEdittingPhotoWith photo: UIImage) {
+        previewImageView.image = photo
+    }
+    
     func fmPhotoPickerController(_ picker: FMPhotoPickerViewController, didFinishPickingPhotoWith photos: [UIImage]) {
         
     }
@@ -19,6 +23,7 @@ class ViewController: UIViewController, FMPhotoPickerViewControllerDelegate {
     @IBOutlet weak var allowVideo: UISwitch!
     @IBOutlet weak var maxImageLB: UILabel!
     @IBOutlet weak var maxVideoLB: UILabel!
+    @IBOutlet weak var previewImageView: UIImageView!
     
     private var maxImage: Int = 5
     private var maxVideo: Int = 5
@@ -63,7 +68,7 @@ class ViewController: UIViewController, FMPhotoPickerViewControllerDelegate {
         self.maxVideoLB.text = "\(self.maxVideo)"
     }
     
-    @IBAction func open(_ sender: Any) {
+    func commonConfig() -> FMPhotoPickerConfig {
         let selectMode: FMSelectMode = (self.selectMode.selectedSegmentIndex == 0 ? .single : .multiple)
         
         var mediaTypes = [FMMediaType]()
@@ -83,8 +88,19 @@ class ViewController: UIViewController, FMPhotoPickerViewControllerDelegate {
         // all available filters will be used
         config.availableFilters = []
         
-        let vc = FMPhotoPickerViewController(config: config)
+        return config
+    }
+    
+    @IBAction func open(_ sender: Any) {
+        let vc = FMPhotoPickerViewController(config: commonConfig())
         vc.delegate = self
+        self.present(vc, animated: true)
+    }
+    
+    @IBAction func openEditor(_ sender: Any) {
+        let vc = FMImageEditorViewController(config: commonConfig(), sourceImage: previewImageView.image!)
+        vc.delegate = self
+        
         self.present(vc, animated: true)
     }
 }

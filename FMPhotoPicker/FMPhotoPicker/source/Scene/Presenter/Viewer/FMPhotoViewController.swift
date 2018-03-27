@@ -48,7 +48,7 @@ class FMPhotoViewController: UIViewController {
         return nil
     }
     
-    public func reloadPhoto() {
+    public func reloadPhoto(complete: @escaping () -> Void) {
         
     }
 }

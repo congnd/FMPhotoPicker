@@ -124,9 +124,9 @@ class FMPhotoPresenterViewController: UIViewController {
                                                        fmPhotoAsset: photo,
                                                        filteredImage: filteredImage,
                                                        originalThumb: originalThumb)
-            editorVC.didEndEditting = { [unowned self] in
+            editorVC.didEndEditting = { [unowned self] viewDidUpdate in
                 if let photoVC = self.pageViewController.viewControllers?.first as? FMPhotoViewController {
-                    photoVC.reloadPhoto()
+                    photoVC.reloadPhoto(complete: viewDidUpdate)
                 }
             }
             self.present(editorVC, animated: false, completion: nil)
@@ -189,7 +189,7 @@ class FMPhotoPresenterViewController: UIViewController {
         
         // Update photo title
         if let photoAsset = self.dataSource.photo(atIndex: self.currentPhotoIndex),
-            let creationDate = photoAsset.asset.creationDate {
+            let creationDate = photoAsset.asset?.creationDate {
             self.photoTitle.text = self.formatter.string(from: creationDate)
         }
     }
@@ -222,7 +222,9 @@ class FMPhotoPresenterViewController: UIViewController {
         if fmAsset.mediaType == .video {
             bottomView.videoMode()
             fmAsset.requestVideoFrames { cgImages in
-                self.bottomView.resetPlaybackControl(cgImages: cgImages, duration: fmAsset.asset.duration)
+                if let asset = fmAsset.asset {
+                    self.bottomView.resetPlaybackControl(cgImages: cgImages, duration: asset.duration)
+                }
             }
         } else {
             bottomView.imageMode()

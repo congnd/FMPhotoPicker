@@ -81,9 +81,10 @@ class FMVideoViewController: FMPhotoViewController {
     }
     
     private func loadVideoIfNeeded() {
-        guard (playerController == nil) else { return }
+        guard (playerController == nil),
+            let asset = photo.asset else { return }
         
-        Helper.requestAVAsset(asset: photo.asset) { avAsset in
+        Helper.requestAVAsset(asset: asset) { avAsset in
             // Do not run on main thread for better perf
             DispatchQueue.global(qos: .userInitiated).async {
                 guard self.shouldUpdateView == true,

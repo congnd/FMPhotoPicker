@@ -10,7 +10,9 @@ import Foundation
 import Photos
 
 public class FMPhotoAsset {
-    var asset: PHAsset
+    let asset: PHAsset?
+    let sourceImage: UIImage?
+    
     var mediaType: FMMediaType
     var thumb: UIImage?
     var thumbRequestId: PHImageRequestID?
@@ -33,15 +35,26 @@ public class FMPhotoAsset {
     init(asset: PHAsset) {
         self.asset = asset
         self.mediaType = FMMediaType(withPHAssetMediaType: asset.mediaType)
+        self.sourceImage = nil
+    }
+    
+    init(sourceImage: UIImage) {
+        self.sourceImage = sourceImage
+        self.mediaType = .image
+        self.asset = nil
     }
     
     func requestVideoFrames(_ complete: @escaping ([CGImage]) -> Void) {
         if let videoFrames = self.videoFrames {
             complete(videoFrames)
         } else {
-            Helper.generateVideoFrames(from: self.asset) { cgImages in
-                self.videoFrames = cgImages
-                complete(cgImages)
+            if let asset = asset {
+                Helper.generateVideoFrames(from: asset) { cgImages in
+                    self.videoFrames = cgImages
+                    complete(cgImages)
+                }
+            } else {
+                complete([])
             }
         }
     }
@@ -50,12 +63,18 @@ public class FMPhotoAsset {
         if let thumb = self.thumb {
             complete(thumb)
         } else {
-            self.thumbRequestId = Helper.getPhoto(by: self.asset, in: CGSize(width: 150, height: 150)) { image in
-                self.thumbRequestId = nil
-                self.thumb = image
-                self.originalThumb = image
-                
-                guard let image = image else { return complete(nil) }
+            if let asset = asset {
+                self.thumbRequestId = Helper.getPhoto(by: asset, in: CGSize(width: 150, height: 150)) { image in
+                    self.thumbRequestId = nil
+                    self.thumb = image
+                    self.originalThumb = image
+                    
+                    guard let image = image else { return complete(nil) }
+                    let edited = self.editor.reproduce(source: image, cropState: .edited, filterState: .edited)
+                    complete(edited)
+                }
+            } else {
+                guard let image = sourceImage else { return complete(nil) }
                 let edited = self.editor.reproduce(source: image, cropState: .edited, filterState: .edited)
                 complete(edited)
             }
@@ -63,24 +82,36 @@ public class FMPhotoAsset {
     }
     
     func requestImage(in desireSize: CGSize, _ complete: @escaping (UIImage?) -> Void) {
-        _ = Helper.getPhoto(by: self.asset, in: desireSize) { image in
-            guard let image = image else { return complete(nil) }
+        if let asset = asset {
+            _ = Helper.getPhoto(by: asset, in: desireSize) { image in
+                guard let image = image else { return complete(nil) }
+                let edited = self.editor.reproduce(source: image, cropState: .edited, filterState: .edited)
+                complete(edited)
+            }
+        } else {
+            guard let image = sourceImage?.resize(toSize: desireSize) else { return complete(nil) }
             let edited = self.editor.reproduce(source: image, cropState: .edited, filterState: .edited)
             complete(edited)
         }
     }
     
     func requestFullSizePhoto(cropState: FMImageEditState, filterState: FMImageEditState, complete: @escaping (UIImage?) -> Void) {
-        self.fullSizePhotoRequestId = Helper.getFullSizePhoto(by: self.asset) { image in
-            self.fullSizePhotoRequestId = nil
-            if self.canceledFullSizeRequest {
-                self.canceledFullSizeRequest = false
-                complete(nil)
-            } else {
-                guard let image = image else { return complete(nil) }
-                let result = self.editor.reproduce(source: image, cropState: cropState, filterState: filterState)
-                complete(result)
+        if let asset = asset {
+            self.fullSizePhotoRequestId = Helper.getFullSizePhoto(by: asset) { image in
+                self.fullSizePhotoRequestId = nil
+                if self.canceledFullSizeRequest {
+                    self.canceledFullSizeRequest = false
+                    complete(nil)
+                } else {
+                    guard let image = image else { return complete(nil) }
+                    let result = self.editor.reproduce(source: image, cropState: cropState, filterState: filterState)
+                    complete(result)
+                }
             }
+        } else {
+            guard let image = sourceImage else { return complete(nil) }
+            let result = self.editor.reproduce(source: image, cropState: cropState, filterState: filterState)
+            complete(result)
         }
     }
     

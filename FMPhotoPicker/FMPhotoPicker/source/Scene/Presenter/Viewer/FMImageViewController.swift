@@ -48,7 +48,7 @@ class FMImageViewController: FMPhotoViewController {
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        reloadPhoto()
+        reloadPhoto() {}
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -109,11 +109,12 @@ class FMImageViewController: FMPhotoViewController {
         return self.smallImage
     }
     
-    override func reloadPhoto() {
+    override func reloadPhoto(complete: @escaping () -> Void) {
         self.photo.requestFullSizePhoto(cropState: .edited, filterState: .edited) { [weak self] image in
             guard let strongSelf = self,
-                let image = image else { return }
+                let image = image else { return complete() }
             strongSelf.scalingImageView.image = image
+            complete()
         }
         
         // get filtered image

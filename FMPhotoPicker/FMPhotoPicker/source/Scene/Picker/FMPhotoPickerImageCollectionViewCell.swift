@@ -62,7 +62,7 @@ class FMPhotoPickerImageCollectionViewCell: UICollectionViewCell {
         
         if photoAsset.mediaType == .video {
             self.videoInfoView.isHidden = false
-            self.videoLengthLabel.text = photoAsset.asset.duration.stringTime
+            self.videoLengthLabel.text = photoAsset.asset?.duration.stringTime
         }
         
         self.editedMarkImageView.isHidden = !photoAsset.isEdited()
