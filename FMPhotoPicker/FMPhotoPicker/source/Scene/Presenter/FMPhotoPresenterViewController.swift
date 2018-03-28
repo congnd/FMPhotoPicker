@@ -83,10 +83,6 @@ class FMPhotoPresenterViewController: UIViewController {
         }
     }
     
-    deinit {
-        print("deinit FMPhotoPresenterViewController")
-    }
-    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
