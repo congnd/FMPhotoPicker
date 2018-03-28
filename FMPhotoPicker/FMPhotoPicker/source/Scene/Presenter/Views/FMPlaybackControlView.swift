@@ -93,6 +93,17 @@ class FMPlaybackControlView: UIView {
         
         self.backgroundColor = kTransparentBackgroundColor
         addPlayerObservers()
+        
+        // top border view
+        let topBorder = UIView(frame: .zero)
+        topBorder.backgroundColor = kBorderColor
+        addSubview(topBorder)
+        
+        topBorder.translatesAutoresizingMaskIntoConstraints = false
+        topBorder.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        topBorder.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        topBorder.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        topBorder.heightAnchor.constraint(equalToConstant: 1).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {
