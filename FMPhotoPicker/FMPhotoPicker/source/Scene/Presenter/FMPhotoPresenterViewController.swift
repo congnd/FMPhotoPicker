@@ -137,7 +137,7 @@ class FMPhotoPresenterViewController: UIViewController {
         self.bottomView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         self.bottomView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         self.bottomView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        self.bottomView.heightAnchor.constraint(equalToConstant: 46).isActive = true
+        self.bottomView.heightAnchor.constraint(equalToConstant: 90).isActive = true
         
         self.pageViewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.pageViewController.didMove(toParentViewController: self)
