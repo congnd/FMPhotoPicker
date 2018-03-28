@@ -15,7 +15,7 @@ class ViewController: UIViewController, FMPhotoPickerViewControllerDelegate, FMI
     }
     
     func fmPhotoPickerController(_ picker: FMPhotoPickerViewController, didFinishPickingPhotoWith photos: [UIImage]) {
-        
+        self.dismiss(animated: true, completion: nil)
     }
     
     @IBOutlet weak var selectMode: UISegmentedControl!

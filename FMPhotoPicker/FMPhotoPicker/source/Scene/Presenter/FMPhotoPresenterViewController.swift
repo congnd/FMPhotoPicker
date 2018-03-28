@@ -15,8 +15,10 @@ class FMPhotoPresenterViewController: UIViewController {
     @IBOutlet weak var selectedContainer: UIView!
     @IBOutlet weak var selectedIcon: UIImageView!
     @IBOutlet weak var selectedIndex: UILabel!
-    @IBOutlet weak var selectButton: UIButton!
     @IBOutlet weak var controlBarHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var numberOfSelectedPhotoContainer: UIView!
+    @IBOutlet weak var numberOfSelectedPhoto: UILabel!
+    @IBOutlet weak var determineButton: UIButton!
     
     // MARK: - Public
     public var swipeInteractionController: FMPhotoInteractionAnimator?
@@ -26,6 +28,8 @@ class FMPhotoPresenterViewController: UIViewController {
     public var didDeselectPhotoHandler: ((Int) -> Void)?
     
     public var didMoveToViewControllerHandler: ((FMPhotoViewController, Int) -> Void)?
+    
+    public var didTapDetermine: (() -> Void)?
     
     public var bottomView: FMPresenterBottomView!
     
@@ -143,6 +147,10 @@ class FMPhotoPresenterViewController: UIViewController {
         self.pageViewController.didMove(toParentViewController: self)
         
         self.view.backgroundColor = kBackgroundColor
+        
+        self.numberOfSelectedPhotoContainer.layer.cornerRadius = self.numberOfSelectedPhotoContainer.frame.size.width / 2
+        self.numberOfSelectedPhotoContainer.isHidden = true
+        self.determineButton.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -163,28 +171,41 @@ class FMPhotoPresenterViewController: UIViewController {
     
     // MARK: - Update Views
     private func updateInfoBar() {
+        let n = dataSource.numberOfSelectedPhoto()
+        if self.config.selectMode == .multiple {
+            if n > 0 {
+                determineButton.isHidden = false
+                numberOfSelectedPhotoContainer.isHidden = false
+                numberOfSelectedPhoto.isHidden = false
+                numberOfSelectedPhoto.text = "\(n)"
+            } else {
+                determineButton.isHidden = true
+                numberOfSelectedPhotoContainer.isHidden = true
+                numberOfSelectedPhoto.isHidden = true
+            }
+        } else {
+            numberOfSelectedPhotoContainer.isHidden = true
+            numberOfSelectedPhoto.isHidden = true
+            if n > 0 {
+                determineButton.isHidden = false
+            } else {
+                determineButton.isHidden = true
+            }
+        }
+        
         // Update selection status
         if let selectedIndex = self.dataSource.selectedIndexOfPhoto(atIndex: self.currentPhotoIndex) {
-            
-            self.selectedContainer.isHidden = false
             if self.config.selectMode == .multiple {
+                self.selectedIndex.isHidden = false
                 self.selectedIndex.text = "\(selectedIndex + 1)"
                 self.selectedIcon.image = UIImage(named: "check_on", in: Bundle(for: self.classForCoder), compatibleWith: nil)
             } else {
                 self.selectedIndex.isHidden = true
                 self.selectedIcon.image = UIImage(named: "single_check_on", in: Bundle(for: self.classForCoder), compatibleWith: nil)
             }
-
-            UIView.performWithoutAnimation {
-                self.selectButton.setTitle("選択解除", for: .normal)
-                self.selectButton.layoutIfNeeded()
-            }
         } else {
-            self.selectedContainer.isHidden = true
-            UIView.performWithoutAnimation {
-                self.selectButton.setTitle("選択", for: .normal)
-                self.selectButton.layoutIfNeeded()
-            }
+            self.selectedIndex.isHidden = true
+            self.selectedIcon.image = UIImage(named: "check_off", in: Bundle(for: self.classForCoder), compatibleWith: nil)
         }
         
         // Update photo title
@@ -235,6 +256,7 @@ class FMPhotoPresenterViewController: UIViewController {
     @IBAction func onTapClose(_ sender: Any) {
         self.dismiss(animated: true)
     }
+    
     @IBAction func onTapSelection(_ sender: Any) {
         if self.dataSource.selectedIndexOfPhoto(atIndex: self.currentPhotoIndex) == nil {
             self.didSelectPhotoHandler?(self.currentPhotoIndex)
@@ -243,6 +265,11 @@ class FMPhotoPresenterViewController: UIViewController {
         }
         self.updateInfoBar()
     }
+    
+    @IBAction func onTapDetermine(_ sender: Any) {
+        didTapDetermine?()
+    }
+    
 }
 
 // MARK: - UIPageViewControllerDataSource / UIPageViewControllerDelegate

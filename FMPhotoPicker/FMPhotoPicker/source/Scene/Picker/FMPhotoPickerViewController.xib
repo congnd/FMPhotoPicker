@@ -13,7 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FMPhotoPickerViewController" customModule="FMPhotoPicker" customModuleProvider="target">
             <connections>
                 <outlet property="controlBarTopConstrant" destination="Esv-jC-y0M" id="mjl-UU-ub5"/>
-                <outlet property="doneButton" destination="H3N-tL-aam" id="o0P-Lj-m9h"/>
+                <outlet property="determineButton" destination="H3N-tL-aam" id="ULu-19-eTW"/>
                 <outlet property="imageCollectionView" destination="OL2-Hq-SBY" id="OEv-0k-kpd"/>
                 <outlet property="numberOfSelectedPhoto" destination="WUE-Oy-OeG" id="HpE-Xa-SeM"/>
                 <outlet property="numberOfSelectedPhotoContainer" destination="Sev-Wd-rWB" id="D5a-HJ-83x"/>
@@ -36,7 +36,7 @@
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <state key="normal" title="キャンセル"/>
                             <connections>
-                                <action selector="onTapDismiss:" destination="-1" eventType="touchUpInside" id="PDR-ri-pYg"/>
+                                <action selector="onTapCancel:" destination="-1" eventType="touchUpInside" id="lbL-Nm-lmS"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H3N-tL-aam">
@@ -48,7 +48,7 @@
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <state key="normal" title="決定"/>
                             <connections>
-                                <action selector="onTapNextStep:" destination="-1" eventType="touchUpInside" id="lTO-Kb-K3l"/>
+                                <action selector="onTapDetermine:" destination="-1" eventType="touchUpInside" id="6ZB-gm-DxN"/>
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nuy-qK-tEa" userLabel="separator">
