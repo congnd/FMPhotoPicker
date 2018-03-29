@@ -37,7 +37,7 @@ public class FMPhotoAsset {
         self.mediaType = FMMediaType(withPHAssetMediaType: asset.mediaType)
         self.sourceImage = nil
         
-        if let fmCropRatio = forceCropType?.ratio() {
+        if let forceCropType = forceCropType, let fmCropRatio = forceCropType.ratio() {
             let assetRatio = CGFloat(asset.pixelWidth) / CGFloat(asset.pixelHeight)
             let cropRatio = fmCropRatio.width / fmCropRatio.height
             var scaleW, scaleH: CGFloat
@@ -53,7 +53,7 @@ public class FMPhotoAsset {
                                       scaleW: scaleW,
                                       scaleH: scaleH)
             self.editor.cropArea = cropArea
-            self.editor.crop = FMCrop.ratioSquare
+            self.editor.crop = forceCropType
         }
     }
     
