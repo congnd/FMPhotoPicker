@@ -32,10 +32,29 @@ public class FMPhotoAsset {
      */
     private var canceledFullSizeRequest = false
     
-    init(asset: PHAsset) {
+    init(asset: PHAsset, forceCropType: FMCroppable?) {
         self.asset = asset
         self.mediaType = FMMediaType(withPHAssetMediaType: asset.mediaType)
         self.sourceImage = nil
+        
+        if let fmCropRatio = forceCropType?.ratio() {
+            let assetRatio = CGFloat(asset.pixelWidth) / CGFloat(asset.pixelHeight)
+            let cropRatio = fmCropRatio.width / fmCropRatio.height
+            var scaleW, scaleH: CGFloat
+            if assetRatio > cropRatio {
+                scaleH = 1.0
+                scaleW = cropRatio / assetRatio
+            } else {
+                scaleW = 1.0
+                scaleH = assetRatio / cropRatio
+            }
+            let cropArea = FMCropArea(scaleX: (1 - scaleW) / 2,
+                                      scaleY: (1 - scaleH) / 2,
+                                      scaleW: scaleW,
+                                      scaleH: scaleH)
+            self.editor.cropArea = cropArea
+            self.editor.crop = FMCrop.ratioSquare
+        }
     }
     
     init(sourceImage: UIImage) {
@@ -66,11 +85,11 @@ public class FMPhotoAsset {
             if let asset = asset {
                 self.thumbRequestId = Helper.getPhoto(by: asset, in: CGSize(width: 150, height: 150)) { image in
                     self.thumbRequestId = nil
-                    self.thumb = image
                     self.originalThumb = image
                     
                     guard let image = image else { return complete(nil) }
                     let edited = self.editor.reproduce(source: image, cropState: .edited, filterState: .edited)
+                    self.thumb = edited
                     complete(edited)
                 }
             } else {
@@ -145,15 +164,10 @@ public class FMPhotoAsset {
         return editor.cropArea
     }
     
-    public func getAppliedZoomScale() -> CGFloat? {
-        return editor.zoomScale
-    }
-    
-    public func apply(filter: FMFilterable, crop: FMCroppable, cropArea: FMCropArea, zoomScale: CGFloat) {
+    public func apply(filter: FMFilterable, crop: FMCroppable, cropArea: FMCropArea) {
         editor.filter = filter
         editor.crop = crop
         editor.cropArea = cropArea
-        editor.zoomScale = zoomScale
         
         if let source = originalThumb {
             thumb = editor.reproduce(source: source, cropState: .edited, filterState: .edited)

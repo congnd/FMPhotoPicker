@@ -144,8 +144,7 @@ public class FMImageEditorViewController: UIViewController {
         
         cropView = FMCropView(image: filteredImage,
                               appliedCrop: fmPhotoAsset.getAppliedCrop(),
-                              appliedCropArea: fmPhotoAsset.getAppliedCropArea(),
-                              zoomScale: fmPhotoAsset.getAppliedZoomScale())
+                              appliedCropArea: fmPhotoAsset.getAppliedCropArea())
         
         self.view.addSubview(self.cropView)
         self.view.sendSubview(toBack: self.cropView)
@@ -245,8 +244,7 @@ public class FMImageEditorViewController: UIViewController {
             
             self.fmPhotoAsset.apply(filter: self.selectedFilter,
                                     crop: self.selectedCrop,
-                                    cropArea: cropArea,
-                                    zoomScale: self.cropView.scrollView.zoomScale)
+                                    cropArea: cropArea)
 
             if let delegate = self.delegate {
                 self.fmPhotoAsset.requestFullSizePhoto(cropState: .edited, filterState: .edited) { image in

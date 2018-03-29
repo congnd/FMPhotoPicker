@@ -47,7 +47,6 @@ struct FMImageEditor {
     var filter: FMFilterable = kDefaultFilter
     var crop: FMCroppable = kDefaultCrop
     var cropArea: FMCropArea = FMCropArea()
-    var zoomScale: CGFloat?
     
     func reproduce(source image: UIImage, cropState: FMImageEditState, filterState: FMImageEditState) -> UIImage {
         var result = image

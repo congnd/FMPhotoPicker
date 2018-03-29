@@ -103,5 +103,16 @@ class ViewController: UIViewController, FMPhotoPickerViewControllerDelegate, FMI
         
         self.present(vc, animated: true)
     }
+    
+    @IBAction func openPickeInForceCrop(_ sender: Any) {
+        var config = commonConfig()
+        config.forceCropEnabled = true
+        config.availableCrops = [FMCrop.ratioSquare]
+        config.selectMode = .single
+        
+        let vc = FMPhotoPickerViewController(config: config)
+        vc.delegate = self
+        self.present(vc, animated: true)
+    }
 }
 

@@ -30,7 +30,17 @@ class FMCropView: UIView {
     }
     
     private var cropArea: FMCropArea?
-    private var zoomScale: CGFloat?
+    lazy private var zoomScale: CGFloat? = {
+        guard let cropArea = cropArea else { return nil }
+        let contentFrameSizeRatio = contentFrame.width / contentFrame.height
+        let cropBoxSizeRatio = cropArea.scaleW / cropArea.scaleH * (image.size.width / image.size.height)
+        
+        if contentFrameSizeRatio > cropBoxSizeRatio {
+            return contentFrame.height / (cropArea.scaleH * image.size.height)
+        } else {
+            return contentFrame.width / (cropArea.scaleW * image.size.width)
+        }
+    }()
     
     public var isCropping: Bool = false {
         didSet {
@@ -65,12 +75,11 @@ class FMCropView: UIView {
         }
     }
 
-    init(image: UIImage, appliedCrop: FMCroppable, appliedCropArea: FMCropArea?, zoomScale: CGFloat?) {
+    init(image: UIImage, appliedCrop: FMCroppable, appliedCropArea: FMCropArea?) {
         self.image = image
 
         crop = appliedCrop
         cropArea = appliedCropArea
-        self.zoomScale = zoomScale
         
         scrollView = FMCropScrollView(image: image)
         
@@ -145,32 +154,32 @@ class FMCropView: UIView {
     }
     
     public func restoreFromPreviousEdittingSection() {
+        guard let cropArea = cropArea, let zoomScale = zoomScale else { return }
+        
         // check for previous section data
-        if let zoomScale = zoomScale, let cropArea = cropArea {
-            var cropFrame = cropBoxView.frame
-            
-            // use for first time only
-            let scrollViewScale = zoomScale / scrollView.zoomScale
-            
-            cropFrame.size.width = ceil(scrollView.imageView.frame.width / scrollView.zoomScale * cropArea.scaleW * zoomScale)
-            cropFrame.size.height = ceil(scrollView.imageView.frame.height / scrollView.zoomScale * cropArea.scaleH * zoomScale)
-            
-            //The scale we need to scale up the crop box to fit full screen
-            let cropBoxScale = min(contentFrame.width / cropFrame.width, contentFrame.height / cropFrame.height)
-            cropFrame.size.width = ceil(cropFrame.size.width * cropBoxScale)
-            cropFrame.size.height = ceil(cropFrame.size.height * cropBoxScale)
-            
-            cropFrame.origin.x = contentFrame.origin.x + ceil(contentFrame.size.width - cropFrame.size.width) * 0.5
-            cropFrame.origin.y = contentFrame.origin.y + ceil(contentFrame.size.height - cropFrame.size.height) * 0.5
-            
-            let targetOffset = CGPoint(x: ceil(scrollView.imageView.frame.width / scrollView.zoomScale * zoomScale * cropArea.scaleX) - cropFrame.minX,
-                                   y: ceil(scrollView.imageView.frame.height / scrollView.zoomScale * zoomScale * cropArea.scaleY) - cropFrame.minY)
-            
-            scrollView.zoomScale *= scrollViewScale
-            scrollView.contentOffset = targetOffset
-            cropBoxView.frame = cropFrame
-            cropboxViewFrameDidChange(rect: cropFrame)
-        }
+        var cropFrame = cropBoxView.frame
+        
+        // use for first time only
+        let scrollViewScale = zoomScale / scrollView.zoomScale
+        
+        cropFrame.size.width = ceil(scrollView.imageView.frame.width / scrollView.zoomScale * cropArea.scaleW * zoomScale)
+        cropFrame.size.height = ceil(scrollView.imageView.frame.height / scrollView.zoomScale * cropArea.scaleH * zoomScale)
+        
+        //The scale we need to scale up the crop box to fit full screen
+        let cropBoxScale = min(contentFrame.width / cropFrame.width, contentFrame.height / cropFrame.height)
+        cropFrame.size.width = ceil(cropFrame.size.width * cropBoxScale)
+        cropFrame.size.height = ceil(cropFrame.size.height * cropBoxScale)
+        
+        cropFrame.origin.x = contentFrame.origin.x + ceil(contentFrame.size.width - cropFrame.size.width) * 0.5
+        cropFrame.origin.y = contentFrame.origin.y + ceil(contentFrame.size.height - cropFrame.size.height) * 0.5
+        
+        let targetOffset = CGPoint(x: ceil(scrollView.imageView.frame.width / scrollView.zoomScale * zoomScale * cropArea.scaleX) - cropFrame.minX,
+                               y: ceil(scrollView.imageView.frame.height / scrollView.zoomScale * zoomScale * cropArea.scaleY) - cropFrame.minY)
+        
+        scrollView.zoomScale *= scrollViewScale
+        scrollView.contentOffset = targetOffset
+        cropBoxView.frame = cropFrame
+        cropboxViewFrameDidChange(rect: cropFrame)
     }
     
     private func moveCroppedContentToCenterAnimated(complete: (() -> Void)? = nil) {

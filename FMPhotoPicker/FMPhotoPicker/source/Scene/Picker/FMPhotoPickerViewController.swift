@@ -97,7 +97,19 @@ public class FMPhotoPickerViewController: UIViewController {
     
     // MARK: - Init
     public init(config: FMPhotoPickerConfig) {
-        self.config = config
+        var tConfig = config
+        
+        // if the force crop mode is enabled
+        // then only the first crop type in the avaiableCrops will be used
+        if tConfig.forceCropEnabled {
+            if tConfig.availableCrops.count == 0 {
+                tConfig.availableCrops = [kDefaultAvailableCrops.first!]
+            } else {
+                tConfig.availableCrops = [tConfig.availableCrops.first!]
+            }
+        }
+        
+        self.config = tConfig
         super.init(nibName: "FMPhotoPickerViewController", bundle: Bundle(for: type(of: self)))
     }
     
@@ -161,7 +173,8 @@ public class FMPhotoPickerViewController: UIViewController {
     
     private func fetchPhotos() {
         let photoAssets = Helper.getAssets(allowMediaTypes: self.config.mediaTypes)
-        let fmPhotoAssets = photoAssets.map { FMPhotoAsset(asset: $0) }
+        let forceCropType = config.forceCropEnabled ? config.availableCrops.first! : nil
+        let fmPhotoAssets = photoAssets.map { FMPhotoAsset(asset: $0, forceCropType: forceCropType) }
         self.dataSource = FMPhotosDataSource(photoAssets: fmPhotoAssets)
         
         if self.dataSource.numberOfPhotos > 0 {
