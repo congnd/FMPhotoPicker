@@ -55,6 +55,10 @@ class FMCropScrollView: UIScrollView {
         bouncesZoom = true;
         decelerationRate = UIScrollViewDecelerationRateFast;
         
+        if #available(iOS 11.0, *) {
+            contentInsetAdjustmentBehavior = .never
+        }
+        
         backgroundColor = .white
     }
     
