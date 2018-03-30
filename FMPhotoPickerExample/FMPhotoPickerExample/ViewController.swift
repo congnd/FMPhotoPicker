@@ -107,6 +107,7 @@ class ViewController: UIViewController, FMPhotoPickerViewControllerDelegate, FMI
     @IBAction func openPickeInForceCrop(_ sender: Any) {
         var config = commonConfig()
         config.forceCropEnabled = true
+        config.eclipsePreviewEnabled = true
         config.availableCrops = [FMCrop.ratioSquare]
         config.selectMode = .single
         

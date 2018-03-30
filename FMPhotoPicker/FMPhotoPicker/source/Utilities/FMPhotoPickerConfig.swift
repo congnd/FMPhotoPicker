@@ -52,6 +52,7 @@ public struct FMPhotoPickerConfig {
     public var alertController: FMAlertable = FMAlert()
     
     public var forceCropEnabled = false
+    public var eclipsePreviewEnabled = false
     
     public init() {
         

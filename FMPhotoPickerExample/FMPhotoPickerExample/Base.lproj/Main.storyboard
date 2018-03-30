@@ -19,11 +19,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lJT-yR-5l9">
-                                <rect key="frame" x="107" y="617" width="160" height="30"/>
+                                <rect key="frame" x="107" y="607" width="160" height="40"/>
                                 <color key="backgroundColor" red="1" green="0.32586389780000002" blue="0.29645484690000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="160" id="UZD-48-SaQ"/>
-                                    <constraint firstAttribute="height" constant="30" id="WSo-0b-bse"/>
+                                    <constraint firstAttribute="height" constant="40" id="WSo-0b-bse"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <state key="normal" title="Picker Force Crop">
@@ -148,10 +148,10 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ANO-4E-1ae">
-                                <rect key="frame" x="107" y="567" width="160" height="30"/>
+                                <rect key="frame" x="107" y="547" width="160" height="40"/>
                                 <color key="backgroundColor" red="1" green="0.32586389780000002" blue="0.29645484690000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="6rL-mv-gib"/>
+                                    <constraint firstAttribute="height" constant="40" id="6rL-mv-gib"/>
                                     <constraint firstAttribute="width" constant="160" id="mEX-aH-ZJs"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>

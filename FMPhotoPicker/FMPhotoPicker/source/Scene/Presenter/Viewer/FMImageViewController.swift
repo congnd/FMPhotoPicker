@@ -36,6 +36,7 @@ class FMImageViewController: FMPhotoViewController {
         
         self.scalingImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.scalingImageView.clipsToBounds = true
+        self.scalingImageView.eclipsePreviewEnabled = config.eclipsePreviewEnabled
         
         self.view.addSubview(self.scalingImageView)
         

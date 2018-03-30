@@ -28,9 +28,13 @@ class FMScalingImageView: UIScrollView {
     
     var image: UIImage? {
         didSet {
-            updateImage(image)
+            if let image = image {
+                updateImage(image)
+            }
         }
     }
+    
+    var eclipsePreviewEnabled = false
     
     override var frame: CGRect {
         didSet {
@@ -41,6 +45,7 @@ class FMScalingImageView: UIScrollView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        imageView.layer.masksToBounds = true
         setupImageScrollView()
         updateZoomScale()
     }
@@ -84,16 +89,18 @@ class FMScalingImageView: UIScrollView {
         self.contentInset = UIEdgeInsetsMake(verticalInset, horizontalInset, verticalInset, horizontalInset);
     }
     
-    private func updateImage(_ image: UIImage?) {
-        let size = image?.size ?? CGSize.zero
-        
+    private func updateImage(_ image: UIImage) {
         imageView.transform = CGAffineTransform.identity
         imageView.image = image
-        imageView.frame = CGRect(origin: CGPoint.zero, size: size)
-        self.contentSize = size
+        imageView.frame = CGRect(origin: CGPoint.zero, size: image.size)
+        self.contentSize = image.size
         
         updateZoomScale()
         centerScrollViewContents()
+        
+        if eclipsePreviewEnabled {
+            imageView.layer.cornerRadius = image.size.width / 2
+        }
     }
     
     private func updateZoomScale() {

@@ -145,6 +145,7 @@ public class FMImageEditorViewController: UIViewController {
         cropView = FMCropView(image: filteredImage,
                               appliedCrop: fmPhotoAsset.getAppliedCrop(),
                               appliedCropArea: fmPhotoAsset.getAppliedCropArea())
+        cropView.foregroundView.eclipsePreviewEnabled = self.config.eclipsePreviewEnabled
         
         self.view.addSubview(self.cropView)
         self.view.sendSubview(toBack: self.cropView)
