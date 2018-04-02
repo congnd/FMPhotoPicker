@@ -17,12 +17,20 @@ extension UIImage {
         self.init(cgImage: image!.cgImage!)
     }
     
-    func resize(toSize: CGSize) -> UIImage {
+    func resize(toSizeInPixel: CGSize) -> UIImage {
+        let screenScale = UIScreen.main.scale
+        let sizeInPoint = CGSize(width: toSizeInPixel.width / screenScale,
+                                 height: toSizeInPixel.height / screenScale)
+        return resize(toSizeInPoint: sizeInPoint)
+    }
+    
+    
+    func resize(toSizeInPoint: CGSize) -> UIImage {
         let size = self.size
         var newImage: UIImage
         
-        let widthRatio  = toSize.width  / size.width
-        let heightRatio = toSize.height / size.height
+        let widthRatio  = toSizeInPoint.width  / size.width
+        let heightRatio = toSizeInPoint.height / size.height
         
         var newSize: CGSize
         if(widthRatio > heightRatio) {

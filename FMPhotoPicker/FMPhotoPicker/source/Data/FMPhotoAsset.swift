@@ -105,7 +105,7 @@ public class FMPhotoAsset {
                 }
             } else {
                 guard let image = sourceImage else { return complete(nil) }
-                let edited = self.editor.reproduce(source: image.resize(toSize: size), cropState: .edited, filterState: .edited)
+                let edited = self.editor.reproduce(source: image.resize(toSizeInPixel: size), cropState: .edited, filterState: .edited)
                 complete(edited)
             }
         }
@@ -119,7 +119,7 @@ public class FMPhotoAsset {
                 complete(edited)
             }
         } else {
-            guard let image = sourceImage?.resize(toSize: desireSize) else { return complete(nil) }
+            guard let image = sourceImage?.resize(toSizeInPixel: desireSize) else { return complete(nil) }
             let edited = self.editor.reproduce(source: image, cropState: .edited, filterState: .edited)
             complete(edited)
         }
