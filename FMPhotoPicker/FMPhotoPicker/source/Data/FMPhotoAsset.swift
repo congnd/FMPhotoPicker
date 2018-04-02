@@ -88,8 +88,8 @@ public class FMPhotoAsset {
         }
     }
     
-    func requestThumb(_ complete: @escaping (UIImage?) -> Void) {
-        if let thumb = self.thumb {
+    func requestThumb(refresh: Bool=false, _ complete: @escaping (UIImage?) -> Void) {
+        if let thumb = self.thumb, !refresh {
             complete(thumb)
         } else {
             let cropScale = min(editor.cropArea.scaleW, editor.cropArea.scaleH)
