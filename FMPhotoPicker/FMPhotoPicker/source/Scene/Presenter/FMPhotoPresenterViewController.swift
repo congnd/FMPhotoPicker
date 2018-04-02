@@ -117,7 +117,7 @@ class FMPhotoPresenterViewController: UIViewController {
         self.bottomView.onTapEditButton = { [unowned self] in
             guard let photo = self.dataSource.photo(atIndex: self.currentPhotoIndex),
                 let vc = self.pageViewController.viewControllers?.first as? FMPhotoViewController,
-                let originalThumb = photo.originalThumb,
+                let originalThumb = photo.filterdThumb,
                 let filteredImage = vc.getFilteredImage()
                 else { return }
             let editorVC = FMImageEditorViewController(config: self.config,

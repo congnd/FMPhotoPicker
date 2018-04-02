@@ -14,10 +14,14 @@ public class FMPhotoAsset {
     let sourceImage: UIImage?
     
     var mediaType: FMMediaType
-    var thumb: UIImage?
-    var thumbRequestId: PHImageRequestID?
     
-    var originalThumb: UIImage?
+    // a fully edited thumbnail version of the image
+    var editedThumb: UIImage?
+    
+    // a filterd-only thumbnail version of the image
+    var filterdThumb: UIImage?
+    
+    var thumbRequestId: PHImageRequestID?
     
     var videoFrames: [CGImage]?
     
@@ -89,8 +93,8 @@ public class FMPhotoAsset {
     }
     
     func requestThumb(refresh: Bool=false, _ complete: @escaping (UIImage?) -> Void) {
-        if let thumb = self.thumb, !refresh {
-            complete(thumb)
+        if let editedThumb = self.editedThumb, !refresh {
+            complete(editedThumb)
         } else {
             // It is not absolutely right but it gives much better performance in most cases
             let cropScale = (editor.cropArea.scaleW + editor.cropArea.scaleH) / 2
@@ -98,12 +102,13 @@ public class FMPhotoAsset {
             if let asset = asset {
                 self.thumbRequestId = Helper.getPhoto(by: asset, in: size) { image in
                     self.thumbRequestId = nil
-                    self.originalThumb = image
                     
                     guard let image = image else { return complete(nil) }
-                    let edited = self.editor.reproduce(source: image, cropState: .edited, filterState: .edited)
-                    self.thumb = edited
-                    complete(edited)
+                    
+                    self.editedThumb    = self.editor.reproduce(source: image, cropState: .edited, filterState: .edited)
+                    self.filterdThumb   = self.editor.reproduce(source: image, cropState: .edited, filterState: .original)
+                    
+                    complete(self.editedThumb)
                 }
             } else {
                 guard let image = sourceImage else { return complete(nil) }
