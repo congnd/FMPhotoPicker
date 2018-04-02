@@ -97,19 +97,7 @@ public class FMPhotoPickerViewController: UIViewController {
     
     // MARK: - Init
     public init(config: FMPhotoPickerConfig) {
-        var tConfig = config
-        
-        // if the force crop mode is enabled
-        // then only the first crop type in the avaiableCrops will be used
-        if tConfig.forceCropEnabled {
-            if tConfig.availableCrops.count == 0 {
-                tConfig.availableCrops = [kDefaultAvailableCrops.first!]
-            } else {
-                tConfig.availableCrops = [tConfig.availableCrops.first!]
-            }
-        }
-        
-        self.config = tConfig
+        self.config = config
         super.init(nibName: "FMPhotoPickerViewController", bundle: Bundle(for: type(of: self)))
     }
     

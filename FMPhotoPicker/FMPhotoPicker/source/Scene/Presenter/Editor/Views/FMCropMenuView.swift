@@ -47,7 +47,17 @@ class FMCropMenuView: UIView {
     
     init(appliedCrop: FMCroppable?, availableCrops: [FMCroppable], forceCropEnabled: Bool) {
         selectedCrop = appliedCrop
-        cropItems = availableCrops.count == 0 ? kDefaultAvailableCrops : availableCrops
+        
+        var tAvailableCrops = availableCrops
+        tAvailableCrops = tAvailableCrops.count == 0 ? kDefaultAvailableCrops : tAvailableCrops
+        
+        // if the force crop mode is enabled
+        // then only the first crop type in the avaiableCrops will be used
+        if forceCropEnabled {
+            tAvailableCrops = [tAvailableCrops.first!]
+        }
+        
+        cropItems = tAvailableCrops
         
         if forceCropEnabled {
             menuItems = []
