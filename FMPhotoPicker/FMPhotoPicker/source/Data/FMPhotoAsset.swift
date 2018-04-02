@@ -187,10 +187,9 @@ public class FMPhotoAsset {
         editor.crop = crop
         editor.cropArea = cropArea
         
-        if let source = originalThumb {
-            thumb = editor.reproduce(source: source, cropState: .edited, filterState: .edited)
-            if thumb != nil {
-                thumbChanged(thumb!)
+        requestThumb(refresh: true) { image in
+            if let image = image {
+                self.thumbChanged(image)
             }
         }
     }
