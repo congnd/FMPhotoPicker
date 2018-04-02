@@ -24,6 +24,8 @@ class ViewController: UIViewController, FMPhotoPickerViewControllerDelegate, FMI
     @IBOutlet weak var maxImageLB: UILabel!
     @IBOutlet weak var maxVideoLB: UILabel!
     @IBOutlet weak var previewImageView: UIImageView!
+    @IBOutlet weak var forceCropEnabled: UISwitch!
+    @IBOutlet weak var eclipsePreviewEnabled: UISwitch!
     
     private var maxImage: Int = 5
     private var maxVideo: Int = 5
@@ -36,6 +38,9 @@ class ViewController: UIViewController, FMPhotoPickerViewControllerDelegate, FMI
         
         // video off by default
         self.allowVideo.isOn = false
+        
+        self.forceCropEnabled.isOn = false
+        self.eclipsePreviewEnabled.isOn = false
         
         self.selectMode.selectedSegmentIndex = 1
         // Do any additional setup after loading the view, typically from a nib.
@@ -68,7 +73,7 @@ class ViewController: UIViewController, FMPhotoPickerViewControllerDelegate, FMI
         self.maxVideoLB.text = "\(self.maxVideo)"
     }
     
-    func commonConfig() -> FMPhotoPickerConfig {
+    func config() -> FMPhotoPickerConfig {
         let selectMode: FMSelectMode = (self.selectMode.selectedSegmentIndex == 0 ? .single : .multiple)
         
         var mediaTypes = [FMMediaType]()
@@ -81,9 +86,17 @@ class ViewController: UIViewController, FMPhotoPickerViewControllerDelegate, FMI
         config.mediaTypes = mediaTypes
         config.maxImage = self.maxImage
         config.maxVideo = self.maxVideo
+        config.forceCropEnabled = forceCropEnabled.isOn
+        config.eclipsePreviewEnabled = eclipsePreviewEnabled.isOn
         
-        // all available crops will be used
-        config.availableCrops = []
+        // in force crop mode, only the first crop option is available
+        config.availableCrops = [
+            FMCrop.ratioSquare,
+            FMCrop.ratioCustom,
+            FMCrop.ratio4x3,
+            FMCrop.ratio16x9,
+            FMCrop.ratioOrigin,
+        ]
         
         // all available filters will be used
         config.availableFilters = []
@@ -92,27 +105,15 @@ class ViewController: UIViewController, FMPhotoPickerViewControllerDelegate, FMI
     }
     
     @IBAction func open(_ sender: Any) {
-        let vc = FMPhotoPickerViewController(config: commonConfig())
+        let vc = FMPhotoPickerViewController(config: config())
         vc.delegate = self
         self.present(vc, animated: true)
     }
     
     @IBAction func openEditor(_ sender: Any) {
-        let vc = FMImageEditorViewController(config: commonConfig(), sourceImage: previewImageView.image!)
+        let vc = FMImageEditorViewController(config: config(), sourceImage: previewImageView.image!)
         vc.delegate = self
         
-        self.present(vc, animated: true)
-    }
-    
-    @IBAction func openPickeInForceCrop(_ sender: Any) {
-        var config = commonConfig()
-        config.forceCropEnabled = true
-        config.eclipsePreviewEnabled = true
-        config.availableCrops = [FMCrop.ratioSquare]
-        config.selectMode = .single
-        
-        let vc = FMPhotoPickerViewController(config: config)
-        vc.delegate = self
         self.present(vc, animated: true)
     }
 }

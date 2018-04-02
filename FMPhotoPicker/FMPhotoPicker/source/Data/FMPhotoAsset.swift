@@ -37,16 +37,32 @@ public class FMPhotoAsset {
         self.mediaType = FMMediaType(withPHAssetMediaType: asset.mediaType)
         self.sourceImage = nil
         
-        if let forceCropType = forceCropType, let fmCropRatio = forceCropType.ratio() {
-            let assetRatio = CGFloat(asset.pixelWidth) / CGFloat(asset.pixelHeight)
+        if let forceCropType = forceCropType {
+            self.initializeEditor(for: forceCropType, imageSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight))
+        }
+    }
+    
+    init(sourceImage: UIImage, forceCropType: FMCroppable?) {
+        self.sourceImage = sourceImage
+        self.mediaType = .image
+        self.asset = nil
+        
+        if let forceCropType = forceCropType {
+            self.initializeEditor(for: forceCropType, imageSize: sourceImage.size)
+        }
+    }
+    
+    private func initializeEditor(for forceCropType: FMCroppable, imageSize: CGSize) {
+        if let fmCropRatio = forceCropType.ratio() {
+            let imageRatio = CGFloat(imageSize.width) / CGFloat(imageSize.height)
             let cropRatio = fmCropRatio.width / fmCropRatio.height
             var scaleW, scaleH: CGFloat
-            if assetRatio > cropRatio {
+            if imageRatio > cropRatio {
                 scaleH = 1.0
-                scaleW = cropRatio / assetRatio
+                scaleW = cropRatio / imageRatio
             } else {
                 scaleW = 1.0
-                scaleH = assetRatio / cropRatio
+                scaleH = imageRatio / cropRatio
             }
             let cropArea = FMCropArea(scaleX: (1 - scaleW) / 2,
                                       scaleY: (1 - scaleH) / 2,
@@ -55,12 +71,6 @@ public class FMPhotoAsset {
             self.editor.cropArea = cropArea
             self.editor.crop = forceCropType
         }
-    }
-    
-    init(sourceImage: UIImage) {
-        self.sourceImage = sourceImage
-        self.mediaType = .image
-        self.asset = nil
     }
     
     func requestVideoFrames(_ complete: @escaping ([CGImage]) -> Void) {
@@ -82,8 +92,9 @@ public class FMPhotoAsset {
         if let thumb = self.thumb {
             complete(thumb)
         } else {
+            let size = CGSize(width: 150, height: 150)
             if let asset = asset {
-                self.thumbRequestId = Helper.getPhoto(by: asset, in: CGSize(width: 150, height: 150)) { image in
+                self.thumbRequestId = Helper.getPhoto(by: asset, in: size) { image in
                     self.thumbRequestId = nil
                     self.originalThumb = image
                     
@@ -94,7 +105,7 @@ public class FMPhotoAsset {
                 }
             } else {
                 guard let image = sourceImage else { return complete(nil) }
-                let edited = self.editor.reproduce(source: image, cropState: .edited, filterState: .edited)
+                let edited = self.editor.reproduce(source: image.resize(toSize: size), cropState: .edited, filterState: .edited)
                 complete(edited)
             }
         }

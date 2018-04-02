@@ -111,12 +111,13 @@ public class FMImageEditorViewController: UIViewController {
     public init(config: FMPhotoPickerConfig, sourceImage: UIImage) {
         self.config = config
         
-        self.fmPhotoAsset = FMPhotoAsset(sourceImage: sourceImage)
+        let forceCropType = config.forceCropEnabled ? config.availableCrops.first! : nil
+        let fmPhotoAsset = FMPhotoAsset(sourceImage: sourceImage, forceCropType: forceCropType)
+        self.fmPhotoAsset = fmPhotoAsset
         
-        self.originalThumb = sourceImage.resize(toSize: CGSize(width: 100, height: 100))
+        self.originalThumb = sourceImage
         
         self.originalImage = sourceImage
-        
         self.filteredImage = sourceImage
         
         selectedFilter = fmPhotoAsset.getAppliedFilter()
@@ -125,6 +126,10 @@ public class FMImageEditorViewController: UIViewController {
         isAnimatedPresent = true
         
         super.init(nibName: "FMImageEditorViewController", bundle: Bundle(for: FMImageEditorViewController.self))
+        
+        fmPhotoAsset.requestThumb { image in
+            self.originalThumb = image!
+        }
         
         self.view.backgroundColor = kBackgroundColor
     }
@@ -177,18 +182,21 @@ public class FMImageEditorViewController: UIViewController {
             }
         }
         
-        if !isAnimatedPresent {
+        if isAnimatedPresent {
             // In animated present mode
-            // hide the view until the crop view image is located
+            // Hide ONLY crop view until the crop view image is located
+            cropView.isHidden = true
+        } else {
+            // Hide entire view view until the crop view image is located
+            // Because the crop view's frame is restore when view did appear
+            // It's neccssary to hide the initial view until the view's position restore is completed
+            // It will make the transition become more natural and smooth
             view.isHidden = true
         }
     }
     
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        // show top menu before animation
-        topMenuContainter.isHidden = false
         
         // hide top and bottom menu
         bottomMenuBottomConstraint.constant = -bottomMenuContainer.frame.height
@@ -202,6 +210,10 @@ public class FMImageEditorViewController: UIViewController {
     }
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        // show top menu before animation
+        topMenuContainter.isHidden = false
+        
         showAnimatedMenu()
         
         // show filter menu by default
@@ -215,8 +227,12 @@ public class FMImageEditorViewController: UIViewController {
         cropView.contentFrame = contentFrameFilter()
         cropView.moveCropBoxToAspectFillContentFrame()
         
-        // show the view when the crop view image is located
-        view.isHidden = false
+        // show view the crop view image is re-located
+        if isAnimatedPresent {
+            cropView.isHidden = false
+        } else {
+            view.isHidden = false
+        }
         
         // dissable pan and pinch gestures
         cropView.isCropping = false
