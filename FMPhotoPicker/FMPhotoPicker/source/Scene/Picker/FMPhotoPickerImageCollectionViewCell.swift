@@ -54,10 +54,10 @@ class FMPhotoPickerImageCollectionViewCell: UICollectionViewCell {
             self.imageView.image = image
         }
         
-        photoAsset.thumbChanged = { [weak self] image in
-            guard let strongSelf = self else { return }
+        photoAsset.thumbChanged = { [weak self, weak photoAsset] image in
+            guard let strongSelf = self, let strongPhotoAsset = photoAsset else { return }
             strongSelf.imageView.image = image
-            strongSelf.editedMarkImageView.isHidden = !photoAsset.isEdited()
+            strongSelf.editedMarkImageView.isHidden = !strongPhotoAsset.isEdited()
         }
         
         if photoAsset.mediaType == .video {
