@@ -40,22 +40,25 @@ public enum FMCrop: FMCroppable {
         
         switch orientation {
         case .down:
-            targetRect.origin.x = image.size.width - rect.maxX * scale
-            targetRect.origin.y = image.size.height - rect.maxY * scale
+            targetRect.origin.x = (image.size.width - rect.maxX) * scale
+            targetRect.origin.y = (image.size.height - rect.maxY) * scale
             targetRect.size.width = rect.width * scale
             targetRect.size.height = rect.height * scale
         case .right:
             targetRect.origin.x = rect.minY * scale
-            targetRect.origin.y = image.size.width - rect.maxX * scale
-            targetRect.size.width = rect.height
-            targetRect.size.height = rect.width
+            targetRect.origin.y = (image.size.width - rect.maxX) * scale
+            targetRect.size.width = rect.height * scale
+            targetRect.size.height = rect.width * scale
         case .left:
             targetRect.origin.x = image.size.height - rect.maxY * scale
             targetRect.origin.y = rect.minX * scale
-            targetRect.size.width = rect.height
-            targetRect.size.height = rect.width
+            targetRect.size.width = rect.height * scale
+            targetRect.size.height = rect.width * scale
         default:
-            targetRect = rect
+            targetRect = CGRect(x: rect.origin.x * scale,
+                                y: rect.origin.y * scale,
+                                width: rect.width * scale,
+                                height: rect.height * scale)
         }
         
         if let croppedCGImage = image.cgImage?.cropping(to: targetRect) {
