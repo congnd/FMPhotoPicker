@@ -92,7 +92,8 @@ public class FMPhotoAsset {
         if let thumb = self.thumb {
             complete(thumb)
         } else {
-            let size = CGSize(width: 150, height: 150)
+            let cropScale = min(editor.cropArea.scaleW, editor.cropArea.scaleH)
+            let size = CGSize(width: 200 / cropScale, height: 200 / cropScale)
             if let asset = asset {
                 self.thumbRequestId = Helper.getPhoto(by: asset, in: size) { image in
                     self.thumbRequestId = nil
