@@ -298,8 +298,8 @@ class FMCropView: UIView {
         return crop.ratio()
     }
     
-    public func getCroppedImage() -> UIImage {
-        return UIImage(view: foregroundView)
+    public func getCroppedThumbImage() -> UIImage {
+        return foregroundView.getViewableCompareView().resize(toSizeInPixel: kFilterPreviewImageSize)
     }
     
     public func reset() {

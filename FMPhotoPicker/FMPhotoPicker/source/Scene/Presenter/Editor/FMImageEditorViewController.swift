@@ -35,7 +35,9 @@ public class FMImageEditorViewController: UIViewController {
     private let isAnimatedPresent: Bool
     
     lazy private var filterSubMenuView: FMFiltersMenuView = {
-        let filterSubMenuView = FMFiltersMenuView(withImage: originalThumb, appliedFilter: fmPhotoAsset.getAppliedFilter(), availableFilters: config.availableFilters)
+        let filterSubMenuView = FMFiltersMenuView(withImage: originalThumb.resize(toSizeInPixel: kFilterPreviewImageSize),
+                                                  appliedFilter: fmPhotoAsset.getAppliedFilter(),
+                                                  availableFilters: config.availableFilters)
         filterSubMenuView.didSelectFilter = { [unowned self] filter in
             self.selectedFilter = filter
             FMLoadingView.shared.show()
@@ -314,7 +316,7 @@ public class FMImageEditorViewController: UIViewController {
         // enable foreground touches to control show/hide compareView
         cropView.foregroundView.isEnabledTouches = true
         
-        filterSubMenuView.image = cropView.getCroppedImage()
+        filterSubMenuView.image = cropView.getCroppedThumbImage()
     }
     @IBAction func onTapOpenCrop(_ sender: Any) {
         cropMenuIcon.tintColor = kRedColor

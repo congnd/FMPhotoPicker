@@ -44,6 +44,15 @@ class FMCropForegroundView: UIView {
         layer.masksToBounds = true
     }
     
+    internal func getViewableCompareView() -> UIImage {
+        compareView.frame = imageView.frame
+        compareView.isHidden = false
+        let image = UIImage(view: self)
+        compareView.isHidden = true
+        
+        return image
+    }
+    
     private func showCompareView() {
         compareView.frame = imageView.frame
         compareView.isHidden = false

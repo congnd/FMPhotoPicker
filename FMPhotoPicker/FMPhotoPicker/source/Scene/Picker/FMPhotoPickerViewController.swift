@@ -26,6 +26,8 @@ internal let kDefaultCrop = FMCrop.ratioCustom
 
 internal let kEpsilon: CGFloat = 0.01
 
+internal let kFilterPreviewImageSize = CGSize(width: 90, height: 90)
+
 internal let kDefaultAvailableFilters = [
     FMFilter.None,
     FMFilter.CIPhotoEffectChrome,
