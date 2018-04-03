@@ -59,10 +59,13 @@ public class FMImageEditorViewController: UIViewController {
             self.cropView.crop = crop
         }
         cropSubMenuView.didReceiveCropControl = { [unowned self] cropControl in
-            if cropControl == .reset {
-                self.cropView.reset()
-            } else if cropControl == .rotate {
+            switch cropControl {
+            case .resetAll:
+                self.cropView.resetAll()
+            case .rotate:
                 self.cropView.rotate()
+            case .resetFrameWithoutChangeRatio:
+                self.cropView.resetFrameWithoutChangeRatio()
             }
         }
         return cropSubMenuView

@@ -302,21 +302,36 @@ class FMCropView: UIView {
         return foregroundView.getViewableCompareView().resize(toSizeInPixel: kFilterPreviewImageSize)
     }
     
-    public func reset() {
+    public func resetAll() {
         let imageRatio = image.size.width / image.size.height
+        resetCropFrame(to: imageRatio)
+    }
+    
+    public func resetFrameWithoutChangeRatio() {
+        guard let fmCropRatio = crop.ratio() else { return }
+        let cropRatio = fmCropRatio.width / fmCropRatio.height
+        
+        resetCropFrame(to: cropRatio)
+    }
+    
+    private func resetCropFrame(to cropRatio: CGFloat) {
         let contentFrameRatio = contentFrame.width / contentFrame.height
         var cropFrame: CGRect = .zero
-        if imageRatio > contentFrameRatio {
+        if cropRatio > contentFrameRatio {
             cropFrame.size.width = contentFrame.width
-            cropFrame.size.height = ceil(cropFrame.width / imageRatio)
+            cropFrame.size.height = ceil(cropFrame.width / cropRatio)
         } else {
             cropFrame.size.height = contentFrame.height
-            cropFrame.size.width = ceil(cropFrame.height * imageRatio)
+            cropFrame.size.width = ceil(cropFrame.height * cropRatio)
         }
         cropFrame.origin = CGPoint(x: (contentFrame.width - cropFrame.width) / 2 + contentFrame.origin.x,
                                    y: (contentFrame.height - cropFrame.height) / 2 + contentFrame.origin.y)
         
-        self.scrollView.minimumZoomScale = max(cropFrame.width / image.size.width, cropFrame.height / image.size.height)
+        let targetZoomScale = max(cropFrame.width / image.size.width, cropFrame.height / image.size.height)
+        let targetContentOffset = CGPoint(x: -cropFrame.origin.x + (image.size.width * targetZoomScale - cropFrame.width) / 2,
+                                          y: -cropFrame.origin.y + (image.size.height * targetZoomScale - cropFrame.height) / 2)
+        
+        scrollView.minimumZoomScale = targetZoomScale
         
         UIView.animate(withDuration: kComplexAnimationDuration,
                        delay: 0,
@@ -324,8 +339,8 @@ class FMCropView: UIView {
                        initialSpringVelocity: 1.0,
                        options: .beginFromCurrentState,
                        animations: {
-                        self.scrollView.zoomScale = self.scrollView.minimumZoomScale
-                        self.scrollView.contentOffset = CGPoint(x: -cropFrame.origin.x, y: -cropFrame.origin.y)
+                        self.scrollView.zoomScale = targetZoomScale
+                        self.scrollView.contentOffset = targetContentOffset
                         self.cropBoxView.frame = cropFrame
                         self.cropboxViewFrameDidChange(rect: cropFrame)
         },

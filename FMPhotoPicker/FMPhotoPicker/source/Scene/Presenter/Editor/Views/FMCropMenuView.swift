@@ -9,19 +9,21 @@
 import UIKit
 
 enum FMCropControl {
-    case reset
+    case resetAll
+    case resetFrameWithoutChangeRatio
     case rotate
     
     func name() -> String {
         switch self {
-        case .reset: return "リセット"
+        case .resetFrameWithoutChangeRatio: return "リセット"
+        case .resetAll: return "リセット"
         case .rotate: return "回転"
         }
     }
     
     func icon() -> UIImage? {
         switch self {
-        case .reset:
+        case .resetAll, .resetFrameWithoutChangeRatio:
             return UIImage(named: "icon_crop_reset", in: Bundle(for: FMPhotoPickerViewController.self), compatibleWith: nil)
         case .rotate:
             return UIImage(named: "icon_crop_rotation", in: Bundle(for: FMPhotoPickerViewController.self), compatibleWith: nil)
@@ -60,9 +62,9 @@ class FMCropMenuView: UIView {
         cropItems = tAvailableCrops
         
         if forceCropEnabled {
-            menuItems = []
+            menuItems = [.resetFrameWithoutChangeRatio]
         } else {
-            menuItems = [.reset]
+            menuItems = [.resetAll]
         }
         
         let layout = UICollectionViewFlowLayout()
@@ -144,13 +146,16 @@ extension FMCropMenuView: UICollectionViewDataSource {
 extension FMCropMenuView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section == 0 {
-            if indexPath.row == 0 {
-                didReceiveCropControl(.reset)
+            let selectedCropControl = menuItems[indexPath.row]
+            
+            switch selectedCropControl {
+            case .resetAll:
                 selectedCrop = kDefaultCrop
                 collectionView.reloadData()
-            } else if indexPath.row == 1 {
-                didReceiveCropControl(.rotate)
+            default: break
             }
+            
+            didReceiveCropControl(selectedCropControl)
         } else if indexPath.section == 1 {
             if let cell = collectionView.cellForItem(at: indexPath) as? FMCropCell {
                 let prevCropItem = selectedCrop
