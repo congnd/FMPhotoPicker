@@ -263,11 +263,11 @@ public class FMImageEditorViewController: UIViewController {
                                     cropArea: cropArea)
 
             if let delegate = self.delegate {
+                // In case that FMImageEditorViewController is used as standard-alone tool
                 self.fmPhotoAsset.requestFullSizePhoto(cropState: .edited, filterState: .edited) { image in
                     if let image = image {
                         delegate.fmImageEditorViewController(self, didFinishEdittingPhotoWith: image)
                     }
-                    self.dismiss(animated: self.isAnimatedPresent)
                 }
             } else {
                 // notify PresenterViewController to update it's image

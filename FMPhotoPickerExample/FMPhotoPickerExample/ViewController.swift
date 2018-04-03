@@ -11,6 +11,7 @@ import FMPhotoPicker
 
 class ViewController: UIViewController, FMPhotoPickerViewControllerDelegate, FMImageEditorViewControllerDelegate {
     func fmImageEditorViewController(_ editor: FMImageEditorViewController, didFinishEdittingPhotoWith photo: UIImage) {
+        self.dismiss(animated: true, completion: nil)
         previewImageView.image = photo
     }
     
