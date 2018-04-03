@@ -21,6 +21,7 @@ class FMPhotoPickerImageCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var videoInfoView: UIView!
     @IBOutlet weak var videoLengthLabel: UILabel!
     @IBOutlet weak var editedMarkImageView: UIImageView!
+    @IBOutlet weak var editedMarkImageViewTopConstraint: NSLayoutConstraint!
     
     private weak var photoAsset: FMPhotoAsset?
     
@@ -47,6 +48,12 @@ class FMPhotoPickerImageCollectionViewCell: UICollectionViewCell {
     
     public func loadView(photoAsset: FMPhotoAsset, selectMode: FMSelectMode, selectedIndex: Int?) {
         self.selectMode = selectMode
+        
+        if selectMode == .single {
+            self.selectedIndex.isHidden = true
+            self.selectButton.isHidden = true
+            self.editedMarkImageViewTopConstraint.constant = 10
+        }
         
         self.photoAsset = photoAsset
 

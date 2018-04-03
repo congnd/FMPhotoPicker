@@ -146,7 +146,16 @@ class FMPhotoPresenterViewController: UIViewController {
         
         self.numberOfSelectedPhotoContainer.layer.cornerRadius = self.numberOfSelectedPhotoContainer.frame.size.width / 2
         self.numberOfSelectedPhotoContainer.isHidden = true
-        self.determineButton.isHidden = true
+        
+        if config.selectMode == .single {
+            selectedContainer.isHidden = true
+            
+            // alway show done button
+            self.determineButton.isHidden = false
+        } else {
+            // in multiple mode done button only appear when at least one image has beem selected
+            self.determineButton.isHidden = true
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -182,11 +191,8 @@ class FMPhotoPresenterViewController: UIViewController {
         } else {
             numberOfSelectedPhotoContainer.isHidden = true
             numberOfSelectedPhoto.isHidden = true
-            if n > 0 {
-                determineButton.isHidden = false
-            } else {
-                determineButton.isHidden = true
-            }
+        
+            determineButton.isHidden = false
         }
         
         // Update selection status
@@ -263,6 +269,11 @@ class FMPhotoPresenterViewController: UIViewController {
     }
     
     @IBAction func onTapDetermine(_ sender: Any) {
+        if config.selectMode == .single {
+            // in single selection mode, tap on done button mean the current displaying image will be selected
+            self.didSelectPhotoHandler?(self.currentPhotoIndex)
+        }
+        
         didTapDetermine?()
     }
     

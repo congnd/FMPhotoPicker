@@ -65,7 +65,7 @@
                         </constraints>
                     </view>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_edited" translatesAutoresizingMaskIntoConstraints="NO" id="Fzu-dX-bHq">
-                        <rect key="frame" x="80" y="38" width="20" height="20"/>
+                        <rect key="frame" x="80" y="35" width="20" height="20"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="20" id="Gbu-G7-Ajm"/>
                             <constraint firstAttribute="height" constant="20" id="WXW-xs-MxA"/>
@@ -108,7 +108,7 @@
                 <constraint firstItem="Icb-4g-uv2" firstAttribute="centerY" secondItem="ZC5-d6-QI8" secondAttribute="centerY" id="pgY-o3-nbk"/>
                 <constraint firstItem="I7p-nR-O3g" firstAttribute="leading" secondItem="0vU-qm-UbG" secondAttribute="leading" id="tcC-Nh-Qes"/>
                 <constraint firstItem="I7p-nR-O3g" firstAttribute="top" secondItem="0vU-qm-UbG" secondAttribute="top" id="v3b-0X-Jnm"/>
-                <constraint firstItem="Fzu-dX-bHq" firstAttribute="top" secondItem="Icb-4g-uv2" secondAttribute="bottom" constant="4" id="wFj-eU-tUt"/>
+                <constraint firstItem="Fzu-dX-bHq" firstAttribute="top" secondItem="0vU-qm-UbG" secondAttribute="top" constant="35" id="wFj-eU-tUt"/>
                 <constraint firstAttribute="trailing" secondItem="I7p-nR-O3g" secondAttribute="trailing" id="win-D6-Yu0"/>
                 <constraint firstItem="Fzu-dX-bHq" firstAttribute="centerX" secondItem="Icb-4g-uv2" secondAttribute="centerX" id="xGx-9h-PqO"/>
                 <constraint firstItem="Icb-4g-uv2" firstAttribute="centerX" secondItem="ZC5-d6-QI8" secondAttribute="centerX" id="zP0-Dg-I13"/>
@@ -118,6 +118,7 @@
             <connections>
                 <outlet property="cellFilterContainer" destination="bx6-ny-VEQ" id="26H-0Z-UB2"/>
                 <outlet property="editedMarkImageView" destination="Fzu-dX-bHq" id="Kmb-Ku-91t"/>
+                <outlet property="editedMarkImageViewTopConstraint" destination="wFj-eU-tUt" id="hsm-Iz-raz"/>
                 <outlet property="imageView" destination="I7p-nR-O3g" id="EeJ-3G-BRq"/>
                 <outlet property="selectButton" destination="ZC5-d6-QI8" id="bBi-Hh-Rz9"/>
                 <outlet property="selectedIndex" destination="Icb-4g-uv2" id="nOH-86-kFi"/>
