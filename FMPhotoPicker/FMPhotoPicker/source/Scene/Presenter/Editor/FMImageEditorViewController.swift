@@ -187,11 +187,7 @@ public class FMImageEditorViewController: UIViewController {
             }
         }
         
-        if isAnimatedPresent {
-            // In animated present mode
-            // Hide ONLY crop view until the crop view image is located
-            cropView.isHidden = true
-        } else {
+        if !isAnimatedPresent {
             // Hide entire view view until the crop view image is located
             // Because the crop view's frame is restore when view did appear
             // It's neccssary to hide the initial view until the view's position restore is completed
@@ -233,9 +229,7 @@ public class FMImageEditorViewController: UIViewController {
         cropView.moveCropBoxToAspectFillContentFrame()
         
         // show view the crop view image is re-located
-        if isAnimatedPresent {
-            cropView.isHidden = false
-        } else {
+        if !isAnimatedPresent {
             view.isHidden = false
         }
         
