@@ -28,7 +28,7 @@ public class FMPhotoAsset {
     var thumbChanged: (UIImage) -> Void = { _ in }
     
     private var fullSizePhotoRequestId: PHImageRequestID?
-    private var editor = FMImageEditor()
+    private var editor: FMImageEditor!
     /**
      Indicates whether the request for the full size image was canceled.
      A workaround for this issue:
@@ -41,9 +41,7 @@ public class FMPhotoAsset {
         self.mediaType = FMMediaType(withPHAssetMediaType: asset.mediaType)
         self.sourceImage = nil
         
-        if let forceCropType = forceCropType {
-            self.initializeEditor(for: forceCropType, imageSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight))
-        }
+        self.editor = self.initializeEditor(for: forceCropType, imageSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight))
     }
     
     init(sourceImage: UIImage, forceCropType: FMCroppable?) {
@@ -51,30 +49,29 @@ public class FMPhotoAsset {
         self.mediaType = .image
         self.asset = nil
         
-        if let forceCropType = forceCropType {
-            self.initializeEditor(for: forceCropType, imageSize: sourceImage.size)
-        }
+        self.editor = self.initializeEditor(for: forceCropType, imageSize: sourceImage.size)
     }
     
-    private func initializeEditor(for forceCropType: FMCroppable, imageSize: CGSize) {
-        if let fmCropRatio = forceCropType.ratio() {
-            let imageRatio = CGFloat(imageSize.width) / CGFloat(imageSize.height)
-            let cropRatio = fmCropRatio.width / fmCropRatio.height
-            var scaleW, scaleH: CGFloat
-            if imageRatio > cropRatio {
-                scaleH = 1.0
-                scaleW = cropRatio / imageRatio
-            } else {
-                scaleW = 1.0
-                scaleH = imageRatio / cropRatio
-            }
-            let cropArea = FMCropArea(scaleX: (1 - scaleW) / 2,
-                                      scaleY: (1 - scaleH) / 2,
-                                      scaleW: scaleW,
-                                      scaleH: scaleH)
-            self.editor.cropArea = cropArea
-            self.editor.crop = forceCropType
+    private func initializeEditor(for forceCropType: FMCroppable?, imageSize: CGSize) -> FMImageEditor {
+        guard let forceCropType = forceCropType, let fmCropRatio = forceCropType.ratio() else {
+            return FMImageEditor()
         }
+        
+        let imageRatio = CGFloat(imageSize.width) / CGFloat(imageSize.height)
+        let cropRatio = fmCropRatio.width / fmCropRatio.height
+        var scaleW, scaleH: CGFloat
+        if imageRatio > cropRatio {
+            scaleH = 1.0
+            scaleW = cropRatio / imageRatio
+        } else {
+            scaleW = 1.0
+            scaleH = imageRatio / cropRatio
+        }
+        let cropArea = FMCropArea(scaleX: (1 - scaleW) / 2,
+                                  scaleY: (1 - scaleH) / 2,
+                                  scaleW: scaleW,
+                                  scaleH: scaleH)
+        return FMImageEditor(filter: kDefaultFilter, crop: forceCropType, cropArea: cropArea)
     }
     
     func requestVideoFrames(_ complete: @escaping ([CGImage]) -> Void) {
@@ -195,9 +192,6 @@ public class FMPhotoAsset {
     }
     
     public func isEdited() -> Bool {
-        if editor.filter as? FMFilter != FMFilter.None { return true }
-        if !editor.cropArea.isApproximatelyEqualToOriginal() { return true }
-        
-        return false
+        return editor.isEdited()
     }
 }
