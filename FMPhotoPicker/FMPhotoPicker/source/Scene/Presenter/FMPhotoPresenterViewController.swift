@@ -15,8 +15,10 @@ class FMPhotoPresenterViewController: UIViewController {
     @IBOutlet weak var selectedContainer: UIView!
     @IBOutlet weak var selectedIcon: UIImageView!
     @IBOutlet weak var selectedIndex: UILabel!
-    @IBOutlet weak var selectButton: UIButton!
     @IBOutlet weak var controlBarHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var numberOfSelectedPhotoContainer: UIView!
+    @IBOutlet weak var numberOfSelectedPhoto: UILabel!
+    @IBOutlet weak var determineButton: UIButton!
     
     // MARK: - Public
     public var swipeInteractionController: FMPhotoInteractionAnimator?
@@ -26,6 +28,8 @@ class FMPhotoPresenterViewController: UIViewController {
     public var didDeselectPhotoHandler: ((Int) -> Void)?
     
     public var didMoveToViewControllerHandler: ((FMPhotoViewController, Int) -> Void)?
+    
+    public var didTapDetermine: (() -> Void)?
     
     public var bottomView: FMPresenterBottomView!
     
@@ -79,10 +83,6 @@ class FMPhotoPresenterViewController: UIViewController {
         }
     }
     
-    deinit {
-        print("deinit FMPhotoPresenterViewController")
-    }
-    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -117,16 +117,16 @@ class FMPhotoPresenterViewController: UIViewController {
         self.bottomView.onTapEditButton = { [unowned self] in
             guard let photo = self.dataSource.photo(atIndex: self.currentPhotoIndex),
                 let vc = self.pageViewController.viewControllers?.first as? FMPhotoViewController,
-                let originalThumb = photo.originalThumb,
+                let originalThumb = photo.filterdThumb,
                 let filteredImage = vc.getFilteredImage()
                 else { return }
             let editorVC = FMImageEditorViewController(config: self.config,
                                                        fmPhotoAsset: photo,
                                                        filteredImage: filteredImage,
                                                        originalThumb: originalThumb)
-            editorVC.didEndEditting = { [unowned self] in
+            editorVC.didEndEditting = { [unowned self] viewDidUpdate in
                 if let photoVC = self.pageViewController.viewControllers?.first as? FMPhotoViewController {
-                    photoVC.reloadPhoto()
+                    photoVC.reloadPhoto(complete: viewDidUpdate)
                 }
             }
             self.present(editorVC, animated: false, completion: nil)
@@ -137,12 +137,25 @@ class FMPhotoPresenterViewController: UIViewController {
         self.bottomView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         self.bottomView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         self.bottomView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        self.bottomView.heightAnchor.constraint(equalToConstant: 46).isActive = true
+        self.bottomView.heightAnchor.constraint(equalToConstant: 90).isActive = true
         
         self.pageViewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.pageViewController.didMove(toParentViewController: self)
         
         self.view.backgroundColor = kBackgroundColor
+        
+        self.numberOfSelectedPhotoContainer.layer.cornerRadius = self.numberOfSelectedPhotoContainer.frame.size.width / 2
+        self.numberOfSelectedPhotoContainer.isHidden = true
+        
+        if config.selectMode == .single {
+            selectedContainer.isHidden = true
+            
+            // alway show done button
+            self.determineButton.isHidden = false
+        } else {
+            // in multiple mode done button only appear when at least one image has beem selected
+            self.determineButton.isHidden = true
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -163,33 +176,43 @@ class FMPhotoPresenterViewController: UIViewController {
     
     // MARK: - Update Views
     private func updateInfoBar() {
+        let n = dataSource.numberOfSelectedPhoto()
+        if self.config.selectMode == .multiple {
+            if n > 0 {
+                determineButton.isHidden = false
+                numberOfSelectedPhotoContainer.isHidden = false
+                numberOfSelectedPhoto.isHidden = false
+                numberOfSelectedPhoto.text = "\(n)"
+            } else {
+                determineButton.isHidden = true
+                numberOfSelectedPhotoContainer.isHidden = true
+                numberOfSelectedPhoto.isHidden = true
+            }
+        } else {
+            numberOfSelectedPhotoContainer.isHidden = true
+            numberOfSelectedPhoto.isHidden = true
+        
+            determineButton.isHidden = false
+        }
+        
         // Update selection status
         if let selectedIndex = self.dataSource.selectedIndexOfPhoto(atIndex: self.currentPhotoIndex) {
-            
-            self.selectedContainer.isHidden = false
             if self.config.selectMode == .multiple {
+                self.selectedIndex.isHidden = false
                 self.selectedIndex.text = "\(selectedIndex + 1)"
                 self.selectedIcon.image = UIImage(named: "check_on", in: Bundle(for: self.classForCoder), compatibleWith: nil)
             } else {
                 self.selectedIndex.isHidden = true
                 self.selectedIcon.image = UIImage(named: "single_check_on", in: Bundle(for: self.classForCoder), compatibleWith: nil)
             }
-
-            UIView.performWithoutAnimation {
-                self.selectButton.setTitle("選択解除", for: .normal)
-                self.selectButton.layoutIfNeeded()
-            }
         } else {
-            self.selectedContainer.isHidden = true
-            UIView.performWithoutAnimation {
-                self.selectButton.setTitle("選択", for: .normal)
-                self.selectButton.layoutIfNeeded()
-            }
+            self.selectedIndex.isHidden = true
+            self.selectedIcon.image = UIImage(named: "check_off", in: Bundle(for: self.classForCoder), compatibleWith: nil)
         }
         
         // Update photo title
         if let photoAsset = self.dataSource.photo(atIndex: self.currentPhotoIndex),
-            let creationDate = photoAsset.asset.creationDate {
+            let creationDate = photoAsset.asset?.creationDate {
             self.photoTitle.text = self.formatter.string(from: creationDate)
         }
     }
@@ -222,7 +245,9 @@ class FMPhotoPresenterViewController: UIViewController {
         if fmAsset.mediaType == .video {
             bottomView.videoMode()
             fmAsset.requestVideoFrames { cgImages in
-                self.bottomView.resetPlaybackControl(cgImages: cgImages, duration: fmAsset.asset.duration)
+                if let asset = fmAsset.asset {
+                    self.bottomView.resetPlaybackControl(cgImages: cgImages, duration: asset.duration)
+                }
             }
         } else {
             bottomView.imageMode()
@@ -233,6 +258,7 @@ class FMPhotoPresenterViewController: UIViewController {
     @IBAction func onTapClose(_ sender: Any) {
         self.dismiss(animated: true)
     }
+    
     @IBAction func onTapSelection(_ sender: Any) {
         if self.dataSource.selectedIndexOfPhoto(atIndex: self.currentPhotoIndex) == nil {
             self.didSelectPhotoHandler?(self.currentPhotoIndex)
@@ -241,6 +267,16 @@ class FMPhotoPresenterViewController: UIViewController {
         }
         self.updateInfoBar()
     }
+    
+    @IBAction func onTapDetermine(_ sender: Any) {
+        if config.selectMode == .single {
+            // in single selection mode, tap on done button mean the current displaying image will be selected
+            self.didSelectPhotoHandler?(self.currentPhotoIndex)
+        }
+        
+        didTapDetermine?()
+    }
+    
 }
 
 // MARK: - UIPageViewControllerDataSource / UIPageViewControllerDelegate

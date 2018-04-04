@@ -40,7 +40,7 @@ class FMPresenterBottomView: UIView {
         
         self.addSubview(playbackControlView)
         playbackControlView.translatesAutoresizingMaskIntoConstraints = false
-        playbackControlView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        playbackControlView.heightAnchor.constraint(equalToConstant: 100).isActive = true
         playbackControlView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         playbackControlView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         playbackControlView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
@@ -51,7 +51,7 @@ class FMPresenterBottomView: UIView {
         
         self.addSubview(editMenuView)
         editMenuView.translatesAutoresizingMaskIntoConstraints = false
-        editMenuView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        editMenuView.heightAnchor.constraint(equalToConstant: 46).isActive = true
         editMenuView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         editMenuView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         editMenuView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true

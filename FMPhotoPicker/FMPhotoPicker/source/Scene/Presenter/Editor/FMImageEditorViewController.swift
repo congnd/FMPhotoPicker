@@ -10,7 +10,12 @@ import UIKit
 
 let kContentFrameSpacing: CGFloat = 22.0
 
-class FMImageEditorViewController: UIViewController {
+// MARK: - Delegate protocol
+public protocol FMImageEditorViewControllerDelegate: class {
+    func fmImageEditorViewController(_ editor: FMImageEditorViewController, didFinishEdittingPhotoWith photo: UIImage)
+}
+
+public class FMImageEditorViewController: UIViewController {
     
     @IBOutlet weak var topMenuTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomMenuBottomConstraint: NSLayoutConstraint!
@@ -24,11 +29,15 @@ class FMImageEditorViewController: UIViewController {
     @IBOutlet weak var cropMenuButton: UIButton!
     @IBOutlet weak var cropMenuIcon: UIImageView!
     
-    public var didEndEditting: () -> Void = {}
+    public var didEndEditting: (@escaping () -> Void) -> Void = { _ in }
+    public var delegate: FMImageEditorViewControllerDelegate?
     
+    private let isAnimatedPresent: Bool
     
     lazy private var filterSubMenuView: FMFiltersMenuView = {
-        let filterSubMenuView = FMFiltersMenuView(withImage: originalThumb, appliedFilter: fmPhotoAsset.getAppliedFilter(), availableFilters: config.availableFilters)
+        let filterSubMenuView = FMFiltersMenuView(withImage: originalThumb.resize(toSizeInPixel: kFilterPreviewImageSize),
+                                                  appliedFilter: fmPhotoAsset.getAppliedFilter(),
+                                                  availableFilters: config.availableFilters)
         filterSubMenuView.didSelectFilter = { [unowned self] filter in
             self.selectedFilter = filter
             FMLoadingView.shared.show()
@@ -44,16 +53,19 @@ class FMImageEditorViewController: UIViewController {
     }()
     
     lazy private var cropSubMenuView: FMCropMenuView = {
-        let cropSubMenuView = FMCropMenuView(appliedCrop: selectedCrop, availableCrops: config.availableCrops)
+        let cropSubMenuView = FMCropMenuView(appliedCrop: selectedCrop, availableCrops: config.availableCrops, forceCropEnabled: config.forceCropEnabled)
         cropSubMenuView.didSelectCrop = { [unowned self] crop in
             self.selectedCrop = crop
             self.cropView.crop = crop
         }
         cropSubMenuView.didReceiveCropControl = { [unowned self] cropControl in
-            if cropControl == .reset {
-                self.cropView.reset()
-            } else if cropControl == .rotate {
+            switch cropControl {
+            case .resetAll:
+                self.cropView.resetAll()
+            case .rotate:
                 self.cropView.rotate()
+            case .resetFrameWithoutChangeRatio:
+                self.cropView.resetFrameWithoutChangeRatio()
             }
         }
         return cropSubMenuView
@@ -94,27 +106,56 @@ class FMImageEditorViewController: UIViewController {
         selectedFilter = fmPhotoAsset.getAppliedFilter()
         selectedCrop = fmPhotoAsset.getAppliedCrop()
         
+        isAnimatedPresent = false
+        
         super.init(nibName: "FMImageEditorViewController", bundle: Bundle(for: FMImageEditorViewController.self))
         
         self.view.backgroundColor = kBackgroundColor
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    public init(config: FMPhotoPickerConfig, sourceImage: UIImage) {
+        self.config = config
+        
+        let forceCropType = config.forceCropEnabled ? config.availableCrops.first! : nil
+        let fmPhotoAsset = FMPhotoAsset(sourceImage: sourceImage, forceCropType: forceCropType)
+        self.fmPhotoAsset = fmPhotoAsset
+        
+        self.originalThumb = sourceImage
+        
+        self.originalImage = sourceImage
+        self.filteredImage = sourceImage
+        
+        selectedFilter = fmPhotoAsset.getAppliedFilter()
+        selectedCrop = fmPhotoAsset.getAppliedCrop()
+        
+        isAnimatedPresent = true
+        
+        super.init(nibName: "FMImageEditorViewController", bundle: Bundle(for: FMImageEditorViewController.self))
+        
+        fmPhotoAsset.requestThumb { image in
+            self.originalThumb = image!
+        }
+        
+        self.view.backgroundColor = kBackgroundColor
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     // MARK - Life cycle
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         
+        topMenuContainter.isHidden = true
         subMenuContainer.isHidden = true
         filterSubMenuView.isHidden = true
         cropSubMenuView.isHidden = true
         
         cropView = FMCropView(image: filteredImage,
                               appliedCrop: fmPhotoAsset.getAppliedCrop(),
-                              appliedCropArea: fmPhotoAsset.getAppliedCropArea(),
-                              zoomScale: fmPhotoAsset.getAppliedZoomScale())
+                              appliedCropArea: fmPhotoAsset.getAppliedCropArea())
+        cropView.foregroundView.eclipsePreviewEnabled = self.config.eclipsePreviewEnabled
         
         self.view.addSubview(self.cropView)
         self.view.sendSubview(toBack: self.cropView)
@@ -146,11 +187,16 @@ class FMImageEditorViewController: UIViewController {
             }
         }
         
-        // hide the view until the crop view image is located
-        view.isHidden = true
+        if !isAnimatedPresent {
+            // Hide entire view view until the crop view image is located
+            // Because the crop view's frame is restore when view did appear
+            // It's neccssary to hide the initial view until the view's position restore is completed
+            // It will make the transition become more natural and smooth
+            view.isHidden = true
+        }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // hide top and bottom menu
@@ -163,8 +209,12 @@ class FMImageEditorViewController: UIViewController {
         // so we need call again in viewDidAppear to dissable them
         cropView.isCropping = false
     }
-    override func viewDidAppear(_ animated: Bool) {
+    override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        // show top menu before animation
+        topMenuContainter.isHidden = false
+        
         showAnimatedMenu()
         
         // show filter menu by default
@@ -178,22 +228,24 @@ class FMImageEditorViewController: UIViewController {
         cropView.contentFrame = contentFrameFilter()
         cropView.moveCropBoxToAspectFillContentFrame()
         
-        // show the view when the crop view image is located
-        view.isHidden = false
+        // show view the crop view image is re-located
+        if !isAnimatedPresent {
+            view.isHidden = false
+        }
         
         // dissable pan and pinch gestures
         cropView.isCropping = false
     }
     
-    override func viewDidLayoutSubviews() {
+    override public func viewDidLayoutSubviews() {
         cropView.frame = view.frame
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
+    override public func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
     }
 
-    override func didReceiveMemoryWarning() {
+    override public func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
 
@@ -208,28 +260,35 @@ class FMImageEditorViewController: UIViewController {
             
             self.fmPhotoAsset.apply(filter: self.selectedFilter,
                                     crop: self.selectedCrop,
-                                    cropArea: cropArea,
-                                    zoomScale: self.cropView.scrollView.zoomScale)
-            
-            
-            // notify PresenterViewController to update it's image
-            self.didEndEditting()
-            
-            self.hideAnimatedMenu {
-                self.dismiss(animated: false, completion: nil)
+                                    cropArea: cropArea)
+
+            if let delegate = self.delegate {
+                // In case that FMImageEditorViewController is used as standard-alone tool
+                self.fmPhotoAsset.requestFullSizePhoto(cropState: .edited, filterState: .edited) { image in
+                    if let image = image {
+                        delegate.fmImageEditorViewController(self, didFinishEdittingPhotoWith: image)
+                    }
+                }
+            } else {
+                // notify PresenterViewController to update it's image
+                self.didEndEditting() {
+                    self.dismiss(animated: self.isAnimatedPresent)
+                }
             }
         }
+        
+        self.hideAnimatedMenu() {}
     }
     
     @IBAction func onTapCancel(_ sender: Any) {
         let doCancelBlock = {
-            self.hideAnimatedMenu {
-                self.dismiss(animated: false, completion: nil)
-            }
+            self.cropView.isCropping = false
             
             self.cropView.contentFrame = self.contentFrameFullScreen()
             self.cropView.moveCropBoxToAspectFillContentFrame()
-            self.cropView.isCropping = false
+            self.hideAnimatedMenu {
+                self.dismiss(animated: self.isAnimatedPresent, completion: nil)
+            }
         }
         
         if fmPhotoAsset.getAppliedFilter().filterName() == selectedFilter.filterName() &&
@@ -254,7 +313,7 @@ class FMImageEditorViewController: UIViewController {
         // enable foreground touches to control show/hide compareView
         cropView.foregroundView.isEnabledTouches = true
         
-        filterSubMenuView.image = cropView.getCroppedImage()
+        filterSubMenuView.image = cropView.getCroppedThumbImage()
     }
     @IBAction func onTapOpenCrop(_ sender: Any) {
         cropMenuIcon.tintColor = kRedColor

@@ -44,10 +44,24 @@ public struct FMCropArea {
 }
 
 struct FMImageEditor {
-    var filter: FMFilterable = kDefaultFilter
-    var crop: FMCroppable = kDefaultCrop
-    var cropArea: FMCropArea = FMCropArea()
-    var zoomScale: CGFloat?
+    var filter: FMFilterable
+    var crop: FMCroppable
+    var cropArea: FMCropArea
+    
+    let initFilter: FMFilterable
+    let initCrop: FMCroppable
+    let initCropArea: FMCropArea
+    
+    init(filter: FMFilterable=kDefaultFilter, crop: FMCroppable=kDefaultCrop, cropArea: FMCropArea=FMCropArea()) {
+        initFilter      = filter
+        self.filter     = filter
+        
+        initCrop        = crop
+        self.crop       = crop
+        
+        initCropArea    = cropArea
+        self.cropArea   = cropArea
+    }
     
     func reproduce(source image: UIImage, cropState: FMImageEditState, filterState: FMImageEditState) -> UIImage {
         var result = image
@@ -74,5 +88,9 @@ struct FMImageEditor {
         
         return crop.crop(image: image,
                          toRect: cropArea.area(forSize: image.size))
+    }
+    
+    public func isEdited() -> Bool {
+        return filter.filterName() != initFilter.filterName() || crop.name() != initCrop.name() || !cropArea.isApproximatelyEqual(to: initCropArea)
     }
 }

@@ -31,18 +31,24 @@ class FMZoomOutAnimationController: NSObject, UIViewControllerAnimatedTransition
                 return
         }
         
-        let snapshot = photoVC.viewToSnapshot().ins_snapshotView()
         let containerView = transitionContext.containerView
         
         let pannedVector = fromVC.pageViewController.view.frame.origin
+        
+        let snapshot = photoVC.viewToSnapshot().ins_snapshotView()
         containerView.addSubview(snapshot)
-        snapshot.frame = CGRect(x: 0, y: 0, width: photoVC.viewToSnapshot().frame.width, height: photoVC.viewToSnapshot().frame.height)
-        snapshot.center =  containerView.center
+        
+        let originSnapshotSize = snapshot.frame.size
+        
+        snapshot.frame = CGRect(origin: .zero, size: originSnapshotSize)
+        snapshot.center = containerView.center
+        
         snapshot.frame = CGRect(origin: CGPoint(x: snapshot.frame.origin.x + pannedVector.x,
                                                 y: snapshot.frame.origin.y + pannedVector.y),
-                                size: snapshot.frame.size)
+                                size: originSnapshotSize)
         
         fromVC.view.isHidden = true
+        
         let duration = transitionDuration(using: transitionContext)
         
         UIView.animateKeyframes(
@@ -52,6 +58,7 @@ class FMZoomOutAnimationController: NSObject, UIViewControllerAnimatedTransition
             animations: {
                 UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.9) {
                     snapshot.frame = self.realDestinationFrame(scaledFrame: self.getDestFrame(), realSize: snapshot.frame.size)
+                    snapshot.layer.cornerRadius = 0
                 }
                 
                 UIView.addKeyframe(withRelativeStartTime: 0.9, relativeDuration: 0.1) {

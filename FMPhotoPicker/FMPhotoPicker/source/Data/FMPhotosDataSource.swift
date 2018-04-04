@@ -38,12 +38,12 @@ class FMPhotosDataSource {
         return self.selectedPhotoIndexes.count
     }
     
-    public func mediaTypeForPhoto(atIndex index: Int) -> PHAssetMediaType? {
-        return self.photo(atIndex: index)?.asset.mediaType
+    public func mediaTypeForPhoto(atIndex index: Int) -> FMMediaType? {
+        return self.photo(atIndex: index)?.mediaType
     }
     
-    public func countSelectedPhoto(byType: PHAssetMediaType) -> Int {
-        return self.getSelectedPhotos().filter { $0.asset.mediaType == byType }.count
+    public func countSelectedPhoto(byType: FMMediaType) -> Int {
+        return self.getSelectedPhotos().filter { $0.mediaType == byType }.count
     }
     
     public func affectedSelectedIndexs(changedIndex: Int) -> [Int] {

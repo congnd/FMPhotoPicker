@@ -21,6 +21,7 @@ class FMPhotoPickerImageCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var videoInfoView: UIView!
     @IBOutlet weak var videoLengthLabel: UILabel!
     @IBOutlet weak var editedMarkImageView: UIImageView!
+    @IBOutlet weak var editedMarkImageViewTopConstraint: NSLayoutConstraint!
     
     private weak var photoAsset: FMPhotoAsset?
     
@@ -48,21 +49,27 @@ class FMPhotoPickerImageCollectionViewCell: UICollectionViewCell {
     public func loadView(photoAsset: FMPhotoAsset, selectMode: FMSelectMode, selectedIndex: Int?) {
         self.selectMode = selectMode
         
+        if selectMode == .single {
+            self.selectedIndex.isHidden = true
+            self.selectButton.isHidden = true
+            self.editedMarkImageViewTopConstraint.constant = 10
+        }
+        
         self.photoAsset = photoAsset
 
         photoAsset.requestThumb() { image in
             self.imageView.image = image
         }
         
-        photoAsset.thumbChanged = { [weak self] image in
-            guard let strongSelf = self else { return }
+        photoAsset.thumbChanged = { [weak self, weak photoAsset] image in
+            guard let strongSelf = self, let strongPhotoAsset = photoAsset else { return }
             strongSelf.imageView.image = image
-            strongSelf.editedMarkImageView.isHidden = !photoAsset.isEdited()
+            strongSelf.editedMarkImageView.isHidden = !strongPhotoAsset.isEdited()
         }
         
         if photoAsset.mediaType == .video {
             self.videoInfoView.isHidden = false
-            self.videoLengthLabel.text = photoAsset.asset.duration.stringTime
+            self.videoLengthLabel.text = photoAsset.asset?.duration.stringTime
         }
         
         self.editedMarkImageView.isHidden = !photoAsset.isEdited()

@@ -26,6 +26,8 @@ internal let kDefaultCrop = FMCrop.ratioCustom
 
 internal let kEpsilon: CGFloat = 0.01
 
+internal let kFilterPreviewImageSize = CGSize(width: 90, height: 90)
+
 internal let kDefaultAvailableFilters = [
     FMFilter.None,
     FMFilter.CIPhotoEffectChrome,
@@ -66,7 +68,7 @@ public class FMPhotoPickerViewController: UIViewController {
     @IBOutlet weak var imageCollectionView: UICollectionView!
     @IBOutlet weak var numberOfSelectedPhotoContainer: UIView!
     @IBOutlet weak var numberOfSelectedPhoto: UILabel!
-    @IBOutlet weak var doneButton: UIButton!
+    @IBOutlet weak var determineButton: UIButton!
     @IBOutlet weak var controlBarTopConstrant: NSLayoutConstraint!
     
     // MARK: - Public
@@ -128,7 +130,7 @@ public class FMPhotoPickerViewController: UIViewController {
         
         self.numberOfSelectedPhotoContainer.layer.cornerRadius = self.numberOfSelectedPhotoContainer.frame.size.width / 2
         self.numberOfSelectedPhotoContainer.isHidden = true
-        self.doneButton.isHidden = true
+        self.determineButton.isHidden = true
         
         if #available(iOS 11.0, *) {
             guard let window = UIApplication.shared.keyWindow else { return }
@@ -140,15 +142,57 @@ public class FMPhotoPickerViewController: UIViewController {
     }
     
     // MARK: - Target Actions
-    @IBAction func onTapDismiss(_ sender: Any) {
+    @IBAction func onTapCancel(_ sender: Any) {
         self.dismiss(animated: true)
     }
     
-    @IBAction func onTapNextStep(_ sender: Any) {
+    @IBAction func onTapDetermine(_ sender: Any) {
+        processDetermination()
+    }
+    
+    // MARK: - Logic
+    private func requestAndFetchAssets() {
+        if Helper.canAccessPhotoLib() {
+            self.fetchPhotos()
+        } else {
+            Helper.showDialog(in: self, ok: {
+                Helper.requestAuthorizationForPhotoAccess(authorized: self.fetchPhotos, rejected: Helper.openIphoneSetting)
+            })
+        }
+    }
+    
+    private func fetchPhotos() {
+        let photoAssets = Helper.getAssets(allowMediaTypes: self.config.mediaTypes)
+        let forceCropType = config.forceCropEnabled ? config.availableCrops.first! : nil
+        let fmPhotoAssets = photoAssets.map { FMPhotoAsset(asset: $0, forceCropType: forceCropType) }
+        self.dataSource = FMPhotosDataSource(photoAssets: fmPhotoAssets)
+        
+        if self.dataSource.numberOfPhotos > 0 {
+            self.imageCollectionView.reloadData()
+            self.imageCollectionView.selectItem(at: IndexPath(row: self.dataSource.numberOfPhotos - 1, section: 0),
+                                                animated: false,
+                                                scrollPosition: .bottom)
+        }
+    }
+    
+    public func updateControlBar() {
+        if self.dataSource.numberOfSelectedPhoto() > 0 {
+            self.determineButton.isHidden = false
+            if self.config.selectMode == .multiple {
+                self.numberOfSelectedPhotoContainer.isHidden = false
+                self.numberOfSelectedPhoto.text = "\(self.dataSource.numberOfSelectedPhoto())"
+            }
+        } else {
+            self.determineButton.isHidden = true
+            self.numberOfSelectedPhotoContainer.isHidden = true
+        }
+    }
+    
+    private func processDetermination() {
         FMLoadingView.shared.show()
         
         var dict = [Int:UIImage]()
-
+        
         DispatchQueue.global(qos: .userInitiated).async {
             let multiTask = DispatchGroup()
             for (index, element) in self.dataSource.getSelectedPhotos().enumerated() {
@@ -166,43 +210,6 @@ public class FMPhotoPickerViewController: UIViewController {
                 FMLoadingView.shared.hide()
                 self.delegate?.fmPhotoPickerController(self, didFinishPickingPhotoWith: result)
             }
-        }
-    }
-    
-    // MARK: - Logic
-    private func requestAndFetchAssets() {
-        if Helper.canAccessPhotoLib() {
-            self.fetchPhotos()
-        } else {
-            Helper.showDialog(in: self, ok: {
-                Helper.requestAuthorizationForPhotoAccess(authorized: self.fetchPhotos, rejected: Helper.openIphoneSetting)
-            })
-        }
-    }
-    
-    private func fetchPhotos() {
-        let photoAssets = Helper.getAssets(allowMediaTypes: self.config.mediaTypes)
-        let fmPhotoAssets = photoAssets.map { FMPhotoAsset(asset: $0) }
-        self.dataSource = FMPhotosDataSource(photoAssets: fmPhotoAssets)
-        
-        if self.dataSource.numberOfPhotos > 0 {
-            self.imageCollectionView.reloadData()
-            self.imageCollectionView.selectItem(at: IndexPath(row: self.dataSource.numberOfPhotos - 1, section: 0),
-                                                animated: false,
-                                                scrollPosition: .bottom)
-        }
-    }
-    
-    public func updateControlBar() {
-        if self.dataSource.numberOfSelectedPhoto() > 0 {
-            self.doneButton.isHidden = false
-            if self.config.selectMode == .multiple {
-                self.numberOfSelectedPhotoContainer.isHidden = false
-                self.numberOfSelectedPhoto.text = "\(self.dataSource.numberOfSelectedPhoto())"
-            }
-        } else {
-            self.doneButton.isHidden = true
-            self.numberOfSelectedPhotoContainer.isHidden = true
         }
     }
 }
@@ -258,9 +265,8 @@ extension FMPhotoPickerViewController: UICollectionViewDataSource {
      */
     public func tryToAddPhotoToSelectedList(photoIndex index: Int) {
         if self.config.selectMode == .multiple {
-            guard let phMediaType = self.dataSource.mediaTypeForPhoto(atIndex: index) else { return }
-            
-            let fmMediaType = FMMediaType(withPHAssetMediaType: phMediaType)
+            guard let fmMediaType = self.dataSource.mediaTypeForPhoto(atIndex: index) else { return }
+
             var canBeAdded = true
             
             switch fmMediaType {
@@ -323,6 +329,9 @@ extension FMPhotoPickerViewController: UICollectionViewDelegate {
         }
         vc.didMoveToViewControllerHandler = { vc, photoIndex in
             self.presentedPhotoIndex = photoIndex
+        }
+        vc.didTapDetermine = {
+            self.processDetermination()
         }
         
         vc.view.frame = self.view.frame

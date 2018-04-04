@@ -16,10 +16,14 @@ class FMCropForegroundView: UIView {
             isUserInteractionEnabled = isEnabledTouches
         }
     }
+    
+    public var eclipsePreviewEnabled = false
 
     override var frame: CGRect {
         didSet {
-//            self.imageView.frame = self.frame
+            if eclipsePreviewEnabled {
+                layer.cornerRadius = frame.width / 2
+            }
         }
     }
 
@@ -37,6 +41,16 @@ class FMCropForegroundView: UIView {
         addSubview(compareView)
         
         clipsToBounds = true
+        layer.masksToBounds = true
+    }
+    
+    internal func getViewableCompareView() -> UIImage {
+        compareView.frame = imageView.frame
+        compareView.isHidden = false
+        let image = UIImage(view: self)
+        compareView.isHidden = true
+        
+        return image
     }
     
     private func showCompareView() {

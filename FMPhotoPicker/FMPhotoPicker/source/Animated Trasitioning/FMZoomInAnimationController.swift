@@ -27,7 +27,13 @@ class FMZoomInAnimationController: NSObject, UIViewControllerAnimatedTransitioni
         let bgView = UIView(frame: containerView.frame)
         containerView.addSubview(bgView)
         containerView.addSubview(snapshot)
-        snapshot.frame = self.realDestinationFrame(scaledFrame: self.getOriginFrame(), realSize: snapshot.frame.size)
+        
+        let originalSnapshotCornerRadius = snapshot.layer.cornerRadius
+        let originalSnapshotSize = snapshot.frame.size
+        let startFrame = self.realDestinationFrame(scaledFrame: self.getOriginFrame(), realSize: snapshot.frame.size)
+        
+        snapshot.layer.cornerRadius = 0
+        snapshot.frame = startFrame
         
         containerView.addSubview(toVC.view)
         containerView.addSubview(snapshot)
@@ -49,8 +55,9 @@ class FMZoomInAnimationController: NSObject, UIViewControllerAnimatedTransitioni
                                     }
                                     
                                     UIView.addKeyframe(withRelativeStartTime: 0.1, relativeDuration: 0.9) {
-                                        snapshot.frame = CGRect(x: 0, y: 0, width: photoVC.viewToSnapshot().frame.width, height: photoVC.viewToSnapshot().frame.height)
+                                        snapshot.frame = CGRect(origin: .zero, size: originalSnapshotSize)
                                         snapshot.center =  containerView.center
+                                        snapshot.layer.cornerRadius = originalSnapshotCornerRadius
                                     }
                                     
                                     UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.5) {
