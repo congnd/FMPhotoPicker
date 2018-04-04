@@ -3,7 +3,7 @@
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
-FMPhotoPicker is a modern, simple, zero-dependency photo picker with an image editor written in Swift for iOS
+FMPhotoPicker is a modern, simple and zero-dependency photo picker with an image editor written in Swift for iOS
 
 ## Features
 - [x] Supports both single and multiple selection
@@ -16,7 +16,7 @@ FMPhotoPicker is a modern, simple, zero-dependency photo picker with an image ed
 - [x] Supports add self-define filter
 - [x] Supports video player
 - [x] Supports customize confirmation view
-- [] Supports customize language
+- [ ] Supports customize language
 
 ## Requirements
 - iOS 9.0+
@@ -68,58 +68,58 @@ func fmImageEditorViewController(_ editor: FMImageEditorViewController, didFinis
 - [`selectMode`](#ref-select-mode)
 - [`maxImage`](#ref-max-image)
 - [`maxVideo`](#ref-max-video)
-- [`availableFilters`](#ref-available-vilters)
+- [`availableFilters`](#ref-available-filters)
 - [`availableCrops`](#ref-available-crops)
 - [`alertController`](#ref-alert-controller)
-- [`forceCropEnabled`](#ref-force-cropEnabled)
+- [`forceCropEnabled`](#ref-force-crop-enabled)
 - [`eclipsePreviewEnabled`](#ref-eclipse-preview-enabled)
 
 #### Reference
-- `mediaTypes` <a name="ref-media-types"></a>  
+- <a name="ref-media-types"></a>`mediaTypes`   
 An array indicating the media types to be accessed by the picker controller.  
 Type: `[FMMediaType]`  
 Default: `[.image, .video]`
 
-- `selectMode`  <a name="ref-select-mode"></a>  
+- <a name="ref-select-mode"></a>`selectMode`    
 Photo selection mode. It can be `single` or `multiple` mode.  
 Type: : `FMSelectMode`  
 Default is `multiple`
 
-- `maxImage`  <a name="ref-max-image"></a>  
+- <a name="ref-max-image"></a>`maxImage`    
 The maximum number of image can be selected. 
 Type: `Int`  
 Default: `10`
 
-- `maxVideo`  <a name="ref-max-video"></a>  
+- <a name="ref-max-video"></a>`maxVideo`    
 The maximum number of video can be selected.  
 Type: `Int`
 Default is `10`
 
-- `availableFilters`  <a name="ref-available-filters"></a>  
+- <a name="ref-available-filters"></a>`availableFilters`    
 Filters that will be used in editor.  
 FMPhotoEditor provides some default filters that will be fit to you.  
 Type: `[FMFilterable]`  
 Default: all filters provided by FMPhotoPicker.
 
-- `availableCrops`  <a name="ref-available-crops"></a>  
+- <a name="ref-available-crops"></a>`availableCrops`    
 Crop that will be used in editor.  
 FMPhotoEditor provides some default crops that will be fit to you.  
 Type: `[FMCroppable]`  
 Default: all crops provided by FMPhotoPicker.
 
-- `alertController`  <a name="ref-alert-controller"></a>  
+- <a name="ref-alert-controller"></a>`alertController`    
 An alert controller to show confirmation view to user with 2 options: Ok or Cancel.  
 Type: `FMAlertable`
 Default: `FMAlert`
 
-- `forceCropEnabled`  <a name="ref-forc-crop-enabled"></a>  
+- <a name="ref-forc-crop-enabled"></a>`forceCropEnabled`    
 A bool value indecating whether force mode is enabled.  
 If set to `true`, only the first crop in the `availableCrops` will be used in the editor.  
 And that crop's ration will become force crop ratio.  
 Type: `FMAlertable`  
 Default: `false`
 
-- `eclipsePreviewEnabled`  <a name="ref-eclipse-preview-enabled"></a>  
+- <a name="ref-eclipse-preview-enabled"></a>`eclipsePreviewEnabled`    
 A bool value indicating whether an image in preview screen should be displayed in eclipse bound.  
 Type: `Bool`
 Default: `false`
