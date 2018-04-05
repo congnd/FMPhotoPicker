@@ -35,7 +35,7 @@ class FMZoomOutAnimationController: NSObject, UIViewControllerAnimatedTransition
         
         let pannedVector = fromVC.pageViewController.view.frame.origin
         
-        let snapshot = photoVC.viewToSnapshot().ins_snapshotView()
+        let snapshot = photoVC.viewToSnapshot().snapshot()
         containerView.addSubview(snapshot)
         
         let originSnapshotSize = snapshot.frame.size

@@ -25,5 +25,3 @@ extension InsertableUIView where Self: UIView {
 }
 
 extension UIView: InsertableUIView {}
-extension UIImageView: InsertableUIView {}
-extension UIScrollView: InsertableUIView {}

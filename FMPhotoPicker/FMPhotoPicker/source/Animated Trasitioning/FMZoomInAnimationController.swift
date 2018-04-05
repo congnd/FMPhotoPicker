@@ -22,7 +22,7 @@ class FMZoomInAnimationController: NSObject, UIViewControllerAnimatedTransitioni
         
         let containerView = transitionContext.containerView
         
-        let snapshot = photoVC.viewToSnapshot().ins_snapshotView()
+        let snapshot = photoVC.viewToSnapshot().snapshot()
         
         let bgView = UIView(frame: containerView.frame)
         containerView.addSubview(bgView)

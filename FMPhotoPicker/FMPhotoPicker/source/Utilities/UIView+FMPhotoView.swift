@@ -9,7 +9,7 @@
 import UIKit
 
 extension UIView {
-    func ins_snapshotView() -> UIView {
+    func snapshot() -> UIView {
         if let contents = layer.contents {
             var snapshotedView: UIView!
             
@@ -30,16 +30,5 @@ extension UIView {
         } else {
             return snapshotView(afterScreenUpdates: true)!
         }
-    }
-    
-    func ins_translatedCenterPointToContainerView(_ containerView: UIView) -> CGPoint {
-        var centerPoint = center
-        
-        // Special case for zoomed scroll views.
-        if let scrollView = self.superview as? UIScrollView , scrollView.zoomScale != 1.0 {
-            centerPoint.x += (scrollView.bounds.width - scrollView.contentSize.width) / 2.0 + scrollView.contentOffset.x
-            centerPoint.y += (scrollView.bounds.height - scrollView.contentSize.height) / 2.0 + scrollView.contentOffset.y
-        }
-        return self.superview?.convert(centerPoint, to: containerView) ?? CGPoint.zero
     }
 }
