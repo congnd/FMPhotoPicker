@@ -111,7 +111,12 @@ class FMScalingImageView: UIScrollView {
             let minimumScale = min(scaleWidth, scaleHeight)
             
             self.minimumZoomScale = minimumScale
-            self.maximumZoomScale = max(minimumScale, self.maximumZoomScale)
+            
+            if minimumScale > 1 {
+                self.maximumZoomScale = minimumScale
+            } else {
+                self.maximumZoomScale = min(1, minimumScale * 3)
+            }
             
             self.zoomScale = minimumZoomScale
             
