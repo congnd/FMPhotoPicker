@@ -13,7 +13,7 @@ class FMPresenterEditMenuView: UIView {
     
     public var onTapEditButton: (() -> Void)?
     
-    init() {
+    init(config: FMPhotoPickerConfig) {
         editButton = UIButton()
         
         super.init(frame: .zero)
@@ -22,9 +22,11 @@ class FMPresenterEditMenuView: UIView {
         editButton.translatesAutoresizingMaskIntoConstraints = false
         editButton.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         editButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        editButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 80).isActive = true
+        editButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 40).isActive = true
         editButton.setTitleColor(.black, for: .normal)
-        editButton.setTitle("編集", for: .normal)
-        editButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        editButton.setTitle(config.strings["present_button_edit_image"], for: .normal)
+        editButton.titleLabel?.font = UIFont.systemFont(ofSize: config.titleFontSize, weight: .bold)
         
         editButton.addTarget(self, action: #selector(editButtonTarget), for: .touchUpInside)
         

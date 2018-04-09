@@ -14,10 +14,10 @@ public protocol FMAlertable {
 
 struct FMAlert: FMAlertable {
     func show(in viewController: UIViewController, ok: @escaping () -> Void, cancel: @escaping () -> Void) {
-        let alert = UIAlertController(title: "編集内容をキャンセルしてもよろしいですか？", message: nil, preferredStyle: .alert)
+        let alert = UIAlertController(title: "Are you sure you want to cancel?", message: nil, preferredStyle: .alert)
         
-        alert.addAction(UIAlertAction(title: "はい", style: .cancel, handler: { _ in ok() }))
-        alert.addAction(UIAlertAction(title: "いいえ", style: .default, handler: { _ in cancel() }))
+        alert.addAction(UIAlertAction(title: "Yes", style: .cancel, handler: { _ in ok() }))
+        alert.addAction(UIAlertAction(title: "No", style: .default, handler: { _ in cancel() }))
         
         viewController.present(alert, animated: true, completion: nil)
     }

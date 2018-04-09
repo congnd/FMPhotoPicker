@@ -54,6 +54,26 @@ public struct FMPhotoPickerConfig {
     public var forceCropEnabled = false
     public var eclipsePreviewEnabled = false
     
+    public var titleFontSize: CGFloat = 17
+    
+    public var strings: [String: String] = [
+        "picker_button_cancel":                     "Cancel",
+        "picker_button_select_done":                "Done",
+        "picker_warning_over_image_select_format":  "You can select maximum %d images",
+        "picker_warning_over_video_select_format":  "You can select maximum %d videos",
+        
+        "present_title_photo_created_date_format":  "yyyy/M/d",
+        "present_button_back":                      "Back",
+        "present_button_edit_image":                "Edit",
+        
+        "editor_button_cancel":                     "Cancel",
+        "editor_button_done":                       "Done",
+        "editor_menu_filter":                       "Filter",
+        "editor_menu_crop":                         "Crop",
+        "editor_menu_crop_button_reset":            "Reset",
+        "editor_menu_crop_button_rotate":           "Rotate",
+    ]
+    
     public init() {
         
     }

@@ -14,10 +14,10 @@
             <connections>
                 <outlet property="bottomMenuBottomConstraint" destination="8cP-et-brD" id="UAg-dl-gvc"/>
                 <outlet property="bottomMenuContainer" destination="qBv-7F-gKy" id="1tV-1O-a2P"/>
+                <outlet property="cancelButton" destination="Oky-8O-GsR" id="XaC-ee-Ou0"/>
                 <outlet property="cropMenuButton" destination="UbG-RA-D49" id="2JF-0j-xJ7"/>
-                <outlet property="cropMenuIcon" destination="apc-zQ-5sy" id="7Uh-Jc-6sk"/>
+                <outlet property="doneButton" destination="l4B-6K-1aJ" id="GnP-JE-dyb"/>
                 <outlet property="filterMenuButton" destination="iga-x3-Nbo" id="Ip3-dv-26C"/>
-                <outlet property="filterMenuIcon" destination="ogf-Ty-3H4" id="01r-OA-cuM"/>
                 <outlet property="subMenuContainer" destination="zaG-6j-m4a" id="TQ4-6L-50g"/>
                 <outlet property="topMenuContainter" destination="zK2-M3-1gG" id="EDK-Wb-kUJ"/>
                 <outlet property="topMenuTopConstraint" destination="T57-wD-hle" id="WcF-zq-Xap"/>
@@ -40,23 +40,23 @@
                             <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oky-8O-GsR">
-                                    <rect key="frame" x="16" y="2" width="77" height="40"/>
+                                    <rect key="frame" x="8" y="2" width="48" height="40"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="40" id="bGg-YT-4Bu"/>
                                     </constraints>
-                                    <state key="normal" title="キャンセル"/>
+                                    <state key="normal" title="Cancel"/>
                                     <connections>
                                         <action selector="onTapCancel:" destination="-1" eventType="touchUpInside" id="83q-t2-vlX"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l4B-6K-1aJ">
-                                    <rect key="frame" x="319" y="2" width="40" height="40"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l4B-6K-1aJ">
+                                    <rect key="frame" x="317" y="2" width="50" height="40"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="q5Z-jP-95L"/>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="q5Z-jP-95L"/>
                                         <constraint firstAttribute="height" constant="40" id="vfd-xa-3I7"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <state key="normal" title="決定"/>
+                                    <state key="normal" title="Done"/>
                                     <connections>
                                         <action selector="onTapDone:" destination="-1" eventType="touchUpInside" id="rjT-G7-0Pd"/>
                                     </connections>
@@ -72,11 +72,11 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="Oky-8O-GsR" firstAttribute="centerY" secondItem="Cso-Cz-tup" secondAttribute="centerY" id="94Z-it-Vnv"/>
-                                <constraint firstItem="Oky-8O-GsR" firstAttribute="leading" secondItem="Cso-Cz-tup" secondAttribute="leading" constant="16" id="Vs4-12-WeG"/>
+                                <constraint firstItem="Oky-8O-GsR" firstAttribute="leading" secondItem="Cso-Cz-tup" secondAttribute="leading" constant="8" id="Vs4-12-WeG"/>
                                 <constraint firstAttribute="trailing" secondItem="y3S-el-vFd" secondAttribute="trailing" id="ZUU-hg-YJb"/>
                                 <constraint firstAttribute="height" constant="44" id="hUK-cF-OhZ"/>
                                 <constraint firstAttribute="bottom" secondItem="y3S-el-vFd" secondAttribute="bottom" id="irB-GV-7WB"/>
-                                <constraint firstAttribute="trailing" secondItem="l4B-6K-1aJ" secondAttribute="trailing" constant="16" id="jfa-Oe-KA6"/>
+                                <constraint firstAttribute="trailing" secondItem="l4B-6K-1aJ" secondAttribute="trailing" constant="8" id="jfa-Oe-KA6"/>
                                 <constraint firstItem="l4B-6K-1aJ" firstAttribute="centerY" secondItem="Cso-Cz-tup" secondAttribute="centerY" id="puf-Qf-QDe"/>
                                 <constraint firstItem="y3S-el-vFd" firstAttribute="leading" secondItem="Cso-Cz-tup" secondAttribute="leading" id="rLx-03-c9h"/>
                             </constraints>
@@ -100,65 +100,43 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7JO-AQ-ps5">
                             <rect key="frame" x="187.5" y="0.0" width="187.5" height="40"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UbG-RA-D49">
-                                    <rect key="frame" x="66.5" y="5.5" width="56" height="29"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="56" id="kUC-rz-HZ5"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                                    <state key="normal" title="調整">
+                                <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UbG-RA-D49">
+                                    <rect key="frame" x="62" y="8.5" width="64" height="24"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                    <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="-4" maxY="0.0"/>
+                                    <state key="normal" title="Crop" image="icon_crop">
                                         <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </state>
                                     <connections>
                                         <action selector="onTapOpenCrop:" destination="-1" eventType="touchUpInside" id="2iY-nt-cMg"/>
                                     </connections>
                                 </button>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_crop" translatesAutoresizingMaskIntoConstraints="NO" id="apc-zQ-5sy">
-                                    <rect key="frame" x="66.5" y="8" width="24" height="24"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="24" id="Oow-uo-3dt"/>
-                                        <constraint firstAttribute="height" constant="24" id="SqV-38-Df0"/>
-                                    </constraints>
-                                </imageView>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="UbG-RA-D49" firstAttribute="centerY" secondItem="7JO-AQ-ps5" secondAttribute="centerY" id="QWU-oA-aDZ"/>
-                                <constraint firstItem="apc-zQ-5sy" firstAttribute="centerY" secondItem="7JO-AQ-ps5" secondAttribute="centerY" id="Wli-7m-J1r"/>
                                 <constraint firstItem="UbG-RA-D49" firstAttribute="centerX" secondItem="7JO-AQ-ps5" secondAttribute="centerX" id="ro0-n6-2es"/>
-                                <constraint firstItem="UbG-RA-D49" firstAttribute="leading" secondItem="apc-zQ-5sy" secondAttribute="leading" id="uXj-92-z1X"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fl8-Qt-5hu">
                             <rect key="frame" x="0.0" y="0.0" width="187.5" height="40"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iga-x3-Nbo">
-                                    <rect key="frame" x="45" y="5.5" width="98" height="29"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="98" id="D95-SS-gTF"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                                    <state key="normal" title="フィルター">
+                                <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iga-x3-Nbo">
+                                    <rect key="frame" x="60.5" y="8.5" width="67" height="24"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                    <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="-4" maxY="0.0"/>
+                                    <state key="normal" title="Filter" image="icon_filter">
                                         <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </state>
                                     <connections>
                                         <action selector="onTapOpenFilter:" destination="-1" eventType="touchUpInside" id="Qq7-Cy-wuC"/>
                                     </connections>
                                 </button>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_filter" translatesAutoresizingMaskIntoConstraints="NO" id="ogf-Ty-3H4">
-                                    <rect key="frame" x="45" y="8" width="24" height="24"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="24" id="QBM-CM-PVk"/>
-                                        <constraint firstAttribute="height" constant="24" id="tPR-hV-fRP"/>
-                                    </constraints>
-                                </imageView>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="iga-x3-Nbo" firstAttribute="centerY" secondItem="Fl8-Qt-5hu" secondAttribute="centerY" id="308-2N-YOv"/>
-                                <constraint firstItem="ogf-Ty-3H4" firstAttribute="centerY" secondItem="Fl8-Qt-5hu" secondAttribute="centerY" id="AOJ-dn-9H0"/>
                                 <constraint firstItem="iga-x3-Nbo" firstAttribute="centerX" secondItem="Fl8-Qt-5hu" secondAttribute="centerX" id="KL7-d0-0XV"/>
-                                <constraint firstItem="iga-x3-Nbo" firstAttribute="leading" secondItem="ogf-Ty-3H4" secondAttribute="leading" id="aja-Cc-AXV"/>
                             </constraints>
                         </view>
                     </subviews>

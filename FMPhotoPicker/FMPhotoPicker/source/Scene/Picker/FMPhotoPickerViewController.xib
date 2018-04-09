@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FMPhotoPickerViewController" customModule="FMPhotoPicker" customModuleProvider="target">
             <connections>
+                <outlet property="cancelButton" destination="rww-s4-oBC" id="Gz8-I7-XQc"/>
                 <outlet property="controlBarTopConstrant" destination="Esv-jC-y0M" id="mjl-UU-ub5"/>
                 <outlet property="determineButton" destination="H3N-tL-aam" id="ULu-19-eTW"/>
                 <outlet property="imageCollectionView" destination="OL2-Hq-SBY" id="OEv-0k-kpd"/>
@@ -29,24 +30,24 @@
                     <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rww-s4-oBC">
-                            <rect key="frame" x="16" y="2" width="72" height="40"/>
+                            <rect key="frame" x="16" y="2" width="56" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="KAv-pD-p36"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <state key="normal" title="キャンセル"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                            <state key="normal" title="Cancel"/>
                             <connections>
                                 <action selector="onTapCancel:" destination="-1" eventType="touchUpInside" id="lbL-Nm-lmS"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H3N-tL-aam">
-                            <rect key="frame" x="319" y="2" width="40" height="40"/>
+                            <rect key="frame" x="318" y="2" width="41" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="QwK-26-jMi"/>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="bCk-Db-psT"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <state key="normal" title="決定"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <state key="normal" title="Done"/>
                             <connections>
                                 <action selector="onTapDetermine:" destination="-1" eventType="touchUpInside" id="6ZB-gm-DxN"/>
                             </connections>
@@ -59,7 +60,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sev-Wd-rWB">
-                            <rect key="frame" x="275" y="8.5" width="28" height="28"/>
+                            <rect key="frame" x="274" y="8.5" width="28" height="28"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WUE-Oy-OeG">
                                     <rect key="frame" x="0.0" y="0.0" width="28" height="28"/>

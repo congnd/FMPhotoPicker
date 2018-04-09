@@ -50,10 +50,14 @@ class FMWarningView {
         self.messageLabel.textColor = .white
         self.messageLabel.font = UIFont.systemFont(ofSize: 15)
         self.messageLabel.text = self.message
+        self.messageLabel.numberOfLines = 2
+        self.messageLabel.textAlignment = .center
         
         self.contentView.addSubview(self.messageLabel)
-        self.messageLabel.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor, constant: 0).isActive = true
-        self.messageLabel.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor, constant: 0).isActive = true
+        self.messageLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 8) .isActive = true
+        self.messageLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -8).isActive = true
+        self.messageLabel.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 8).isActive = true
+        self.messageLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -8).isActive = true
     }
     
     func showAndAutoHide() {

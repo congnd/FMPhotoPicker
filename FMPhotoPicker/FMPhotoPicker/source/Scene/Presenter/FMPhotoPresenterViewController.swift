@@ -19,6 +19,7 @@ class FMPhotoPresenterViewController: UIViewController {
     @IBOutlet weak var numberOfSelectedPhotoContainer: UIView!
     @IBOutlet weak var numberOfSelectedPhoto: UILabel!
     @IBOutlet weak var determineButton: UIButton!
+    @IBOutlet weak var backButton: UIButton!
     
     // MARK: - Public
     public var swipeInteractionController: FMPhotoInteractionAnimator?
@@ -50,7 +51,7 @@ class FMPhotoPresenterViewController: UIViewController {
     
     private lazy var formatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy年M月d日"
+        formatter.dateFormat = config.strings["present_title_photo_created_date_format"]
         formatter.calendar = Calendar(identifier: .gregorian)
         return formatter
     }()
@@ -105,7 +106,7 @@ class FMPhotoPresenterViewController: UIViewController {
         
         
         // Init bottom view
-        self.bottomView = FMPresenterBottomView()
+        self.bottomView = FMPresenterBottomView(config: config)
         swipeInteractionController = FMPhotoInteractionAnimator(viewController: self)
         
         self.bottomView.touchBegan = { [unowned self] in
@@ -156,6 +157,13 @@ class FMPhotoPresenterViewController: UIViewController {
             // in multiple mode done button only appear when at least one image has beem selected
             self.determineButton.isHidden = true
         }
+        
+        // set button title
+        self.backButton.setTitle(config.strings["present_button_back"], for: .normal)
+        self.backButton.titleLabel!.font = UIFont.systemFont(ofSize: config.titleFontSize)
+        
+        self.determineButton.setTitle(config.strings["picker_button_select_done"], for: .normal)
+        self.determineButton.titleLabel!.font = UIFont.systemFont(ofSize: config.titleFontSize)
     }
     
     override func viewDidAppear(_ animated: Bool) {

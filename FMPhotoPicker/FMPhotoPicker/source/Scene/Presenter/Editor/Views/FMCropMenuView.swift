@@ -13,11 +13,11 @@ enum FMCropControl {
     case resetFrameWithoutChangeRatio
     case rotate
     
-    func name() -> String {
+    func name(from stringConfig: [String: String]) -> String {
         switch self {
-        case .resetFrameWithoutChangeRatio: return "リセット"
-        case .resetAll: return "リセット"
-        case .rotate: return "回転"
+        case .resetFrameWithoutChangeRatio: return stringConfig["editor_menu_crop_button_reset"]!
+        case .resetAll: return stringConfig["editor_menu_crop_button_reset"]!
+        case .rotate: return stringConfig["editor_menu_crop_button_rotate"]!
         }
     }
     
@@ -47,21 +47,24 @@ class FMCropMenuView: UIView {
         }
     }
     
-    init(appliedCrop: FMCroppable?, availableCrops: [FMCroppable], forceCropEnabled: Bool) {
+    private var config: FMPhotoPickerConfig
+    
+    init(appliedCrop: FMCroppable?, availableCrops: [FMCroppable], config: FMPhotoPickerConfig) {
         selectedCrop = appliedCrop
+        self.config = config
         
         var tAvailableCrops = availableCrops
         tAvailableCrops = tAvailableCrops.count == 0 ? kDefaultAvailableCrops : tAvailableCrops
         
         // if the force crop mode is enabled
         // then only the first crop type in the avaiableCrops will be used
-        if forceCropEnabled {
+        if config.forceCropEnabled {
             tAvailableCrops = [tAvailableCrops.first!]
         }
         
         cropItems = tAvailableCrops
         
-        if forceCropEnabled {
+        if config.forceCropEnabled {
             menuItems = [.resetFrameWithoutChangeRatio]
         } else {
             menuItems = [.resetAll]
@@ -127,7 +130,7 @@ extension FMCropMenuView: UICollectionViewDataSource {
         
         if indexPath.section == 0 {
             // menu items
-            cell.name.text = menuItems[indexPath.row].name()
+            cell.name.text = menuItems[indexPath.row].name(from: config.strings)
             cell.imageView.image = menuItems[indexPath.row].icon()
         } else if indexPath.section == 1 {
             // crop items

@@ -21,6 +21,7 @@ public class FMPhotoPickerViewController: UIViewController {
     @IBOutlet weak var numberOfSelectedPhoto: UILabel!
     @IBOutlet weak var determineButton: UIButton!
     @IBOutlet weak var controlBarTopConstrant: NSLayoutConstraint!
+    @IBOutlet weak var cancelButton: UIButton!
     
     // MARK: - Public
     public weak var delegate: FMPhotoPickerViewControllerDelegate? = nil
@@ -90,6 +91,12 @@ public class FMPhotoPickerViewController: UIViewController {
                 self.controlBarTopConstrant.constant = 44
             }
         }
+        
+        // set button title
+        self.cancelButton.setTitle(config.strings["picker_button_cancel"], for: .normal)
+        self.cancelButton.titleLabel!.font = UIFont.systemFont(ofSize: config.titleFontSize)
+        self.determineButton.setTitle(config.strings["picker_button_select_done"], for: .normal)
+        self.determineButton.titleLabel!.font = UIFont.systemFont(ofSize: config.titleFontSize)
     }
     
     // MARK: - Target Actions
@@ -225,14 +232,14 @@ extension FMPhotoPickerViewController: UICollectionViewDataSource {
                 if self.dataSource.countSelectedPhoto(byType: .image) >= self.config.maxImage {
                     canBeAdded = false
                     let warning = FMWarningView.shared
-                    warning.message = "画像は最大\(self.config.maxImage)個まで選択できます。"
+                    warning.message = String(format: config.strings["picker_warning_over_image_select_format"]!, self.config.maxImage)
                     warning.showAndAutoHide()
                 }
             case .video:
                 if self.dataSource.countSelectedPhoto(byType: .video) >= self.config.maxVideo {
                     canBeAdded = false
                     let warning = FMWarningView.shared
-                    warning.message = "動画は最大\(self.config.maxVideo)個まで選択できます。"
+                    warning.message = String(format: config.strings["picker_warning_over_video_select_format"]!, self.config.maxImage)
                     warning.showAndAutoHide()
                 }
             case .unsupported:

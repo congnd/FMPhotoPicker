@@ -33,9 +33,9 @@ class FMPresenterBottomView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init() {
+    init(config: FMPhotoPickerConfig) {
         playbackControlView = FMPlaybackControlView()
-        editMenuView = FMPresenterEditMenuView()
+        editMenuView = FMPresenterEditMenuView(config: config)
         super.init(frame: .zero)
         
         self.addSubview(playbackControlView)
