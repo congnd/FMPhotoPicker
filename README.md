@@ -16,7 +16,7 @@ FMPhotoPicker is a modern, simple and zero-dependency photo picker with an image
 - [x] Supports add self-define filter
 - [x] Supports video player
 - [x] Supports customize confirmation view
-- [ ] Supports customize language
+- [x] Supports customize language
 
 ## Requirements
 - iOS 9.0+
@@ -73,6 +73,7 @@ func fmImageEditorViewController(_ editor: FMImageEditorViewController, didFinis
 - [`alertController`](#ref-alert-controller)
 - [`forceCropEnabled`](#ref-force-crop-enabled)
 - [`eclipsePreviewEnabled`](#ref-eclipse-preview-enabled)
+- [`strings`](#ref-strings)
 
 #### Reference
 - <a name="ref-media-types"></a>`mediaTypes`   
@@ -92,7 +93,7 @@ Default: `10`
 
 - <a name="ref-max-video"></a>`maxVideo`    
 The maximum number of video can be selected.  
-Type: `Int`
+Type: `Int`   
 Default is `10`
 
 - <a name="ref-available-filters"></a>`availableFilters`    
@@ -109,7 +110,7 @@ Default: all crops provided by FMPhotoPicker.
 
 - <a name="ref-alert-controller"></a>`alertController`    
 An alert controller to show confirmation view to user with 2 options: Ok or Cancel.  
-Type: `FMAlertable`
+Type: `FMAlertable`   
 Default: `FMAlert`
 
 - <a name="ref-forc-crop-enabled"></a>`forceCropEnabled`    
@@ -121,6 +122,12 @@ Default: `false`
 
 - <a name="ref-eclipse-preview-enabled"></a>`eclipsePreviewEnabled`    
 A bool value indicating whether an image in preview screen should be displayed in eclipse bound.  
+Type: `Bool`
+Default: `false`
+
+- <a name="ref-strings"></a>`strings`    
+A dictionary allows you custom language for your app.    
+For details, see `FMPhotoPickerConfig.swift`   
 Type: `Bool`
 Default: `false`
 
@@ -141,11 +148,14 @@ Like filter fuction, FMPhotoPicker provides capability to use your own crop by i
 ```
 public protocol FMCroppable {
     func crop(image: UIImage, toRect rect: CGRect) -> UIImage
-    func name() -> String
+    func name(string: [String: String]) -> String
     func icon() -> UIImage
     func ratio() -> FMCropRatio?
 }
 ```
+The `func name(strings: [String: String]) -> String` will receive the strings configuration from configuration object.
+It allows you custom crop while keep all your language setting in only one place.
+
 the `name()` method also will be used as indentical for the crop.  
 So make sure you don't have any duplicate crop's name.
 
