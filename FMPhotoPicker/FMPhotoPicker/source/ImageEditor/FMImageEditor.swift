@@ -91,6 +91,6 @@ struct FMImageEditor {
     }
     
     public func isEdited() -> Bool {
-        return filter.filterName() != initFilter.filterName() || crop.name() != initCrop.name() || !cropArea.isApproximatelyEqual(to: initCropArea)
+        return filter.filterName() != initFilter.filterName() || crop.identifier() != initCrop.identifier() || !cropArea.isApproximatelyEqual(to: initCropArea)
     }
 }

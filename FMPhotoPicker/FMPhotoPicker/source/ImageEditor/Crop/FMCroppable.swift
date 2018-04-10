@@ -10,9 +10,10 @@ import UIKit
 
 public protocol FMCroppable {
     func crop(image: UIImage, toRect rect: CGRect) -> UIImage
-    func name() -> String
+    func name(strings: [String: String]) -> String?
     func icon() -> UIImage
     func ratio() -> FMCropRatio?
+    func identifier() -> String
 }
 
 extension FMCroppable {

@@ -11,6 +11,11 @@ import UIKit
 public struct FMCropRatio {
     let width: CGFloat
     let height: CGFloat
+    
+    public init(width: CGFloat, height: CGFloat) {
+        self.width = width
+        self.height = height
+    }
 }
 
 public enum FMCrop: FMCroppable {
@@ -33,13 +38,13 @@ public enum FMCrop: FMCroppable {
         }
     }
     
-    public func name() -> String {
+    public func name(strings: [String: String]) -> String? {
         switch self {
-        case .ratio4x3: return "4:3"
-        case .ratio16x9: return "16:9"
-        case .ratioCustom: return "Custom"
-        case .ratioOrigin: return "Origin"
-        case .ratioSquare: return "Square"
+        case .ratio4x3: return strings["editor_crop_ratio4x3"]
+        case .ratio16x9: return strings["editor_crop_ratio16x9"]
+        case .ratioCustom: return strings["editor_crop_ratioCustom"]
+        case .ratioOrigin: return strings["editor_crop_ratioOrigin"]
+        case .ratioSquare: return strings["editor_crop_ratioSquare"]
         }
     }
     
@@ -61,5 +66,15 @@ public enum FMCrop: FMCroppable {
             return icon!
         }
         return UIImage()
+    }
+    
+    public func identifier() -> String {
+        switch self {
+        case .ratio4x3: return "ratio4x3"
+        case .ratio16x9: return "ratio16x9"
+        case .ratioCustom: return "ratioCustom"
+        case .ratioOrigin: return "ratioOrigin"
+        case .ratioSquare: return "ratioSquare"
+        }
     }
 }

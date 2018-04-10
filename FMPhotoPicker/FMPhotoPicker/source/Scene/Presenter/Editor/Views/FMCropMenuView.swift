@@ -134,10 +134,10 @@ extension FMCropMenuView: UICollectionViewDataSource {
         } else if indexPath.section == 1 {
             // crop items
             let cropItem = cropItems[indexPath.row]
-            cell.name.text = cropItem.name()
+            cell.name.text = cropItem.name(strings: config.strings)
             cell.imageView.image = cropItem.icon()
             
-            if selectedCrop?.name() == cropItem.name() {
+            if selectedCrop?.identifier() == cropItem.identifier() {
                 cell.setSelected()
             }
         }
@@ -165,7 +165,7 @@ extension FMCropMenuView: UICollectionViewDelegate {
                 cell.setSelected()
                 
                 if let prevCropItem = prevCropItem,
-                    let prevRow = cropItems.index(where: { $0.name() == prevCropItem.name() }) {
+                    let prevRow = cropItems.index(where: { $0.identifier() == prevCropItem.identifier() }) {
                     collectionView.reloadItems(at: [IndexPath(row: prevRow, section: 1)])
                 }
             }
