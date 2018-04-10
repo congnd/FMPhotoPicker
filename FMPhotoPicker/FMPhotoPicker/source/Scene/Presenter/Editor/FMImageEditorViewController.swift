@@ -439,9 +439,9 @@ public class FMImageEditorViewController: UIViewController {
     
     private func contentFrameFilter() -> CGRect {
         return CGRect(x: 0,
-                      y: topMenuContainter.frame.height,
+                      y: transparentViewHeightConstraint.constant,
                       width: view.bounds.width,
-                      height: view.bounds.height - topMenuContainter.frame.height - bottomMenuContainer.frame.height - subMenuContainer.frame.height)
+                      height: view.bounds.height - transparentViewHeightConstraint.constant - bottomMenuContainer.frame.height - subMenuContainer.frame.height - unsafeAreaBottomViewHeightConstraint.constant)
     }
     
     private func contentFrameFullScreen() -> CGRect {
