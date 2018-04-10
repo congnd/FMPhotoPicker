@@ -15,11 +15,13 @@ class FMPhotoPresenterViewController: UIViewController {
     @IBOutlet weak var selectedContainer: UIView!
     @IBOutlet weak var selectedIcon: UIImageView!
     @IBOutlet weak var selectedIndex: UILabel!
-    @IBOutlet weak var controlBarHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var numberOfSelectedPhotoContainer: UIView!
     @IBOutlet weak var numberOfSelectedPhoto: UILabel!
     @IBOutlet weak var determineButton: UIButton!
     @IBOutlet weak var backButton: UIButton!
+    @IBOutlet weak var transparentViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var unsafeAreaBottomViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var unsafeAreaBottomView: UIView!
     
     // MARK: - Public
     public var swipeInteractionController: FMPhotoInteractionAnimator?
@@ -44,6 +46,8 @@ class FMPhotoPresenterViewController: UIViewController {
     private var dataSource: FMPhotosDataSource
     
     private var config: FMPhotoPickerConfig
+    
+    private var bottomViewBottomConstraint: NSLayoutConstraint!
     
     private var currentPhotoViewController: FMPhotoViewController? {
         return pageViewController.viewControllers?.first as? FMPhotoViewController
@@ -88,14 +92,6 @@ class FMPhotoPresenterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if #available(iOS 11.0, *) {
-            guard let window = UIApplication.shared.keyWindow else { return }
-            if window.safeAreaInsets.top > 0 {
-                // iPhone X
-                self.controlBarHeightConstraint.constant = 88
-            }
-        }
-        
         self.selectedContainer.layer.cornerRadius = self.selectedContainer.frame.size.width / 2
         
         self.updateInfoBar()
@@ -137,7 +133,8 @@ class FMPhotoPresenterViewController: UIViewController {
         self.bottomView.translatesAutoresizingMaskIntoConstraints = false
         self.bottomView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         self.bottomView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        self.bottomView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        bottomViewBottomConstraint = self.bottomView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+        bottomViewBottomConstraint.isActive = true
         self.bottomView.heightAnchor.constraint(equalToConstant: 90).isActive = true
         
         self.pageViewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -175,6 +172,15 @@ class FMPhotoPresenterViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         bottomView.updateFrames()
+        
+        if #available(iOS 11.0, *) {
+            transparentViewHeightConstraint.constant = view.safeAreaInsets.top + 44 // 44 is the height of nav bar
+            bottomViewBottomConstraint.constant = -view.safeAreaInsets.bottom
+            
+            unsafeAreaBottomViewHeightConstraint.constant = view.safeAreaInsets.bottom
+            unsafeAreaBottomView.backgroundColor = .white
+            unsafeAreaBottomView.alpha = 0.9
+        }
     }
     
     override func didReceiveMemoryWarning() {

@@ -20,7 +20,6 @@ public class FMPhotoPickerViewController: UIViewController {
     @IBOutlet weak var numberOfSelectedPhotoContainer: UIView!
     @IBOutlet weak var numberOfSelectedPhoto: UILabel!
     @IBOutlet weak var determineButton: UIButton!
-    @IBOutlet weak var controlBarTopConstrant: NSLayoutConstraint!
     @IBOutlet weak var cancelButton: UIButton!
     
     // MARK: - Public
@@ -83,14 +82,6 @@ public class FMPhotoPickerViewController: UIViewController {
         self.numberOfSelectedPhotoContainer.layer.cornerRadius = self.numberOfSelectedPhotoContainer.frame.size.width / 2
         self.numberOfSelectedPhotoContainer.isHidden = true
         self.determineButton.isHidden = true
-        
-        if #available(iOS 11.0, *) {
-            guard let window = UIApplication.shared.keyWindow else { return }
-            if window.safeAreaInsets.top > 0 {
-                // iPhone X
-                self.controlBarTopConstrant.constant = 44
-            }
-        }
         
         // set button title
         self.cancelButton.setTitle(config.strings["picker_button_cancel"], for: .normal)

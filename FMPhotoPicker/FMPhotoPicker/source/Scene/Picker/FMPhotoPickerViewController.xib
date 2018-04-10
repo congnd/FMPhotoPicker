@@ -13,7 +13,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FMPhotoPickerViewController" customModule="FMPhotoPicker" customModuleProvider="target">
             <connections>
                 <outlet property="cancelButton" destination="rww-s4-oBC" id="Gz8-I7-XQc"/>
-                <outlet property="controlBarTopConstrant" destination="Esv-jC-y0M" id="mjl-UU-ub5"/>
                 <outlet property="determineButton" destination="H3N-tL-aam" id="ULu-19-eTW"/>
                 <outlet property="imageCollectionView" destination="OL2-Hq-SBY" id="OEv-0k-kpd"/>
                 <outlet property="numberOfSelectedPhoto" destination="WUE-Oy-OeG" id="HpE-Xa-SeM"/>
@@ -107,8 +106,8 @@
                 <constraint firstItem="mWw-fw-Ht8" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="6Qg-Gl-Xo9"/>
                 <constraint firstItem="OL2-Hq-SBY" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="ARE-Kl-BfU"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="OL2-Hq-SBY" secondAttribute="bottom" id="Ccb-QS-uqt"/>
-                <constraint firstItem="mWw-fw-Ht8" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="Esv-jC-y0M"/>
                 <constraint firstAttribute="trailing" secondItem="mWw-fw-Ht8" secondAttribute="trailing" id="JgV-kU-gwf"/>
+                <constraint firstItem="mWw-fw-Ht8" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="fOe-wW-PAy"/>
                 <constraint firstAttribute="trailing" secondItem="OL2-Hq-SBY" secondAttribute="trailing" id="fVa-DC-zEu"/>
                 <constraint firstItem="OL2-Hq-SBY" firstAttribute="top" secondItem="mWw-fw-Ht8" secondAttribute="bottom" id="xVZ-GD-yuz"/>
             </constraints>

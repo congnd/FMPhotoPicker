@@ -13,7 +13,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FMPhotoPresenterViewController" customModule="FMPhotoPicker" customModuleProvider="target">
             <connections>
                 <outlet property="backButton" destination="b9K-Fo-FLO" id="akE-tf-JWG"/>
-                <outlet property="controlBarHeightConstraint" destination="um2-yh-bB5" id="qnR-4O-Rvd"/>
                 <outlet property="determineButton" destination="fok-2X-Dem" id="Cgg-D9-X04"/>
                 <outlet property="numberOfSelectedPhoto" destination="DMr-YG-Dqc" id="MqD-9i-0Dh"/>
                 <outlet property="numberOfSelectedPhotoContainer" destination="czB-A8-gik" id="fdg-hg-dx9"/>
@@ -21,6 +20,9 @@
                 <outlet property="selectedContainer" destination="o05-8f-eoM" id="E4p-u5-K5W"/>
                 <outlet property="selectedIcon" destination="lfY-RY-Mr8" id="Y5O-R5-c4Z"/>
                 <outlet property="selectedIndex" destination="T1c-ye-Rne" id="4Km-NI-to0"/>
+                <outlet property="transparentViewHeightConstraint" destination="gci-kT-yUO" id="cWd-I8-fvu"/>
+                <outlet property="unsafeAreaBottomView" destination="SuV-mC-eAF" id="LHg-dB-ltR"/>
+                <outlet property="unsafeAreaBottomViewHeightConstraint" destination="2iZ-LV-22z" id="mRO-m0-jil"/>
                 <outlet property="view" destination="iN0-l3-epB" id="gHO-HK-ssu"/>
             </connections>
         </placeholder>
@@ -30,14 +32,17 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hwJ-iD-bAE">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+                    <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                     <subviews>
                         <view alpha="0.90000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zhP-bH-3rv" userLabel="transparent-alpha-0.9">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+                            <rect key="frame" x="0.0" y="-20" width="375" height="64"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="64" id="gci-kT-yUO"/>
+                            </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="49l-Qx-Iei" userLabel="transparent-alpha-0">
-                            <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b9K-Fo-FLO">
                                     <rect key="frame" x="8" y="2" width="47" height="40"/>
@@ -123,10 +128,9 @@
                         <constraint firstAttribute="trailing" secondItem="49l-Qx-Iei" secondAttribute="trailing" id="Nr5-LU-yd8"/>
                         <constraint firstAttribute="trailing" secondItem="zhP-bH-3rv" secondAttribute="trailing" id="PZZ-v7-TKT"/>
                         <constraint firstAttribute="bottom" secondItem="49l-Qx-Iei" secondAttribute="bottom" id="Yse-IF-8RI"/>
-                        <constraint firstItem="zhP-bH-3rv" firstAttribute="top" secondItem="hwJ-iD-bAE" secondAttribute="top" id="fxs-35-D0X"/>
                         <constraint firstItem="zhP-bH-3rv" firstAttribute="leading" secondItem="hwJ-iD-bAE" secondAttribute="leading" id="lWy-PC-Ivo"/>
                         <constraint firstItem="49l-Qx-Iei" firstAttribute="leading" secondItem="hwJ-iD-bAE" secondAttribute="leading" id="mpC-nW-i98"/>
-                        <constraint firstAttribute="height" constant="64" id="um2-yh-bB5"/>
+                        <constraint firstAttribute="height" constant="44" id="um2-yh-bB5"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o05-8f-eoM">
@@ -165,6 +169,13 @@
                         <constraint firstAttribute="height" constant="28" id="yYR-GO-uBk"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SuV-mC-eAF" userLabel="UnsafeAreaBottomView">
+                    <rect key="frame" x="0.0" y="667" width="375" height="20"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="20" id="2iZ-LV-22z"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -172,7 +183,10 @@
                 <constraint firstItem="hwJ-iD-bAE" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="5Vo-oK-3jP"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="o05-8f-eoM" secondAttribute="trailing" constant="8" id="E4e-SJ-ghN"/>
                 <constraint firstItem="o05-8f-eoM" firstAttribute="top" secondItem="hwJ-iD-bAE" secondAttribute="bottom" constant="16" id="Qo7-78-xKg"/>
-                <constraint firstItem="hwJ-iD-bAE" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="iGA-ej-V1N"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="SuV-mC-eAF" secondAttribute="trailing" id="ZQ0-MZ-8AS"/>
+                <constraint firstItem="SuV-mC-eAF" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="eh1-XM-eyH"/>
+                <constraint firstItem="hwJ-iD-bAE" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="iGA-ej-V1N"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="SuV-mC-eAF" secondAttribute="top" id="qJO-Ja-4yG"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <point key="canvasLocation" x="33.5" y="54.5"/>

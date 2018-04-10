@@ -18,6 +18,7 @@ public protocol FMImageEditorViewControllerDelegate: class {
 public class FMImageEditorViewController: UIViewController {
     
     @IBOutlet weak var topMenuTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var transparentViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomMenuBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var topMenuContainter: UIView!
     @IBOutlet weak var bottomMenuContainer: UIView!
@@ -28,6 +29,9 @@ public class FMImageEditorViewController: UIViewController {
     @IBOutlet weak var cropMenuButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var doneButton: UIButton!
+    
+    @IBOutlet weak var unsafeAreaBottomViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var unsafeAreaBottomView: UIView!
     
     public var didEndEditting: (@escaping () -> Void) -> Void = { _ in }
     public var delegate: FMImageEditorViewControllerDelegate?
@@ -252,6 +256,14 @@ public class FMImageEditorViewController: UIViewController {
     
     override public func viewDidLayoutSubviews() {
         cropView.frame = view.frame
+        
+        if #available(iOS 11.0, *) {
+            transparentViewHeightConstraint.constant = view.safeAreaInsets.top + 44
+            
+            unsafeAreaBottomViewHeightConstraint.constant = view.safeAreaInsets.bottom
+            unsafeAreaBottomView.backgroundColor = .white
+            unsafeAreaBottomView.alpha = 0.9
+        }
     }
     
     override public func viewDidDisappear(_ animated: Bool) {
@@ -358,7 +370,7 @@ public class FMImageEditorViewController: UIViewController {
                         self.filterSubMenuView.alpha = 0
         },
                        completion: { _ in
-                        self.subMenuContainer.backgroundColor = .white
+//                        self.subMenuContainer.backgroundColor = .white
                         self.filterSubMenuView.isHidden = true
         })
     }
@@ -376,7 +388,7 @@ public class FMImageEditorViewController: UIViewController {
                         self.cropSubMenuView.alpha = 0
         },
                        completion: { _ in
-                        self.subMenuContainer.backgroundColor = .white
+//                        self.subMenuContainer.backgroundColor = .white
                         self.cropSubMenuView.isHidden = true
         })
     }

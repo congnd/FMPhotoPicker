@@ -92,10 +92,9 @@ class FMCropMenuView: UIView {
         collectionView.delegate = self
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.contentInset = UIEdgeInsetsMake(0,14,0,14)
-        
-//        collectionView.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.old, context: nil)
-        
-        backgroundColor = .red
+    
+        self.backgroundColor = .clear
+        collectionView.backgroundColor = .clear
     }
     
     func insert(toView parentView: UIView) {

@@ -55,6 +55,9 @@ class FMFiltersMenuView: UIView {
         collectionView.contentInset = UIEdgeInsetsMake(0,14,0,14)
         
         collectionView.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.old, context: nil)
+        
+        self.backgroundColor = .clear
+        collectionView.backgroundColor = .clear
     }
     
     func insert(toView parenetView: UIView) {
