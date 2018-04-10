@@ -102,26 +102,6 @@ class ViewController: UIViewController, FMPhotoPickerViewControllerDelegate, FMI
         // all available filters will be used
         config.availableFilters = []
         
-        config.titleFontSize = 14
-        
-        config.strings = [
-            "picker_button_cancel":                     "キャンセル",
-            "picker_button_select_done":                "決定",
-            "picker_warning_over_image_select_format":  "画像は最大%d個まで選択できます。",
-            "picker_warning_over_video_select_format":  "動画は最大%d個まで選択できます。",
-            
-            "present_title_photo_created_date_format":  "yyyy年M月d日",
-            "present_button_back":                      "一覧",
-            "present_button_edit_image":                "編集",
-            
-            "editor_button_cancel":                     "キャンセル",
-            "editor_button_done":                       "決定",
-            "editor_menu_filter":                       "フィルター",
-            "editor_menu_crop":                         "調整",
-            "editor_menu_crop_button_reset":            "リセット",
-            "editor_menu_crop_button_rotate":           "回転",
-        ]
-        
         return config
     }
     
