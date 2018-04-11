@@ -103,11 +103,12 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="mWw-fw-Ht8" firstAttribute="top" relation="greaterThanOrEqual" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="1Qg-mI-nX9"/>
                 <constraint firstItem="mWw-fw-Ht8" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="6Qg-Gl-Xo9"/>
                 <constraint firstItem="OL2-Hq-SBY" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="ARE-Kl-BfU"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="OL2-Hq-SBY" secondAttribute="bottom" id="Ccb-QS-uqt"/>
                 <constraint firstAttribute="trailing" secondItem="mWw-fw-Ht8" secondAttribute="trailing" id="JgV-kU-gwf"/>
-                <constraint firstItem="mWw-fw-Ht8" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="fOe-wW-PAy"/>
+                <constraint firstItem="mWw-fw-Ht8" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" priority="750" id="fOe-wW-PAy"/>
                 <constraint firstAttribute="trailing" secondItem="OL2-Hq-SBY" secondAttribute="trailing" id="fVa-DC-zEu"/>
                 <constraint firstItem="OL2-Hq-SBY" firstAttribute="top" secondItem="mWw-fw-Ht8" secondAttribute="bottom" id="xVZ-GD-yuz"/>
             </constraints>

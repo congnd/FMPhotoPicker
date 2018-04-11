@@ -181,11 +181,12 @@
             <constraints>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="hwJ-iD-bAE" secondAttribute="trailing" id="0FM-pd-a72"/>
                 <constraint firstItem="hwJ-iD-bAE" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="5Vo-oK-3jP"/>
+                <constraint firstItem="hwJ-iD-bAE" firstAttribute="top" relation="greaterThanOrEqual" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="AC2-ao-d1W"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="o05-8f-eoM" secondAttribute="trailing" constant="8" id="E4e-SJ-ghN"/>
                 <constraint firstItem="o05-8f-eoM" firstAttribute="top" secondItem="hwJ-iD-bAE" secondAttribute="bottom" constant="16" id="Qo7-78-xKg"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="SuV-mC-eAF" secondAttribute="trailing" id="ZQ0-MZ-8AS"/>
                 <constraint firstItem="SuV-mC-eAF" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="eh1-XM-eyH"/>
-                <constraint firstItem="hwJ-iD-bAE" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="iGA-ej-V1N"/>
+                <constraint firstItem="hwJ-iD-bAE" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" priority="750" id="iGA-ej-V1N"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="SuV-mC-eAF" secondAttribute="top" id="qJO-Ja-4yG"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
