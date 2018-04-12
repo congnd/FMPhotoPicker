@@ -13,6 +13,7 @@ class FMFiltersMenuView: UIView {
     private var availableFilters: [FMFilterable]
     private var demoImages: [String:UIImage] = [:]
     private var selectedCellIndex: Int = 0
+    private var isObservingCollectionView = true
     
     public var didSelectFilter: (FMFilterable) -> Void = { _ in }
     
@@ -55,6 +56,7 @@ class FMFiltersMenuView: UIView {
         collectionView.contentInset = UIEdgeInsetsMake(0,14,0,14)
         
         collectionView.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.old, context: nil)
+        isObservingCollectionView = true
         
         self.backgroundColor = .clear
         collectionView.backgroundColor = .clear
@@ -73,12 +75,22 @@ class FMFiltersMenuView: UIView {
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if let observedObject = object as? UICollectionView, observedObject == collectionView {
             collectionView.removeObserver(self, forKeyPath: "contentSize")
+            isObservingCollectionView = false
+            
             collectionView.scrollToItem(at: IndexPath(row: self.selectedCellIndex, section: 0), at: .centeredHorizontally, animated: false)
         }
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        if isObservingCollectionView {
+            print("FM-Warning: Deinit instance of FMFiltersMenuView before removing observer. Trying to remove running observer...")
+            collectionView.removeObserver(self, forKeyPath: "contentSize")
+            print("FM-OK: Running observer has been removed.")
+        }
     }
 }
 
