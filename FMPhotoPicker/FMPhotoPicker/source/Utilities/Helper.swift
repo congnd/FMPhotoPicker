@@ -130,7 +130,7 @@ class Helper: NSObject {
         let newSize = CGSize(width: desireSize.width,
                              height: desireSize.height)
         
-        let pId = manager.requestImage(for: photoAsset, targetSize: newSize, contentMode: .aspectFill, options: options, resultHandler: { result, _ in
+        let pId = manager.requestImage(for: photoAsset, targetSize: newSize, contentMode: .aspectFit, options: options, resultHandler: { result, _ in
             complete(result)
         })
 //        manager.cancelImageRequest(pId)

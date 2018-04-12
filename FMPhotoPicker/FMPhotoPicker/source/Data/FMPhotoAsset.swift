@@ -131,7 +131,7 @@ public class FMPhotoAsset {
     
     func requestFullSizePhoto(cropState: FMImageEditState, filterState: FMImageEditState, complete: @escaping (UIImage?) -> Void) {
         if let asset = asset {
-            self.fullSizePhotoRequestId = Helper.getFullSizePhoto(by: asset) { image in
+            self.fullSizePhotoRequestId = Helper.getPhoto(by: asset, in: CGSize(width: 2000, height: 2000)){ image in
                 self.fullSizePhotoRequestId = nil
                 if self.canceledFullSizeRequest {
                     self.canceledFullSizeRequest = false
