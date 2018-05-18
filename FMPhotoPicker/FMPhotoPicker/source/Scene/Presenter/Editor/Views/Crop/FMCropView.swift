@@ -162,19 +162,19 @@ class FMCropView: UIView {
         // use for first time only
         let scrollViewScale = zoomScale / scrollView.zoomScale
         
-        cropFrame.size.width = ceil(scrollView.imageView.frame.width / scrollView.zoomScale * cropArea.scaleW * zoomScale)
-        cropFrame.size.height = ceil(scrollView.imageView.frame.height / scrollView.zoomScale * cropArea.scaleH * zoomScale)
+        cropFrame.size.width = (scrollView.imageView.frame.width / scrollView.zoomScale * cropArea.scaleW * zoomScale)
+        cropFrame.size.height = (scrollView.imageView.frame.height / scrollView.zoomScale * cropArea.scaleH * zoomScale)
         
         //The scale we need to scale up the crop box to fit full screen
         let cropBoxScale = min(contentFrame.width / cropFrame.width, contentFrame.height / cropFrame.height)
-        cropFrame.size.width = ceil(cropFrame.size.width * cropBoxScale)
-        cropFrame.size.height = ceil(cropFrame.size.height * cropBoxScale)
+        cropFrame.size.width = (cropFrame.size.width * cropBoxScale)
+        cropFrame.size.height = (cropFrame.size.height * cropBoxScale)
         
-        cropFrame.origin.x = contentFrame.origin.x + ceil(contentFrame.size.width - cropFrame.size.width) * 0.5
-        cropFrame.origin.y = contentFrame.origin.y + ceil(contentFrame.size.height - cropFrame.size.height) * 0.5
+        cropFrame.origin.x = contentFrame.origin.x + (contentFrame.size.width - cropFrame.size.width) * 0.5
+        cropFrame.origin.y = contentFrame.origin.y + (contentFrame.size.height - cropFrame.size.height) * 0.5
         
-        let targetOffset = CGPoint(x: ceil(scrollView.imageView.frame.width / scrollView.zoomScale * zoomScale * cropArea.scaleX) - cropFrame.minX,
-                               y: ceil(scrollView.imageView.frame.height / scrollView.zoomScale * zoomScale * cropArea.scaleY) - cropFrame.minY)
+        let targetOffset = CGPoint(x: (scrollView.imageView.frame.width / scrollView.zoomScale * zoomScale * cropArea.scaleX) - cropFrame.minX,
+                               y: (scrollView.imageView.frame.height / scrollView.zoomScale * zoomScale * cropArea.scaleY) - cropFrame.minY)
         
         scrollView.zoomScale *= scrollViewScale
         scrollView.contentOffset = targetOffset
@@ -208,10 +208,10 @@ class FMCropView: UIView {
         let cropBoxScale = min(contentFrame.width / cropFrame.width, contentFrame.height / cropFrame.height) 
         
         // calculate new cropFrame that is translated to center of contentBound
-        cropFrame.size.width = ceil(cropFrame.size.width * cropBoxScale)
-        cropFrame.size.height = ceil(cropFrame.size.height * cropBoxScale)
-        cropFrame.origin.x = contentFrame.origin.x + ceil(contentFrame.size.width - cropFrame.size.width) * 0.5
-        cropFrame.origin.y = contentFrame.origin.y + ceil(contentFrame.size.height - cropFrame.size.height) * 0.5
+        cropFrame.size.width = cropFrame.size.width * cropBoxScale
+        cropFrame.size.height = cropFrame.size.height * cropBoxScale
+        cropFrame.origin.x = contentFrame.origin.x + (contentFrame.size.width - cropFrame.size.width) * 0.5
+        cropFrame.origin.y = contentFrame.origin.y + (contentFrame.size.height - cropFrame.size.height) * 0.5
         
         scrollViewScale = min(cropBoxScale, scrollView.maximumZoomScale / scrollView.zoomScale)
 
@@ -319,10 +319,10 @@ class FMCropView: UIView {
         var cropFrame: CGRect = .zero
         if cropRatio > contentFrameRatio {
             cropFrame.size.width = contentFrame.width
-            cropFrame.size.height = ceil(cropFrame.width / cropRatio)
+            cropFrame.size.height = cropFrame.width / cropRatio
         } else {
             cropFrame.size.height = contentFrame.height
-            cropFrame.size.width = ceil(cropFrame.height * cropRatio)
+            cropFrame.size.width = cropFrame.height * cropRatio
         }
         cropFrame.origin = CGPoint(x: (contentFrame.width - cropFrame.width) / 2 + contentFrame.origin.x,
                                    y: (contentFrame.height - cropFrame.height) / 2 + contentFrame.origin.y)
