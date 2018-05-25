@@ -263,6 +263,8 @@ public class FMImageEditorViewController: UIViewController {
             unsafeAreaBottomViewHeightConstraint.constant = view.safeAreaInsets.bottom
             unsafeAreaBottomView.backgroundColor = .white
             unsafeAreaBottomView.alpha = 0.9
+        } else {
+            unsafeAreaBottomViewHeightConstraint.constant = 0
         }
     }
     
