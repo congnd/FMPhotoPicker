@@ -43,7 +43,7 @@ let picker = FMPhotoPickerViewController(config: config)
 picker.delegate = self
 self.present(picker, animated: true)
 ```
-*From iOS 11, you have to add the `Privacy - Photo Library Usage Description` into your Info.plist file.*
+*From iOS 10, you have to add the `Privacy - Photo Library Usage Description` into your Info.plist file.*
 
 ### Editor
 ```
