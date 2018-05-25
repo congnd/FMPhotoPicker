@@ -43,6 +43,7 @@ let picker = FMPhotoPickerViewController(config: config)
 picker.delegate = self
 self.present(picker, animated: true)
 ```
+*From iOS 11, you have to add the `Privacy - Photo Library Usage Description` into your Info.plist file.*
 
 ### Editor
 ```
@@ -128,8 +129,7 @@ Default: `false`
 - <a name="ref-strings"></a>`strings`    
 A dictionary allows you custom language for your app.    
 For details, see `FMPhotoPickerConfig.swift`   
-Type: `Bool`
-Default: `false`
+Type: `Dictionary`
 
 ## Customization
 ### Custom filter
