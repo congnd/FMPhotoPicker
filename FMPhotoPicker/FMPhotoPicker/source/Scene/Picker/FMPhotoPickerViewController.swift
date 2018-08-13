@@ -230,7 +230,7 @@ extension FMPhotoPickerViewController: UICollectionViewDataSource {
                 if self.dataSource.countSelectedPhoto(byType: .video) >= self.config.maxVideo {
                     canBeAdded = false
                     let warning = FMWarningView.shared
-                    warning.message = String(format: config.strings["picker_warning_over_video_select_format"]!, self.config.maxImage)
+                    warning.message = String(format: config.strings["picker_warning_over_video_select_format"]!, self.config.maxVideo)
                     warning.showAndAutoHide()
                 }
             case .unsupported:
