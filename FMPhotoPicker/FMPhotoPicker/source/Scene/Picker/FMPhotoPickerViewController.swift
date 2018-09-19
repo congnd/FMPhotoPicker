@@ -93,6 +93,9 @@ public class FMPhotoPickerViewController: UIViewController {
     // MARK: - Target Actions
     @IBAction func onTapCancel(_ sender: Any) {
         print("Something should happen now!@#$!@%!@$%^!#$^!$#%^!#$%!@$%!#$%!%")
+        self.willMove(toParentViewController: nil)
+        self.view.removeFromSuperview()
+        self.removeFromParentViewController()
         self.dismiss(animated: true)
     }
     
