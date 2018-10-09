@@ -3,7 +3,7 @@
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
-FMPhotoPicker is a modern, simple and zero-dependency photo picker with an image editor written in Swift for iOS
+FMPhotoPicker is a modern, simple and zero-dependency photo picker with an elegant and customizable image editor
 
 ## Features
 - [x] Support both single and multiple selection
