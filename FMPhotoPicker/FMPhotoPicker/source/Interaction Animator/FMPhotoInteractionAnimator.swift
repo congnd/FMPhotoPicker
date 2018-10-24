@@ -90,7 +90,7 @@ class FMPhotoInteractionAnimator: NSObject, UIViewControllerInteractiveTransitio
         let velocityY = gestureRecognizer.velocity(in: gestureRecognizer.view).y
         
         var animationDuration = (Double(abs(velocityY)) * returnToCenterVelocityAnimationRatio) + 0.2
-        var animationCurve: UIViewAnimationOptions = .curveEaseOut
+        var animationCurve: UIView.AnimationOptions = .curveEaseOut
         var finalPageViewCenterPoint = anchorPoint
         var finalBackgroundAlpha = 1.0
         

@@ -53,7 +53,7 @@ class FMCropScrollView: UIScrollView {
         showsVerticalScrollIndicator = false
         showsHorizontalScrollIndicator = false;
         bouncesZoom = true;
-        decelerationRate = UIScrollViewDecelerationRateFast;
+        decelerationRate = UIScrollView.DecelerationRate.fast;
         
         if #available(iOS 11.0, *) {
             contentInsetAdjustmentBehavior = .never
@@ -114,7 +114,7 @@ class FMCropScrollView: UIScrollView {
         }
         
         // Use `contentInset` to center the contents in the scroll view. Reasoning explained here: http://petersteinberger.com/blog/2013/how-to-center-uiscrollview/
-        self.contentInset = UIEdgeInsetsMake(verticalInset, horizontalInset, verticalInset, horizontalInset);
+        self.contentInset = UIEdgeInsets(top: verticalInset, left: horizontalInset, bottom: verticalInset, right: horizontalInset);
     }
     
     // MARK: - Logic

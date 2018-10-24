@@ -29,7 +29,7 @@ class Helper: NSObject {
             
             var times = [CMTime]()
             for i in 0..<numberOfFrames {
-                times.append(CMTimeMakeWithSeconds(durationInSeconds / Double(numberOfFrames) * Double(i), 1000))
+                times.append(CMTimeMakeWithSeconds(durationInSeconds / Double(numberOfFrames) * Double(i), preferredTimescale: 1000))
             }
             
             let generator = AVAssetImageGenerator(asset: avAsset)
@@ -162,7 +162,7 @@ class Helper: NSObject {
     }
     
     static func openIphoneSetting() {
-        UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+        UIApplication.shared.openURL(URL(string: UIApplication.openSettingsURLString)!)
     }
     
     static func requestAuthorizationForPhotoAccess(authorized: @escaping () -> Void, rejected: @escaping () -> Void) {

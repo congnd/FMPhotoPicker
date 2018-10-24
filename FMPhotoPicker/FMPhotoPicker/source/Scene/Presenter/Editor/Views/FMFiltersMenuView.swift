@@ -53,7 +53,7 @@ class FMFiltersMenuView: UIView {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.contentInset = UIEdgeInsetsMake(0,14,0,14)
+        collectionView.contentInset = UIEdgeInsets(top: 0,left: 14,bottom: 0,right: 14)
         
         collectionView.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.old, context: nil)
         isObservingCollectionView = true

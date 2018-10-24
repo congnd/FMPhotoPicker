@@ -24,7 +24,7 @@ class FMVideoViewController: FMPhotoViewController {
     private var isPlayingBeforeSeek = false
     
     private var isSeekInProgress = false
-    private var chaseTime = kCMTimeZero
+    private var chaseTime = CMTime.zero
     
     deinit {
         removeVideoControlObservers()
@@ -119,7 +119,7 @@ class FMVideoViewController: FMPhotoViewController {
         thumbImageView.isHidden = false
         playIcon.isHidden = false
         playerController?.view.isHidden = true
-        player?.seek(to: CMTimeMakeWithSeconds(0, 1000))
+        player?.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
         NotificationCenter.default.post(name: .player_pause, object: nil)
     }
     
@@ -136,10 +136,10 @@ class FMVideoViewController: FMPhotoViewController {
         guard let playerController = self.playerController else { return }
         
         if playerController.view.superview == nil {
-            self.addChildViewController(playerController)
+            self.addChild(playerController)
             self.view.addSubview(playerController.view)
-            self.view.bringSubview(toFront: thumbImageView)
-            self.view.bringSubview(toFront: playIcon)
+            self.view.bringSubviewToFront(thumbImageView)
+            self.view.bringSubviewToFront(playIcon)
         }
     }
         
@@ -177,7 +177,7 @@ class FMVideoViewController: FMPhotoViewController {
             let player = self.player,
             let currentPlayerItem = player.currentItem
             else { return }
-        let cmTime = CMTimeMakeWithSeconds(currentPlayerItem.duration.seconds * percent, 1000)
+        let cmTime = CMTimeMakeWithSeconds(currentPlayerItem.duration.seconds * percent, preferredTimescale: 1000)
 //        player.seek(to: cmTime, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
         seekSmoothlyToTime(newChaseTime: cmTime)
         
@@ -201,7 +201,7 @@ class FMVideoViewController: FMPhotoViewController {
     
     private func addPlayerTimeObserverIfNeeded() {
         if playerTimeObserver == nil {
-            self.playerTimeObserver = self.player?.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(0.1, 1000), queue: .main, using: { [unowned self] time in
+            self.playerTimeObserver = self.player?.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(0.1, preferredTimescale: 1000), queue: .main, using: { [unowned self] time in
                 print("callback is called for video: \(self.dataSource.index(ofPhoto: self.photo)!)")
                 guard let status = self.player?.currentItem?.status,
                     status == .readyToPlay else {
@@ -253,7 +253,7 @@ class FMVideoViewController: FMPhotoViewController {
     func actuallySeekToTime() {
         isSeekInProgress = true
         let seekTimeInProgress = chaseTime
-        player!.seek(to: seekTimeInProgress, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero, completionHandler: { isFinished in
+        player!.seek(to: seekTimeInProgress, toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero, completionHandler: { isFinished in
             if CMTimeCompare(seekTimeInProgress, self.chaseTime) == 0 {
                 self.isSeekInProgress = false
             } else {

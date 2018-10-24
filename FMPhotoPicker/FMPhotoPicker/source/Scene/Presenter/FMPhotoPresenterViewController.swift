@@ -75,7 +75,7 @@ class FMPhotoPresenterViewController: UIViewController {
     }
     
     private func setupPageViewController(withInitialPhoto initialPhoto: FMPhotoAsset? = nil) {
-        self.pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey: 16.0])
+        self.pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: [UIPageViewController.OptionsKey.interPageSpacing: 16.0])
         self.pageViewController.view.frame = self.view.frame
         self.pageViewController.view.backgroundColor = .clear
         self.pageViewController.delegate = self
@@ -96,9 +96,9 @@ class FMPhotoPresenterViewController: UIViewController {
         
         self.updateInfoBar()
         
-        self.addChildViewController(self.pageViewController)
+        self.addChild(self.pageViewController)
         self.view.addSubview(pageViewController.view)
-        self.view.sendSubview(toBack: pageViewController.view)
+        self.view.sendSubviewToBack(pageViewController.view)
         
         
         // Init bottom view
@@ -138,7 +138,7 @@ class FMPhotoPresenterViewController: UIViewController {
         self.bottomView.heightAnchor.constraint(equalToConstant: 90).isActive = true
         
         self.pageViewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        self.pageViewController.didMove(toParentViewController: self)
+        self.pageViewController.didMove(toParent: self)
         
         self.view.backgroundColor = kBackgroundColor
         

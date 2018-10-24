@@ -162,7 +162,7 @@ public class FMImageEditorViewController: UIViewController {
         cropView.foregroundView.eclipsePreviewEnabled = self.config.eclipsePreviewEnabled
         
         self.view.addSubview(self.cropView)
-        self.view.sendSubview(toBack: self.cropView)
+        self.view.sendSubviewToBack(self.cropView)
         
         DispatchQueue.main.async {
             self.filterSubMenuView.insert(toView: self.subMenuContainer)

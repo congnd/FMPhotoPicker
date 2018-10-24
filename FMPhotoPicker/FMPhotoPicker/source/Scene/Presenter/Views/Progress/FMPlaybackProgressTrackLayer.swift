@@ -21,7 +21,7 @@ class FMPlaybackProgressTrackLayer: CALayer {
                 imageLayer.frame = CGRect(x: CGFloat(index) * subLayerWidth, y: 0, width: subLayerWidth, height: self.frame.height)
                 imageLayer.contents = cgImage
                 imageLayer.contentsScale = UIScreen.main.scale
-                imageLayer.contentsGravity = kCAGravityResizeAspectFill
+                imageLayer.contentsGravity = CALayerContentsGravity.resizeAspectFill
                 imageLayer.masksToBounds = true
                 self.addSublayer(imageLayer)
             }
