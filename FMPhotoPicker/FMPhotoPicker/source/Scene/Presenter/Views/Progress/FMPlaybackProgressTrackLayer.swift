@@ -14,7 +14,7 @@ class FMPlaybackProgressTrackLayer: CALayer {
     public var cgImages: [CGImage] = []
     
     override func draw(in ctx: CGContext) {
-        if let slider = rangeSlider {
+        if rangeSlider != nil {
             let subLayerWidth = self.frame.width / CGFloat(cgImages.count)
             for (index, cgImage) in cgImages.enumerated() {
                 let imageLayer = CALayer()
