@@ -1,4 +1,4 @@
-![FMPhotoPicker](/resources/FMPhotoPicker.jpg)
+![FMPhotoPicker](https://i.imgur.com/xrIZy0S.jpg)
 
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
@@ -168,7 +168,7 @@ public protocol FMAlertable {
 ```
 
 ## Apps using FMPhotoPicker
-<a href="https://funmee.jp"><img src="resources/funmee.png" width="100"></a>
+<a href="https://funmee.jp"><img src="https://i.imgur.com/l2mz2qE.png" width="100"></a>
 
 ## Author
 `<code>` with ❤️ by Tribal Media House
