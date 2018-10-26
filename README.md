@@ -2,6 +2,7 @@
 
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![Pod Compatible](https://img.shields.io/cocoapods/v/FMPhotoPicker.svg)](https://cocoapods.org/pods/FMPhotoPicker)
 
 FMPhotoPicker is a modern, simple and zero-dependency photo picker with an elegant and customizable image editor
 
@@ -22,13 +23,22 @@ FMPhotoPicker is a modern, simple and zero-dependency photo picker with an elega
 - iOS 9.0+
 
 ## Installation
-
+### Carthage
 Insert the following line in your Carthfile:
 ```
 git "git@github.com:tribalmedia/FMPhotoPicker.git"
 ```
 and run `carthage update FMPhotoPicker`
 
+### CocoaPods
+FMPhotoPicker is now available in [CocoaPods](https://cocoapods.org/pods/FMPhotoPicker)  
+You want to add pod 'FMPhotoPicker', '~> 0.8' similar to the following to your Podfile:
+```
+target 'MyApp' do
+  pod 'FMPhotoPicker', '~> 0.8'
+end
+```
+Then run a `pod install` inside your terminal.
 
 ## Usage
 #### Create a configuration object
