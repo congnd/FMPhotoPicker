@@ -18,7 +18,6 @@
 		CE1A5BCC204D3F6E009EA821 /* FMCropBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1A5BCB204D3F6E009EA821 /* FMCropBackgroundView.swift */; };
 		CE1A5BCE204D3F88009EA821 /* FMCropForegroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1A5BCD204D3F88009EA821 /* FMCropForegroundView.swift */; };
 		CE1A5BD2204E1FA5009EA821 /* InsertableUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1A5BD1204E1FA5009EA821 /* InsertableUIView.swift */; };
-		CE1A5BD4204E2F9F009EA821 /* file0001176452626.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CE1A5BD3204E2F9F009EA821 /* file0001176452626.jpg */; };
 		CE1D3C5520197F5300154980 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE1D3C5420197F5300154980 /* Assets.xcassets */; };
 		CE1D3C592019C25700154980 /* FMPhotoAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1D3C582019C25700154980 /* FMPhotoAsset.swift */; };
 		CE213CB72075C07300026B17 /* Const.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE213CB62075C07300026B17 /* Const.swift */; };
@@ -88,7 +87,6 @@
 		CE1A5BCB204D3F6E009EA821 /* FMCropBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMCropBackgroundView.swift; sourceTree = "<group>"; };
 		CE1A5BCD204D3F88009EA821 /* FMCropForegroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMCropForegroundView.swift; sourceTree = "<group>"; };
 		CE1A5BD1204E1FA5009EA821 /* InsertableUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsertableUIView.swift; sourceTree = "<group>"; };
-		CE1A5BD3204E2F9F009EA821 /* file0001176452626.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = file0001176452626.jpg; sourceTree = "<group>"; };
 		CE1D3C5420197F5300154980 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE1D3C582019C25700154980 /* FMPhotoAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMPhotoAsset.swift; sourceTree = "<group>"; };
 		CE213CB62075C07300026B17 /* Const.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Const.swift; sourceTree = "<group>"; };
@@ -354,7 +352,6 @@
 		CEE50D0B20196DF9005AE708 /* FMPhotoPicker */ = {
 			isa = PBXGroup;
 			children = (
-				CE1A5BD3204E2F9F009EA821 /* file0001176452626.jpg */,
 				CEE50D2320196E32005AE708 /* source */,
 				CEE50D0D20196DF9005AE708 /* Info.plist */,
 			);
@@ -481,7 +478,6 @@
 				CED2E98D20453D8F00AB8206 /* FMImageEditorViewController.xib in Resources */,
 				CE1D3C5520197F5300154980 /* Assets.xcassets in Resources */,
 				CEE50D6B20197A61005AE708 /* FMPhotoPickerImageCollectionViewCell.xib in Resources */,
-				CE1A5BD4204E2F9F009EA821 /* file0001176452626.jpg in Resources */,
 				CE0C5FB7201ABD660040A03A /* FMPhotoPresenterViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
