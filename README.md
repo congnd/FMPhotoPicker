@@ -178,6 +178,7 @@ public protocol FMAlertable {
 ```
 
 ## Apps using FMPhotoPicker
+If you using FMPhotoPicker in your apps, please tell we & please P-R add this list.
 <a href="https://funmee.jp"><img src="https://i.imgur.com/l2mz2qE.png" width="100"></a>
 
 ## Author
