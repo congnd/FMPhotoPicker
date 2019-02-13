@@ -180,6 +180,9 @@ public protocol FMAlertable {
 ## Apps using FMPhotoPicker
 <a href="https://funmee.jp"><img src="https://i.imgur.com/l2mz2qE.png" width="100"></a>
 
+## Committers
+Cong Nguyen (@congnd)
+
 ## Author
 `<code>` with ❤️ by Tribal Media House
 
