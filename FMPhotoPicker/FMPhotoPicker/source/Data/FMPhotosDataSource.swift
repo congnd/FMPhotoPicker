@@ -19,19 +19,19 @@ class FMPhotosDataSource {
     }
     
     public func setSeletedForPhoto(atIndex index: Int) {
-        if self.selectedPhotoIndexes.index(where: { $0 == index }) == nil {
+        if self.selectedPhotoIndexes.firstIndex(where: { $0 == index }) == nil {
             self.selectedPhotoIndexes.append(index)
         }
     }
     
     public func unsetSeclectedForPhoto(atIndex index: Int) {
-        if let indexInSelectedIndex = self.selectedPhotoIndexes.index(where: { $0 == index }) {
+        if let indexInSelectedIndex = self.selectedPhotoIndexes.firstIndex(where: { $0 == index }) {
             self.selectedPhotoIndexes.remove(at: indexInSelectedIndex)
         }
     }
     
     public func selectedIndexOfPhoto(atIndex index: Int) -> Int? {
-        return self.selectedPhotoIndexes.index(where: { $0 == index })
+        return self.selectedPhotoIndexes.firstIndex(where: { $0 == index })
     }
     
     public func numberOfSelectedPhoto() -> Int {
@@ -70,7 +70,7 @@ class FMPhotosDataSource {
     }
     
     public func index(ofPhoto photo: FMPhotoAsset) -> Int? {
-        return self.photoAssets.index(where: { $0 === photo })
+        return self.photoAssets.firstIndex(where: { $0 === photo })
     }
     
     public func contains(photo: FMPhotoAsset) -> Bool {

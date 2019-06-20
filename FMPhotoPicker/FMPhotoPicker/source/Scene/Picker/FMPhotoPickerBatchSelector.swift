@@ -185,7 +185,7 @@ class FMPhotoPickerBatchSelector: NSObject {
         
         var result = [PanSelection]()
         for index in fromIndex...toIndex {
-            let found = self.panSelections.index(where: { $0.indexPath.item == index })
+            let found = self.panSelections.firstIndex(where: { $0.indexPath.item == index })
             if let found = found {
                 result.append(self.panSelections[found])
             }
@@ -198,7 +198,7 @@ class FMPhotoPickerBatchSelector: NSObject {
      */
     private func removeFromPrevSection(panSelectionsTobeReset: [PanSelection]) {
         panSelectionsTobeReset.forEach { panSelection in
-            if let found = self.panSelections.index(where: { $0.indexPath == panSelection.indexPath }) {
+            if let found = self.panSelections.firstIndex(where: { $0.indexPath == panSelection.indexPath }) {
                 self.panSelections.remove(at: found)
             }
         }

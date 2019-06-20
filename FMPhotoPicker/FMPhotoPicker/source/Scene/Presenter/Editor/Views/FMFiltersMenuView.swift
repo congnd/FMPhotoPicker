@@ -36,7 +36,7 @@ class FMFiltersMenuView: UIView {
         
         super.init(frame: .zero)
         
-        if let index = self.availableFilters.index(where: { return $0.filterName() == appliedFilter?.filterName() }) {
+        if let index = self.availableFilters.firstIndex(where: { return $0.filterName() == appliedFilter?.filterName() }) {
             self.selectedCellIndex = index
         }
         
