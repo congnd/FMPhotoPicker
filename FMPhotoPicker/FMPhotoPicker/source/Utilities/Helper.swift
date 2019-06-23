@@ -178,14 +178,14 @@ class Helper: NSObject {
     }
     
     static func showDialog(in viewController: UIViewController,
-                           ok: (() -> Void)? = nil,
-                           cancel: (() -> Void)? = nil,
-                           title: String = "FMPhotoPicker",
-                           message: String = "FMPhotoPicker want to access Photo Library") {
+                           okAction: UIAlertAction = UIAlertAction(title: "OK", style: .default, handler: nil),
+                           cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil),
+                           title: String? = "FMPhotoPicker",
+                           message: String? = "FMPhotoPicker want to access Photo Library") {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
-        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in ok?() }))
-        alertController.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: { _ in cancel?() }))
+        alertController.addAction(okAction)
+        alertController.addAction(cancelAction)
 
         viewController.present(alertController, animated: true)
     }

@@ -165,7 +165,7 @@ extension FMCropMenuView: UICollectionViewDelegate {
                 cell.setSelected()
                 
                 if let prevCropItem = prevCropItem,
-                    let prevRow = cropItems.index(where: { $0.identifier() == prevCropItem.identifier() }) {
+                    let prevRow = cropItems.firstIndex(where: { $0.identifier() == prevCropItem.identifier() }) {
                     collectionView.reloadItems(at: [IndexPath(row: prevRow, section: 1)])
                 }
             }

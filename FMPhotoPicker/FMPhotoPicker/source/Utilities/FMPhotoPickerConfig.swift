@@ -78,6 +78,11 @@ public struct FMPhotoPickerConfig {
         "editor_crop_ratioCustom":                  "Custom",
         "editor_crop_ratioOrigin":                  "Origin",
         "editor_crop_ratioSquare":                  "Square",
+
+        "permission_dialog_title":                  "FMPhotoPicker",
+        "permission_dialog_message":                "FMPhotoPicker wants to access Photo Library",
+        "permission_button_ok":                     "OK",
+        "permission_button_cancel":                 "Cancel"
     ]
     
     public init() {
