@@ -21,6 +21,7 @@ public struct FMCropRatio {
 public enum FMCrop: FMCroppable {
     case ratio4x3
     case ratio16x9
+    case ratio9x16
     case ratioCustom
     case ratioOrigin
     case ratioSquare
@@ -31,6 +32,8 @@ public enum FMCrop: FMCroppable {
             return FMCropRatio(width: 4, height: 3)
         case .ratio16x9:
             return FMCropRatio(width: 16, height: 9)
+        case .ratio9x16:
+            return FMCropRatio(width: 9, height: 16)
         case .ratioSquare:
             return FMCropRatio(width: 1, height: 1)
         default:
@@ -42,6 +45,7 @@ public enum FMCrop: FMCroppable {
         switch self {
         case .ratio4x3: return strings["editor_crop_ratio4x3"]
         case .ratio16x9: return strings["editor_crop_ratio16x9"]
+        case .ratio9x16: return strings["editor_crop_ratio9x16"]
         case .ratioCustom: return strings["editor_crop_ratioCustom"]
         case .ratioOrigin: return strings["editor_crop_ratioOrigin"]
         case .ratioSquare: return strings["editor_crop_ratioSquare"]
@@ -55,6 +59,8 @@ public enum FMCrop: FMCroppable {
             icon = UIImage(named: "icon_crop_4x3", in: Bundle(for: FMPhotoPickerViewController.self), compatibleWith: nil)
         case .ratio16x9:
             icon = UIImage(named: "icon_crop_16x9", in: Bundle(for: FMPhotoPickerViewController.self), compatibleWith: nil)
+        case .ratio9x16:
+            icon = UIImage(named: "icon_crop_16x9", in: Bundle(for: FMPhotoPickerViewController.self), compatibleWith: nil) // fixme: new image from bundle for 9x16
         case .ratioCustom:
             icon = UIImage(named: "icon_crop_custom", in: Bundle(for: FMPhotoPickerViewController.self), compatibleWith: nil)
         case .ratioOrigin:
@@ -72,6 +78,7 @@ public enum FMCrop: FMCroppable {
         switch self {
         case .ratio4x3: return "ratio4x3"
         case .ratio16x9: return "ratio16x9"
+        case .ratio9x16: return "ratio9x16"
         case .ratioCustom: return "ratioCustom"
         case .ratioOrigin: return "ratioOrigin"
         case .ratioSquare: return "ratioSquare"
