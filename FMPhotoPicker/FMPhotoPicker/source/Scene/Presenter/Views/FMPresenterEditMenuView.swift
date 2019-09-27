@@ -22,7 +22,9 @@ class FMPresenterEditMenuView: UIView {
         editButton.translatesAutoresizingMaskIntoConstraints = false
         editButton.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         editButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        editButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 80).isActive = true
+        editButton.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        editButton.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        // editButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 80).isActive = true
         editButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 40).isActive = true
         editButton.setTitleColor(.black, for: .normal)
         editButton.setTitle(config.strings["present_button_edit_image"], for: .normal)
