@@ -95,7 +95,8 @@ public class FMPhotoAsset {
         } else {
             // It is not absolutely right but it gives much better performance in most cases
             let cropScale = (editor.cropArea.scaleW + editor.cropArea.scaleH) / 2
-            let size = CGSize(width: 200 / cropScale, height: 200 / cropScale)
+            let cellSize = UIScreen.main.bounds.width / 3 * UIScreen.main.scale
+            let size = CGSize(width: cellSize / cropScale, height: cellSize / cropScale)
             if let asset = asset {
                 self.thumbRequestId = Helper.getPhoto(by: asset, in: size) { image in
                     self.thumbRequestId = nil
