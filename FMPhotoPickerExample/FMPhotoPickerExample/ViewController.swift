@@ -96,6 +96,7 @@ class ViewController: UIViewController, FMPhotoPickerViewControllerDelegate, FMI
             FMCrop.ratioCustom,
             FMCrop.ratio4x3,
             FMCrop.ratio16x9,
+            FMCrop.ratio9x16,
             FMCrop.ratioOrigin,
         ]
         
