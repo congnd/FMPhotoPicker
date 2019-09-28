@@ -139,6 +139,7 @@ class Helper: NSObject {
     
     static func getAssets(allowMediaTypes: [FMMediaType]) -> [PHAsset] {
         let fetchOptions = PHFetchOptions()
+        fetchOptions.includeAssetSourceTypes = [.typeUserLibrary, .typeCloudShared, .typeiTunesSynced]
         
         // Default sort is modificationDate
         // fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
