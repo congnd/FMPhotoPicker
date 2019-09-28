@@ -177,12 +177,8 @@ public protocol FMAlertable {
 }
 ```
 
-## Apps using FMPhotoPicker
-If you are using FMPhotoPicker in your project, please let us know.
-<a href="https://funmee.jp"><img src="https://i.imgur.com/l2mz2qE.png" width="100"></a>
-
-## Committers
-Cong Nguyen (@congnd)
+## Developer
+[@congnd](https://github.com/congnd)
 
 ## Author
 `<code>` with ❤️ by Tribal Media House
