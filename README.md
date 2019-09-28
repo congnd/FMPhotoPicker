@@ -6,6 +6,11 @@
 
 FMPhotoPicker is a modern, simple and zero-dependency photo picker with an elegant and customizable image editor
 
+## Quick demo
+|Batch select/deselect|Smooth transitions|Filter|Crop|
+|---|---|---|---|---|
+|![FMPhotoPicker](https://media.giphy.com/media/kele5hwpuOvaY0jW85/giphy.gif)| ![FMPhotoPicker](https://media.giphy.com/media/JPm6sAGyGhTV8rGXxs/giphy.gif)|![FMPhotoPicker](https://media.giphy.com/media/eJ3klNWDqWem69SbLT/giphy.gif)|![FMPhotoPicker](https://media.giphy.com/media/XBQITkEgzUv0GefK9F/giphy.gif)|
+
 ## Features
 - [x] Support both single and multiple selection
 - [x] Support batch selection/deselection by swipe gesture
