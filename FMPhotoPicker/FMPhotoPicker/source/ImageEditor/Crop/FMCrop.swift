@@ -60,7 +60,7 @@ public enum FMCrop: FMCroppable {
         case .ratio16x9:
             icon = UIImage(named: "icon_crop_16x9", in: Bundle(for: FMPhotoPickerViewController.self), compatibleWith: nil)
         case .ratio9x16:
-            icon = UIImage(named: "icon_crop_16x9", in: Bundle(for: FMPhotoPickerViewController.self), compatibleWith: nil) // fixme: new image from bundle for 9x16
+            icon = UIImage(named: "icon_crop_9x16", in: Bundle(for: FMPhotoPickerViewController.self), compatibleWith: nil)
         case .ratioCustom:
             icon = UIImage(named: "icon_crop_custom", in: Bundle(for: FMPhotoPickerViewController.self), compatibleWith: nil)
         case .ratioOrigin:
