@@ -1,4 +1,4 @@
-@version = "0.8.2"
+@version = "0.9.0"
 
 Pod::Spec.new do |s|
   s.name          = "FMPhotoPicker"
@@ -11,4 +11,5 @@ Pod::Spec.new do |s|
   s.source        = { :git => "https://github.com/tribalmedia/FMPhotoPicker.git", :tag => s.version }
   s.source_files  = 'Classes', 'FMPhotoPicker/FMPhotoPicker/source/**/*.swift'
   s.resources     = ['FMPhotoPicker/FMPhotoPicker/source/Assets.xcassets', 'FMPhotoPicker/FMPhotoPicker/source/**/*.xib']
+  s.swift_version = ["4.2", "5.0"]
 end
