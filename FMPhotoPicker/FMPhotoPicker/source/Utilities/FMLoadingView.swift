@@ -16,9 +16,14 @@ class FMLoadingView {
     static let shared = FMLoadingView()
     
     private init() {
-        let rootVC = (UIApplication.shared.delegate?.window??.rootViewController)!
+        if let rootVC = (UIApplication.shared.windows.first?.rootViewController) {
+            self.transparentView = UIView(frame: rootVC.view.frame)
+            
+        } else {
+            let windowFrame = UIApplication.shared.keyWindow?.frame
+            self.transparentView = UIView(frame: windowFrame ?? .zero)
+        }
         
-        self.transparentView = UIView(frame: rootVC.view.frame)
         self.transparentView.backgroundColor = UIColor(white: 0, alpha: 0.4)
         
         self.indicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
