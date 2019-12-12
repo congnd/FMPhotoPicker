@@ -16,14 +16,7 @@ class FMLoadingView {
     static let shared = FMLoadingView()
     
     private init() {
-        if let rootVC = (UIApplication.shared.windows.first?.rootViewController) {
-            self.transparentView = UIView(frame: rootVC.view.frame)
-            
-        } else {
-            let windowFrame = UIApplication.shared.keyWindow?.frame
-            self.transparentView = UIView(frame: windowFrame ?? .zero)
-        }
-        
+        self.transparentView = UIView()
         self.transparentView.backgroundColor = UIColor(white: 0, alpha: 0.4)
         
         self.indicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
@@ -34,7 +27,11 @@ class FMLoadingView {
     }
     
     func show() {
-        UIApplication.shared.keyWindow?.addSubview(self.transparentView)
+        guard let keyWindow = UIApplication.shared.keyWindow else { return }
+        
+        self.transparentView.frame = keyWindow.frame
+        keyWindow.addSubview(self.transparentView)
+        
         self.transparentView.alpha = 0
         self.indicator.startAnimating()
         UIView.animate(withDuration: kEnteringAnimationDuration, animations: {
