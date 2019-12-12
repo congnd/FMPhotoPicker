@@ -6,7 +6,7 @@
 //  Copyright © 2018 Tribal Media House. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import Photos
 
 public class FMPhotoAsset {
