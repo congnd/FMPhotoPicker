@@ -31,7 +31,7 @@ FMPhotoPicker is a modern, simple and zero-dependency photo picker with an elega
 ### Carthage
 Insert the following line in your Carthfile:
 ```
-git "git@github.com:tribalmedia/FMPhotoPicker.git"
+git "git@github.com:congnd/FMPhotoPicker.git"
 ```
 and run `carthage update FMPhotoPicker`
 
@@ -184,9 +184,6 @@ public protocol FMAlertable {
 
 ## Developer
 [@congnd](https://github.com/congnd)
-
-## Author
-`<code>` with ❤️ by Tribal Media House
 
 ## License
 FMPhotoPicker is released under the MIT license. See LICENSE for details.
