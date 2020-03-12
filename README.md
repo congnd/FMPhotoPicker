@@ -28,6 +28,13 @@ FMPhotoPicker is a modern, simple and zero-dependency photo picker with an elega
 - iOS 9.0+
 
 ## Installation
+### SwiftPM
+```
+dependencies: [
+  .package(url: "https://github.com/congnd/FMPhotoPicker.git", .exact("0.9.1")),
+]
+```
+
 ### Carthage
 Insert the following line in your Carthfile:
 ```
