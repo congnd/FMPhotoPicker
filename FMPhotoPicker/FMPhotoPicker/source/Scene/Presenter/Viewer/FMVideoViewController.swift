@@ -201,8 +201,9 @@ class FMVideoViewController: FMPhotoViewController {
     
     private func addPlayerTimeObserverIfNeeded() {
         if playerTimeObserver == nil {
-            self.playerTimeObserver = self.player?.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(0.1, preferredTimescale: 1000), queue: .main, using: { [unowned self] time in
-                print("callback is called for video: \(self.dataSource.index(ofPhoto: self.photo)!)")
+            self.playerTimeObserver = self.player?.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1, preferredTimescale: 1000), queue: .main, using: { [weak self] time in
+                guard let self = self else { return }
+                
                 guard let status = self.player?.currentItem?.status,
                     status == .readyToPlay else {
                     return
