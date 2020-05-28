@@ -115,6 +115,8 @@ public class FMImageEditorViewController: UIViewController {
         super.init(nibName: "FMImageEditorViewController", bundle: Bundle(for: FMImageEditorViewController.self))
         
         self.view.backgroundColor = kBackgroundColor
+        
+        modalPresentationStyle = .fullScreen
     }
     
     public init(config: FMPhotoPickerConfig, sourceImage: UIImage) {
@@ -141,6 +143,8 @@ public class FMImageEditorViewController: UIViewController {
         }
         
         self.view.backgroundColor = kBackgroundColor
+        
+        modalPresentationStyle = .fullScreen
     }
     
     required public init?(coder aDecoder: NSCoder) {

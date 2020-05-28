@@ -52,6 +52,7 @@ public class FMPhotoPickerViewController: UIViewController {
     public init(config: FMPhotoPickerConfig) {
         self.config = config
         super.init(nibName: "FMPhotoPickerViewController", bundle: Bundle(for: type(of: self)))
+        modalPresentationStyle = .fullScreen
     }
     
     required public init?(coder aDecoder: NSCoder) {
