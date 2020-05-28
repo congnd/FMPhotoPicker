@@ -75,8 +75,7 @@ public class FMPhotoPickerViewController: UIViewController {
     
     // MARK: - Setup View
     private func setupView() {
-        let reuseCellNib = UINib(nibName: "FMPhotoPickerImageCollectionViewCell", bundle: Bundle(for: self.classForCoder))
-        self.imageCollectionView.register(reuseCellNib, forCellWithReuseIdentifier: FMPhotoPickerImageCollectionViewCell.reuseId)
+        self.imageCollectionView.register(FMPhotoPickerImageCollectionViewCell.self, forCellWithReuseIdentifier: FMPhotoPickerImageCollectionViewCell.reuseId)
         self.imageCollectionView.dataSource = self
         self.imageCollectionView.delegate = self
         
