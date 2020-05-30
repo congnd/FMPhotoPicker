@@ -16,11 +16,11 @@ public protocol FMPhotoPickerViewControllerDelegate: class {
 
 public class FMPhotoPickerViewController: UIViewController {
     // MARK: - Outlet
-    @IBOutlet weak var imageCollectionView: UICollectionView!
-    @IBOutlet weak var numberOfSelectedPhotoContainer: UIView!
-    @IBOutlet weak var numberOfSelectedPhoto: UILabel!
-    @IBOutlet weak var determineButton: UIButton!
-    @IBOutlet weak var cancelButton: UIButton!
+    private weak var imageCollectionView: UICollectionView!
+    private weak var numberOfSelectedPhotoContainer: UIView!
+    private weak var numberOfSelectedPhoto: UILabel!
+    private weak var doneButton: UIButton!
+    private weak var cancelButton: UIButton!
     
     // MARK: - Public
     public weak var delegate: FMPhotoPickerViewControllerDelegate? = nil
@@ -51,7 +51,7 @@ public class FMPhotoPickerViewController: UIViewController {
     // MARK: - Init
     public init(config: FMPhotoPickerConfig) {
         self.config = config
-        super.init(nibName: "FMPhotoPickerViewController", bundle: Bundle(for: type(of: self)))
+        super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
     }
     
@@ -59,6 +59,12 @@ public class FMPhotoPickerViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    public override func loadView() {
+        super.loadView()
+        view = UIView()
+        view.backgroundColor = .white
+        initializeViews()
+    }
     
     // MARK: - Life cycle
     override public func viewDidLoad() {
@@ -79,23 +85,21 @@ public class FMPhotoPickerViewController: UIViewController {
         self.imageCollectionView.dataSource = self
         self.imageCollectionView.delegate = self
         
-        self.numberOfSelectedPhotoContainer.layer.cornerRadius = self.numberOfSelectedPhotoContainer.frame.size.width / 2
         self.numberOfSelectedPhotoContainer.isHidden = true
-        self.determineButton.isHidden = true
+        self.doneButton.isHidden = true
         
         // set button title
         self.cancelButton.setTitle(config.strings["picker_button_cancel"], for: .normal)
         self.cancelButton.titleLabel!.font = UIFont.systemFont(ofSize: config.titleFontSize)
-        self.determineButton.setTitle(config.strings["picker_button_select_done"], for: .normal)
-        self.determineButton.titleLabel!.font = UIFont.systemFont(ofSize: config.titleFontSize)
+        self.doneButton.setTitle(config.strings["picker_button_select_done"], for: .normal)
+        self.doneButton.titleLabel!.font = UIFont.systemFont(ofSize: config.titleFontSize)
     }
     
-    // MARK: - Target Actions
-    @IBAction func onTapCancel(_ sender: Any) {
+    @objc private func onTapCancel(_ sender: Any) {
         self.dismiss(animated: true)
     }
     
-    @IBAction func onTapDetermine(_ sender: Any) {
+    @objc private func onTapDone(_ sender: Any) {
         processDetermination()
     }
     
@@ -141,13 +145,13 @@ public class FMPhotoPickerViewController: UIViewController {
     
     public func updateControlBar() {
         if self.dataSource.numberOfSelectedPhoto() > 0 {
-            self.determineButton.isHidden = false
+            self.doneButton.isHidden = false
             if self.config.selectMode == .multiple {
                 self.numberOfSelectedPhotoContainer.isHidden = false
                 self.numberOfSelectedPhoto.text = "\(self.dataSource.numberOfSelectedPhoto())"
             }
         } else {
-            self.determineButton.isHidden = true
+            self.doneButton.isHidden = true
             self.numberOfSelectedPhotoContainer.isHidden = true
         }
     }
@@ -340,5 +344,94 @@ extension FMPhotoPickerViewController: UIViewControllerTransitioningDelegate {
                 return CGRect(x: 0, y: self.view.frame.height, width: self.view.frame.size.width, height: self.view.frame.size.width)
         }
         return cell.convert(cell.bounds, to: self.view)
+    }
+}
+
+private extension FMPhotoPickerViewController {
+    func initializeViews() {
+        let headerContainer = UIView()
+        headerContainer.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(headerContainer)
+        
+        if #available(iOS 11.0, *) {
+            NSLayoutConstraint.activate([
+                headerContainer.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                headerContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
+            ])
+        }
+        NSLayoutConstraint.activate([
+            headerContainer.leftAnchor.constraint(equalTo: view.leftAnchor),
+            headerContainer.rightAnchor.constraint(equalTo: view.rightAnchor),
+            headerContainer.heightAnchor.constraint(equalToConstant: 44)
+        ])
+        
+        let cancelButton = UIButton(type: .system)
+        self.cancelButton = cancelButton
+        cancelButton.addTarget(self, action: #selector(onTapCancel(_:)), for: .touchUpInside)
+        
+        cancelButton.translatesAutoresizingMaskIntoConstraints = false
+        headerContainer.addSubview(cancelButton)
+        NSLayoutConstraint.activate([
+            cancelButton.leftAnchor.constraint(equalTo: headerContainer.leftAnchor, constant: 16),
+            cancelButton.centerYAnchor.constraint(equalTo: headerContainer.centerYAnchor),
+        ])
+        
+        let doneButton = UIButton(type: .system)
+        self.doneButton = doneButton
+        doneButton.addTarget(self, action: #selector(onTapDone(_:)), for: .touchUpInside)
+        
+        doneButton.translatesAutoresizingMaskIntoConstraints = false
+        headerContainer.addSubview(doneButton)
+        NSLayoutConstraint.activate([
+            doneButton.rightAnchor.constraint(equalTo: headerContainer.rightAnchor, constant: -16),
+            doneButton.centerYAnchor.constraint(equalTo: headerContainer.centerYAnchor),
+            doneButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 40),
+        ])
+        
+        let numberOfSelectedPhotoContainer = UIView()
+        self.numberOfSelectedPhotoContainer = numberOfSelectedPhotoContainer
+        numberOfSelectedPhotoContainer.layer.cornerRadius = 14
+        numberOfSelectedPhotoContainer.layer.masksToBounds = true
+        numberOfSelectedPhotoContainer.backgroundColor = kRedColor
+        
+        numberOfSelectedPhotoContainer.translatesAutoresizingMaskIntoConstraints = false
+        headerContainer.addSubview(numberOfSelectedPhotoContainer)
+        NSLayoutConstraint.activate([
+            numberOfSelectedPhotoContainer.rightAnchor.constraint(equalTo: doneButton.leftAnchor, constant: -16),
+            numberOfSelectedPhotoContainer.centerYAnchor.constraint(equalTo: headerContainer.centerYAnchor),
+            numberOfSelectedPhotoContainer.heightAnchor.constraint(equalToConstant: 28),
+            numberOfSelectedPhotoContainer.widthAnchor.constraint(equalToConstant: 28),
+        ])
+        
+        let numberOfSelectedPhoto = UILabel()
+        self.numberOfSelectedPhoto = numberOfSelectedPhoto
+        numberOfSelectedPhoto.font = .systemFont(ofSize: 15)
+        numberOfSelectedPhoto.textColor = .white
+        numberOfSelectedPhoto.textAlignment = .center
+        
+        numberOfSelectedPhoto.translatesAutoresizingMaskIntoConstraints = false
+        numberOfSelectedPhotoContainer.addSubview(numberOfSelectedPhoto)
+        NSLayoutConstraint.activate([
+            numberOfSelectedPhoto.topAnchor.constraint(equalTo: numberOfSelectedPhotoContainer.topAnchor),
+            numberOfSelectedPhoto.rightAnchor.constraint(equalTo: numberOfSelectedPhotoContainer.rightAnchor),
+            numberOfSelectedPhoto.bottomAnchor.constraint(equalTo: numberOfSelectedPhotoContainer.bottomAnchor),
+            numberOfSelectedPhoto.leftAnchor.constraint(equalTo: numberOfSelectedPhotoContainer.leftAnchor),
+        ])
+        
+        let imageCollectionView = UICollectionView(frame: .zero, collectionViewLayout: FMPhotoPickerImageCollectionViewLayout())
+        self.imageCollectionView = imageCollectionView
+        imageCollectionView.backgroundColor = .clear
+        
+        imageCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(imageCollectionView)
+        NSLayoutConstraint.activate([
+            imageCollectionView.topAnchor.constraint(equalTo: headerContainer.bottomAnchor),
+            imageCollectionView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            imageCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            imageCollectionView.leftAnchor.constraint(equalTo: view.leftAnchor),
+        ])
     }
 }

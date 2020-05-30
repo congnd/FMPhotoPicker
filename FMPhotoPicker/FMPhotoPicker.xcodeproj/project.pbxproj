@@ -60,7 +60,6 @@
 		CEE50D2A20196E45005AE708 /* FMPhotoPickerImageCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE50D2520196E45005AE708 /* FMPhotoPickerImageCollectionViewLayout.swift */; };
 		CEE50D2B20196E45005AE708 /* FMPhotoPickerImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE50D2620196E45005AE708 /* FMPhotoPickerImageCollectionViewCell.swift */; };
 		CEE50D2C20196E45005AE708 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE50D2720196E45005AE708 /* Helper.swift */; };
-		CEE50D6920197958005AE708 /* FMPhotoPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEE50D6820197958005AE708 /* FMPhotoPickerViewController.xib */; };
 		CEEC7E3920328C2000BBC214 /* FMWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEC7E3820328C2000BBC214 /* FMWarningView.swift */; };
 /* End PBXBuildFile section */
 
@@ -131,7 +130,6 @@
 		CEE50D2520196E45005AE708 /* FMPhotoPickerImageCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FMPhotoPickerImageCollectionViewLayout.swift; sourceTree = "<group>"; };
 		CEE50D2620196E45005AE708 /* FMPhotoPickerImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FMPhotoPickerImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		CEE50D2720196E45005AE708 /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
-		CEE50D6820197958005AE708 /* FMPhotoPickerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FMPhotoPickerViewController.xib; sourceTree = "<group>"; };
 		CEEC7E3820328C2000BBC214 /* FMWarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMWarningView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -193,7 +191,6 @@
 				CEE50D2420196E44005AE708 /* FMPhotoPickerViewController.swift */,
 				CEE50D2620196E45005AE708 /* FMPhotoPickerImageCollectionViewCell.swift */,
 				CEE50D2520196E45005AE708 /* FMPhotoPickerImageCollectionViewLayout.swift */,
-				CEE50D6820197958005AE708 /* FMPhotoPickerViewController.xib */,
 			);
 			path = Picker;
 			sourceTree = "<group>";
@@ -473,7 +470,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CEE50D6920197958005AE708 /* FMPhotoPickerViewController.xib in Resources */,
 				CED2E98D20453D8F00AB8206 /* FMImageEditorViewController.xib in Resources */,
 				CE1D3C5520197F5300154980 /* Assets.xcassets in Resources */,
 				CE0C5FB7201ABD660040A03A /* FMPhotoPresenterViewController.xib in Resources */,
