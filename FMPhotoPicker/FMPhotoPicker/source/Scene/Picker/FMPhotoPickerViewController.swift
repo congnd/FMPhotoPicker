@@ -53,23 +53,14 @@ public class FMPhotoPickerViewController: UIViewController {
         self.config = config
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
+        view = UIView()
+        view.backgroundColor = .white
+        initializeViews()
+        setupView()
     }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    public override func loadView() {
-        super.loadView()
-        view = UIView()
-        view.backgroundColor = .white
-        initializeViews()
-    }
-    
-    // MARK: - Life cycle
-    override public func viewDidLoad() {
-        super.viewDidLoad()
-        self.setupView()
     }
     
     override public func viewDidAppear(_ animated: Bool) {
