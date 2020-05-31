@@ -340,23 +340,47 @@ extension FMPhotoPickerViewController: UIViewControllerTransitioningDelegate {
 
 private extension FMPhotoPickerViewController {
     func initializeViews() {
-        let headerContainer = UIView()
-        headerContainer.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(headerContainer)
+        let headerView = UIView()
+        headerView.backgroundColor = .white
         
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(headerView)
+        NSLayoutConstraint.activate([
+            headerView.topAnchor.constraint(equalTo: view.topAnchor),
+            headerView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            headerView.rightAnchor.constraint(equalTo: view.rightAnchor),
+        ])
+        
+        let headerSeparator = UIView()
+        headerSeparator.backgroundColor = kBorderColor
+        
+        headerSeparator.translatesAutoresizingMaskIntoConstraints = false
+        headerView.addSubview(headerSeparator)
+        NSLayoutConstraint.activate([
+            headerSeparator.leftAnchor.constraint(equalTo: headerView.leftAnchor),
+            headerSeparator.rightAnchor.constraint(equalTo: headerView.rightAnchor),
+            headerSeparator.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
+            headerSeparator.heightAnchor.constraint(equalToConstant: 1),
+        ])
+        
+        let menuContainer = UIView()
+        
+        menuContainer.translatesAutoresizingMaskIntoConstraints = false
+        headerView.addSubview(menuContainer)
         if #available(iOS 11.0, *) {
             NSLayoutConstraint.activate([
-                headerContainer.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                menuContainer.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             ])
         } else {
             NSLayoutConstraint.activate([
-                headerContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
+                menuContainer.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 20),
             ])
         }
         NSLayoutConstraint.activate([
-            headerContainer.leftAnchor.constraint(equalTo: view.leftAnchor),
-            headerContainer.rightAnchor.constraint(equalTo: view.rightAnchor),
-            headerContainer.heightAnchor.constraint(equalToConstant: 44)
+            menuContainer.leftAnchor.constraint(equalTo: headerView.leftAnchor),
+            menuContainer.rightAnchor.constraint(equalTo: headerView.rightAnchor),
+            menuContainer.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
+            menuContainer.heightAnchor.constraint(equalToConstant: 44)
         ])
         
         let cancelButton = UIButton(type: .system)
@@ -364,10 +388,10 @@ private extension FMPhotoPickerViewController {
         cancelButton.addTarget(self, action: #selector(onTapCancel(_:)), for: .touchUpInside)
         
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
-        headerContainer.addSubview(cancelButton)
+        menuContainer.addSubview(cancelButton)
         NSLayoutConstraint.activate([
-            cancelButton.leftAnchor.constraint(equalTo: headerContainer.leftAnchor, constant: 16),
-            cancelButton.centerYAnchor.constraint(equalTo: headerContainer.centerYAnchor),
+            cancelButton.leftAnchor.constraint(equalTo: menuContainer.leftAnchor, constant: 16),
+            cancelButton.centerYAnchor.constraint(equalTo: menuContainer.centerYAnchor),
         ])
         
         let doneButton = UIButton(type: .system)
@@ -375,10 +399,10 @@ private extension FMPhotoPickerViewController {
         doneButton.addTarget(self, action: #selector(onTapDone(_:)), for: .touchUpInside)
         
         doneButton.translatesAutoresizingMaskIntoConstraints = false
-        headerContainer.addSubview(doneButton)
+        menuContainer.addSubview(doneButton)
         NSLayoutConstraint.activate([
-            doneButton.rightAnchor.constraint(equalTo: headerContainer.rightAnchor, constant: -16),
-            doneButton.centerYAnchor.constraint(equalTo: headerContainer.centerYAnchor),
+            doneButton.rightAnchor.constraint(equalTo: menuContainer.rightAnchor, constant: -16),
+            doneButton.centerYAnchor.constraint(equalTo: menuContainer.centerYAnchor),
             doneButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 40),
         ])
         
@@ -389,10 +413,10 @@ private extension FMPhotoPickerViewController {
         numberOfSelectedPhotoContainer.backgroundColor = kRedColor
         
         numberOfSelectedPhotoContainer.translatesAutoresizingMaskIntoConstraints = false
-        headerContainer.addSubview(numberOfSelectedPhotoContainer)
+        menuContainer.addSubview(numberOfSelectedPhotoContainer)
         NSLayoutConstraint.activate([
             numberOfSelectedPhotoContainer.rightAnchor.constraint(equalTo: doneButton.leftAnchor, constant: -16),
-            numberOfSelectedPhotoContainer.centerYAnchor.constraint(equalTo: headerContainer.centerYAnchor),
+            numberOfSelectedPhotoContainer.centerYAnchor.constraint(equalTo: menuContainer.centerYAnchor),
             numberOfSelectedPhotoContainer.heightAnchor.constraint(equalToConstant: 28),
             numberOfSelectedPhotoContainer.widthAnchor.constraint(equalToConstant: 28),
         ])
@@ -419,7 +443,7 @@ private extension FMPhotoPickerViewController {
         imageCollectionView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(imageCollectionView)
         NSLayoutConstraint.activate([
-            imageCollectionView.topAnchor.constraint(equalTo: headerContainer.bottomAnchor),
+            imageCollectionView.topAnchor.constraint(equalTo: menuContainer.bottomAnchor),
             imageCollectionView.rightAnchor.constraint(equalTo: view.rightAnchor),
             imageCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             imageCollectionView.leftAnchor.constraint(equalTo: view.leftAnchor),
