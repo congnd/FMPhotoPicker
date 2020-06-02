@@ -9,7 +9,7 @@
 import UIKit
 import AVKit
 
-class FMPresenterBottomView: UIView {
+class FMPresenterBottomView: UIStackView {
     // should be false when the view is hidden
     private var shouldReceiveUpdate = true
     
@@ -28,33 +28,29 @@ class FMPresenterBottomView: UIView {
     }
     
     public var playerProgressDidChange: ((Double) -> Void)?
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     init(config: FMPhotoPickerConfig) {
         playbackControlView = FMPlaybackControlView()
         editMenuView = FMPresenterEditMenuView(config: config)
         super.init(frame: .zero)
         
-        self.addSubview(playbackControlView)
+        axis = .vertical
+        
+        addArrangedSubview(playbackControlView)
         playbackControlView.translatesAutoresizingMaskIntoConstraints = false
         playbackControlView.heightAnchor.constraint(equalToConstant: 100).isActive = true
-        playbackControlView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        playbackControlView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        playbackControlView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         
         playerProgressDidChange = { [unowned self] percent in
             self.playbackControlView.playerProgressDidChange(value: percent)
         }
         
-        self.addSubview(editMenuView)
+        addArrangedSubview(editMenuView)
         editMenuView.translatesAutoresizingMaskIntoConstraints = false
         editMenuView.heightAnchor.constraint(equalToConstant: 46).isActive = true
-        editMenuView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        editMenuView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        editMenuView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+    }
+    
+    required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     public func resetPlaybackControl(cgImages: [CGImage], duration: TimeInterval) {

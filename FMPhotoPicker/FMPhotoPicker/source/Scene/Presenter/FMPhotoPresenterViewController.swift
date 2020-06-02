@@ -11,17 +11,14 @@ import AVKit
 
 class FMPhotoPresenterViewController: UIViewController {
     // MARK: Outlet
-    @IBOutlet weak var photoTitle: UILabel!
-    @IBOutlet weak var selectedContainer: UIView!
-    @IBOutlet weak var selectedIcon: UIImageView!
-    @IBOutlet weak var selectedIndex: UILabel!
-    @IBOutlet weak var numberOfSelectedPhotoContainer: UIView!
-    @IBOutlet weak var numberOfSelectedPhoto: UILabel!
-    @IBOutlet weak var determineButton: UIButton!
-    @IBOutlet weak var backButton: UIButton!
-    @IBOutlet weak var transparentViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var unsafeAreaBottomViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var unsafeAreaBottomView: UIView!
+    private weak var photoTitle: UILabel!
+    private weak var selectedContainer: UIView!
+    private weak var selectedIcon: UIImageView!
+    private weak var selectedIndex: UILabel!
+    private weak var numberOfSelectedPhotoContainer: UIView!
+    private weak var numberOfSelectedPhoto: UILabel!
+    private weak var doneButton: UIButton!
+    private weak var backButton: UIButton!
     
     // MARK: - Public
     public var swipeInteractionController: FMPhotoInteractionAnimator?
@@ -32,7 +29,7 @@ class FMPhotoPresenterViewController: UIViewController {
     
     public var didMoveToViewControllerHandler: ((FMPhotoViewController, Int) -> Void)?
     
-    public var didTapDetermine: (() -> Void)?
+    public var didTapDone: (() -> Void)?
     
     public var bottomView: FMPresenterBottomView!
     
@@ -46,8 +43,6 @@ class FMPhotoPresenterViewController: UIViewController {
     private var dataSource: FMPhotosDataSource
     
     private var config: FMPhotoPickerConfig
-    
-    private var bottomViewBottomConstraint: NSLayoutConstraint!
     
     private var currentPhotoViewController: FMPhotoViewController? {
         return pageViewController.viewControllers?.first as? FMPhotoViewController
@@ -70,7 +65,7 @@ class FMPhotoPresenterViewController: UIViewController {
         self.dataSource = dataSource
         self.currentPhotoIndex = initialPhotoIndex
         
-        super.init(nibName: "FMPhotoPresenterViewController", bundle: Bundle(for: FMPhotoPresenterViewController.self))
+        super.init(nibName: nil, bundle: Bundle(for: Self.self))
         self.setupPageViewController(withInitialPhoto: self.dataSource.photo(atIndex: self.currentPhotoIndex))
     }
     
@@ -88,6 +83,12 @@ class FMPhotoPresenterViewController: UIViewController {
         }
     }
     
+    override func loadView() {
+        view = UIView()
+        view.backgroundColor = .white
+        setupView()
+    }
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,9 +101,6 @@ class FMPhotoPresenterViewController: UIViewController {
         self.view.addSubview(pageViewController.view)
         self.view.sendSubviewToBack(pageViewController.view)
         
-        
-        // Init bottom view
-        self.bottomView = FMPresenterBottomView(config: config)
         swipeInteractionController = FMPhotoInteractionAnimator(viewController: self)
         
         self.bottomView.touchBegan = { [unowned self] in
@@ -129,38 +127,29 @@ class FMPhotoPresenterViewController: UIViewController {
             self.present(editorVC, animated: false, completion: nil)
         }
         
-        self.view.addSubview(bottomView)
-        self.bottomView.translatesAutoresizingMaskIntoConstraints = false
-        self.bottomView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        self.bottomView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        bottomViewBottomConstraint = self.bottomView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-        bottomViewBottomConstraint.isActive = true
-        self.bottomView.heightAnchor.constraint(equalToConstant: 90).isActive = true
-        
         self.pageViewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.pageViewController.didMove(toParent: self)
         
         self.view.backgroundColor = kBackgroundColor
         
-        self.numberOfSelectedPhotoContainer.layer.cornerRadius = self.numberOfSelectedPhotoContainer.frame.size.width / 2
         self.numberOfSelectedPhotoContainer.isHidden = true
         
         if config.selectMode == .single {
             selectedContainer.isHidden = true
             
             // alway show done button
-            self.determineButton.isHidden = false
+            self.doneButton.isHidden = false
         } else {
             // in multiple mode done button only appear when at least one image has beem selected
-            self.determineButton.isHidden = true
+            self.doneButton.isHidden = true
         }
         
         // set button title
         self.backButton.setTitle(config.strings["present_button_back"], for: .normal)
         self.backButton.titleLabel!.font = UIFont.systemFont(ofSize: config.titleFontSize)
         
-        self.determineButton.setTitle(config.strings["picker_button_select_done"], for: .normal)
-        self.determineButton.titleLabel!.font = UIFont.systemFont(ofSize: config.titleFontSize)
+        self.doneButton.setTitle(config.strings["picker_button_select_done"], for: .normal)
+        self.doneButton.titleLabel!.font = UIFont.systemFont(ofSize: config.titleFontSize)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -168,19 +157,6 @@ class FMPhotoPresenterViewController: UIViewController {
         
         // update bottom view for the first page that can not handled by PageViewControllerDelegate
         self.updateBottomView()
-    }
-    
-    override func viewDidLayoutSubviews() {
-        bottomView.updateFrames()
-        
-        if #available(iOS 11.0, *) {
-            transparentViewHeightConstraint.constant = view.safeAreaInsets.top + 44 // 44 is the height of nav bar
-            bottomViewBottomConstraint.constant = -view.safeAreaInsets.bottom
-            
-            unsafeAreaBottomViewHeightConstraint.constant = view.safeAreaInsets.bottom
-            unsafeAreaBottomView.backgroundColor = .white
-            unsafeAreaBottomView.alpha = 0.9
-        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -193,12 +169,12 @@ class FMPhotoPresenterViewController: UIViewController {
         let n = dataSource.numberOfSelectedPhoto()
         if self.config.selectMode == .multiple {
             if n > 0 {
-                determineButton.isHidden = false
+                doneButton.isHidden = false
                 numberOfSelectedPhotoContainer.isHidden = false
                 numberOfSelectedPhoto.isHidden = false
                 numberOfSelectedPhoto.text = "\(n)"
             } else {
-                determineButton.isHidden = true
+                doneButton.isHidden = true
                 numberOfSelectedPhotoContainer.isHidden = true
                 numberOfSelectedPhoto.isHidden = true
             }
@@ -206,7 +182,7 @@ class FMPhotoPresenterViewController: UIViewController {
             numberOfSelectedPhotoContainer.isHidden = true
             numberOfSelectedPhoto.isHidden = true
         
-            determineButton.isHidden = false
+            doneButton.isHidden = false
         }
         
         // Update selection status
@@ -282,13 +258,13 @@ class FMPhotoPresenterViewController: UIViewController {
         self.updateInfoBar()
     }
     
-    @IBAction func onTapDetermine(_ sender: Any) {
+    @IBAction func onTapDone(_ sender: Any) {
         if config.selectMode == .single {
             // in single selection mode, tap on done button mean the current displaying image will be selected
             self.didSelectPhotoHandler?(self.currentPhotoIndex)
         }
         
-        didTapDetermine?()
+        didTapDone?()
     }
     
 }
@@ -328,6 +304,207 @@ extension FMPhotoPresenterViewController: UIPageViewControllerDelegate, UIPageVi
         previousViewControllers.forEach { vc in
             guard let photoViewController = vc as? FMPhotoViewController else { return }
             photoViewController.photo.cancelAllRequest()
+        }
+    }
+}
+
+private extension FMPhotoPresenterViewController {
+    func setupView() {
+//        private weak var unsafeAreaBottomViewHeightConstraint: NSLayoutConstraint!
+//        private weak var unsafeAreaBottomView: UIView!
+        
+        let headerView = UIView()
+        headerView.backgroundColor = .white
+        
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(headerView)
+        NSLayoutConstraint.activate([
+            headerView.topAnchor.constraint(equalTo: view.topAnchor),
+            headerView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            headerView.rightAnchor.constraint(equalTo: view.rightAnchor),
+        ])
+        
+        let headerSeparator = UIView()
+        headerSeparator.backgroundColor = kBorderColor
+        
+        headerSeparator.translatesAutoresizingMaskIntoConstraints = false
+        headerView.addSubview(headerSeparator)
+        NSLayoutConstraint.activate([
+            headerSeparator.leftAnchor.constraint(equalTo: headerView.leftAnchor),
+            headerSeparator.rightAnchor.constraint(equalTo: headerView.rightAnchor),
+            headerSeparator.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
+            headerSeparator.heightAnchor.constraint(equalToConstant: 1),
+        ])
+        
+        let menuContainer = UIView()
+        
+        menuContainer.translatesAutoresizingMaskIntoConstraints = false
+        headerView.addSubview(menuContainer)
+        if #available(iOS 11.0, *) {
+            NSLayoutConstraint.activate([
+                menuContainer.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                menuContainer.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 20),
+            ])
+        }
+        NSLayoutConstraint.activate([
+            menuContainer.leftAnchor.constraint(equalTo: headerView.leftAnchor),
+            menuContainer.rightAnchor.constraint(equalTo: headerView.rightAnchor),
+            menuContainer.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
+            menuContainer.heightAnchor.constraint(equalToConstant: 44)
+        ])
+        
+        let backButton = UIButton(type: .custom)
+        self.backButton = backButton
+        backButton.setTitleColor(kBlackColor, for: .normal)
+        backButton.setImage(UIImage(named: "icon_back", in: Bundle(for: Self.self), compatibleWith: nil), for: .normal)
+        backButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -4)
+        backButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: -4)
+        backButton.addTarget(self, action: #selector(onTapClose(_:)), for: .touchUpInside)
+        
+        backButton.translatesAutoresizingMaskIntoConstraints = false
+        menuContainer.addSubview(backButton)
+        NSLayoutConstraint.activate([
+            backButton.leftAnchor.constraint(equalTo: menuContainer.leftAnchor, constant: 8),
+            backButton.centerYAnchor.constraint(equalTo: menuContainer.centerYAnchor),
+        ])
+        
+        let photoTitle = UILabel()
+        self.photoTitle = photoTitle
+        photoTitle.textColor = kBlackColor
+        photoTitle.font = .boldSystemFont(ofSize: 16)
+        
+        photoTitle.translatesAutoresizingMaskIntoConstraints = false
+        menuContainer.addSubview(photoTitle)
+        NSLayoutConstraint.activate([
+            photoTitle.centerXAnchor.constraint(equalTo: menuContainer.centerXAnchor),
+            photoTitle.centerYAnchor.constraint(equalTo: menuContainer.centerYAnchor),
+        ])
+        
+        let doneButton = UIButton(type: .custom)
+        self.doneButton = doneButton
+        doneButton.setTitleColor(kBlackColor, for: .normal)
+        doneButton.addTarget(self, action: #selector(onTapDone(_:)), for: .touchUpInside)
+        
+        doneButton.translatesAutoresizingMaskIntoConstraints = false
+        menuContainer.addSubview(doneButton)
+        NSLayoutConstraint.activate([
+            doneButton.rightAnchor.constraint(equalTo: menuContainer.rightAnchor, constant: -16),
+            doneButton.centerYAnchor.constraint(equalTo: menuContainer.centerYAnchor),
+            doneButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 40),
+        ])
+        
+        let numberOfSelectedPhotoContainer = UIView()
+        self.numberOfSelectedPhotoContainer = numberOfSelectedPhotoContainer
+        numberOfSelectedPhotoContainer.layer.cornerRadius = 14
+        numberOfSelectedPhotoContainer.layer.masksToBounds = true
+        numberOfSelectedPhotoContainer.backgroundColor = kRedColor
+        
+        numberOfSelectedPhotoContainer.translatesAutoresizingMaskIntoConstraints = false
+        menuContainer.addSubview(numberOfSelectedPhotoContainer)
+        NSLayoutConstraint.activate([
+            numberOfSelectedPhotoContainer.rightAnchor.constraint(equalTo: doneButton.leftAnchor, constant: -16),
+            numberOfSelectedPhotoContainer.centerYAnchor.constraint(equalTo: menuContainer.centerYAnchor),
+            numberOfSelectedPhotoContainer.heightAnchor.constraint(equalToConstant: 28),
+            numberOfSelectedPhotoContainer.widthAnchor.constraint(equalToConstant: 28),
+        ])
+        
+        let numberOfSelectedPhoto = UILabel()
+        self.numberOfSelectedPhoto = numberOfSelectedPhoto
+        numberOfSelectedPhoto.font = .systemFont(ofSize: 15)
+        numberOfSelectedPhoto.textColor = .white
+        numberOfSelectedPhoto.textAlignment = .center
+        
+        numberOfSelectedPhoto.translatesAutoresizingMaskIntoConstraints = false
+        numberOfSelectedPhotoContainer.addSubview(numberOfSelectedPhoto)
+        NSLayoutConstraint.activate([
+            numberOfSelectedPhoto.topAnchor.constraint(equalTo: numberOfSelectedPhotoContainer.topAnchor),
+            numberOfSelectedPhoto.rightAnchor.constraint(equalTo: numberOfSelectedPhotoContainer.rightAnchor),
+            numberOfSelectedPhoto.bottomAnchor.constraint(equalTo: numberOfSelectedPhotoContainer.bottomAnchor),
+            numberOfSelectedPhoto.leftAnchor.constraint(equalTo: numberOfSelectedPhotoContainer.leftAnchor),
+        ])
+        
+        let selectedContainer = UIView()
+        self.selectedContainer = selectedContainer
+        
+        selectedContainer.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(selectedContainer)
+        NSLayoutConstraint.activate([
+            selectedContainer.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 16),
+            selectedContainer.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -8),
+            selectedContainer.widthAnchor.constraint(equalToConstant: 28),
+            selectedContainer.heightAnchor.constraint(equalToConstant: 28),
+        ])
+        
+        let selectedIcon = UIImageView()
+        self.selectedIcon = selectedIcon
+        
+        selectedIcon.translatesAutoresizingMaskIntoConstraints = false
+        selectedContainer.addSubview(selectedIcon)
+        NSLayoutConstraint.activate([
+            selectedIcon.topAnchor.constraint(equalTo: selectedContainer.topAnchor),
+            selectedIcon.rightAnchor.constraint(equalTo: selectedContainer.rightAnchor),
+            selectedIcon.bottomAnchor.constraint(equalTo: selectedContainer.bottomAnchor),
+            selectedIcon.leftAnchor.constraint(equalTo: selectedContainer.leftAnchor),
+        ])
+        
+        let selectedButton = UIButton(type: .custom)
+        selectedButton.addTarget(self, action: #selector(onTapSelection(_:)), for: .touchUpInside)
+        
+        selectedButton.translatesAutoresizingMaskIntoConstraints = false
+        selectedContainer.addSubview(selectedButton)
+        NSLayoutConstraint.activate([
+            selectedButton.topAnchor.constraint(equalTo: selectedContainer.topAnchor, constant: -10),
+            selectedButton.rightAnchor.constraint(equalTo: selectedContainer.rightAnchor, constant: -10),
+            selectedButton.bottomAnchor.constraint(equalTo: selectedContainer.bottomAnchor, constant: -10),
+            selectedButton.leftAnchor.constraint(equalTo: selectedContainer.leftAnchor, constant: -10),
+        ])
+        
+        let selectedIndex = UILabel()
+        self.selectedIndex = selectedIndex
+        selectedIndex.textColor = .white
+        selectedIndex.textAlignment = .center
+        selectedIndex.font = .systemFont(ofSize: 17)
+        
+        selectedIndex.translatesAutoresizingMaskIntoConstraints = false
+        selectedContainer.addSubview(selectedIndex)
+        NSLayoutConstraint.activate([
+            selectedIndex.topAnchor.constraint(equalTo: selectedContainer.topAnchor),
+            selectedIndex.rightAnchor.constraint(equalTo: selectedContainer.rightAnchor),
+            selectedIndex.bottomAnchor.constraint(equalTo: selectedContainer.bottomAnchor),
+            selectedIndex.leftAnchor.constraint(equalTo: selectedContainer.leftAnchor),
+        ])
+        
+        let bottomViewContainer = UIView()
+        bottomViewContainer.backgroundColor = .white
+        
+        bottomViewContainer.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bottomViewContainer)
+        NSLayoutConstraint.activate([
+            bottomViewContainer.rightAnchor.constraint(equalTo: view.rightAnchor),
+            bottomViewContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            bottomViewContainer.leftAnchor.constraint(equalTo: view.leftAnchor),
+        ])
+        
+        bottomView = FMPresenterBottomView(config: config)
+        bottomView.translatesAutoresizingMaskIntoConstraints = false
+        bottomViewContainer.addSubview(bottomView)
+        NSLayoutConstraint.activate([
+            bottomView.topAnchor.constraint(equalTo: bottomViewContainer.topAnchor),
+            bottomView.leftAnchor.constraint(equalTo: bottomViewContainer.leftAnchor),
+            bottomView.rightAnchor.constraint(equalTo: bottomViewContainer.rightAnchor),
+        ])
+        
+        if #available(iOS 11.0, *) {
+            NSLayoutConstraint.activate([
+                bottomView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                bottomView.bottomAnchor.constraint(equalTo: bottomViewContainer.bottomAnchor),
+            ])
         }
     }
 }

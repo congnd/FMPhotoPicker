@@ -289,7 +289,7 @@ extension FMPhotoPickerViewController: UICollectionViewDelegate {
         vc.didMoveToViewControllerHandler = { vc, photoIndex in
             self.presentedPhotoIndex = photoIndex
         }
-        vc.didTapDetermine = {
+        vc.didTapDone = {
             self.processDetermination()
         }
         

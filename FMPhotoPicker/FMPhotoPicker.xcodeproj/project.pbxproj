@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		CE0C5FB5201ABD460040A03A /* FMPhotoPresenterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0C5FB4201ABD460040A03A /* FMPhotoPresenterViewController.swift */; };
-		CE0C5FB7201ABD660040A03A /* FMPhotoPresenterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE0C5FB6201ABD660040A03A /* FMPhotoPresenterViewController.xib */; };
 		CE0C5FB9201AC4870040A03A /* FMZoomInAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0C5FB8201AC4870040A03A /* FMZoomInAnimationController.swift */; };
 		CE0C5FBD201AE09F0040A03A /* FMZoomOutAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0C5FBC201AE09F0040A03A /* FMZoomOutAnimationController.swift */; };
 		CE18608D2030D38700A5D73D /* FMLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE18608C2030D38700A5D73D /* FMLoadingView.swift */; };
@@ -75,7 +74,6 @@
 
 /* Begin PBXFileReference section */
 		CE0C5FB4201ABD460040A03A /* FMPhotoPresenterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMPhotoPresenterViewController.swift; sourceTree = "<group>"; };
-		CE0C5FB6201ABD660040A03A /* FMPhotoPresenterViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FMPhotoPresenterViewController.xib; sourceTree = "<group>"; };
 		CE0C5FB8201AC4870040A03A /* FMZoomInAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMZoomInAnimationController.swift; sourceTree = "<group>"; };
 		CE0C5FBC201AE09F0040A03A /* FMZoomOutAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMZoomOutAnimationController.swift; sourceTree = "<group>"; };
 		CE18608C2030D38700A5D73D /* FMLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMLoadingView.swift; sourceTree = "<group>"; };
@@ -202,7 +200,6 @@
 				CE510902202AE80B003CBFA5 /* Viewer */,
 				CED2E98920453D6500AB8206 /* Editor */,
 				CE0C5FB4201ABD460040A03A /* FMPhotoPresenterViewController.swift */,
-				CE0C5FB6201ABD660040A03A /* FMPhotoPresenterViewController.xib */,
 			);
 			path = Presenter;
 			sourceTree = "<group>";
@@ -472,7 +469,6 @@
 			files = (
 				CED2E98D20453D8F00AB8206 /* FMImageEditorViewController.xib in Resources */,
 				CE1D3C5520197F5300154980 /* Assets.xcassets in Resources */,
-				CE0C5FB7201ABD660040A03A /* FMPhotoPresenterViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
