@@ -16,22 +16,21 @@ public protocol FMImageEditorViewControllerDelegate: class {
 }
 
 public class FMImageEditorViewController: UIViewController {
+    private weak var headerView: UIView!
+    private weak var bottomViewContainer: UIView!
+    private weak var subMenuContainer: UIView!
     
-    @IBOutlet weak var topMenuTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var transparentViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var bottomMenuBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var topMenuContainter: UIView!
-    @IBOutlet weak var bottomMenuContainer: UIView!
-    @IBOutlet weak var subMenuContainer: UIView!
+    private weak var cancelButton: UIButton!
+    private weak var doneButton: UIButton!
     
-    @IBOutlet weak var filterMenuButton: UIButton!
+    private weak var filterMenuButton: UIButton!
+    private weak var cropMenuButton: UIButton!
     
-    @IBOutlet weak var cropMenuButton: UIButton!
-    @IBOutlet weak var cancelButton: UIButton!
-    @IBOutlet weak var doneButton: UIButton!
+    private weak var headerViewTopConstraint: NSLayoutConstraint!
+    private weak var bottomViewContainerBottomConstraint: NSLayoutConstraint!
     
-    @IBOutlet weak var unsafeAreaBottomViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var unsafeAreaBottomView: UIView!
+    private weak var menuContainerTopConstraint: NSLayoutConstraint!
+    private weak var bottomMenuContainerBottomConstraint: NSLayoutConstraint!
     
     public var didEndEditting: (@escaping () -> Void) -> Void = { _ in }
     public var delegate: FMImageEditorViewControllerDelegate?
@@ -112,9 +111,9 @@ public class FMImageEditorViewController: UIViewController {
         
         isAnimatedPresent = false
         
-        super.init(nibName: "FMImageEditorViewController", bundle: Bundle(for: FMImageEditorViewController.self))
+        super.init(nibName: nil, bundle: nil)
         
-        self.view.backgroundColor = kBackgroundColor
+        view.backgroundColor = kBackgroundColor
         
         modalPresentationStyle = .fullScreen
     }
@@ -126,23 +125,23 @@ public class FMImageEditorViewController: UIViewController {
         let fmPhotoAsset = FMPhotoAsset(sourceImage: sourceImage, forceCropType: forceCropType)
         self.fmPhotoAsset = fmPhotoAsset
         
-        self.originalThumb = sourceImage
+        originalThumb = sourceImage
         
-        self.originalImage = sourceImage
-        self.filteredImage = sourceImage
+        originalImage = sourceImage
+        filteredImage = sourceImage
         
         selectedFilter = fmPhotoAsset.getAppliedFilter()
         selectedCrop = fmPhotoAsset.getAppliedCrop()
         
         isAnimatedPresent = true
         
-        super.init(nibName: "FMImageEditorViewController", bundle: Bundle(for: FMImageEditorViewController.self))
+        super.init(nibName: nil, bundle: nil)
         
         fmPhotoAsset.requestThumb { image in
             self.originalThumb = image!
         }
         
-        self.view.backgroundColor = kBackgroundColor
+        view.backgroundColor = kBackgroundColor
         
         modalPresentationStyle = .fullScreen
     }
@@ -151,22 +150,29 @@ public class FMImageEditorViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    public override func loadView() {
+        view = UIView()
+        view.backgroundColor = .white
+        setupView()
+    }
+    
     // MARK - Life cycle
     override public func viewDidLoad() {
         super.viewDidLoad()
         
-        topMenuContainter.isHidden = true
-        subMenuContainer.isHidden = true
+        headerView.isHidden = true
+        bottomViewContainer.isHidden = true
+        
         filterSubMenuView.isHidden = true
         cropSubMenuView.isHidden = true
         
         cropView = FMCropView(image: filteredImage,
                               appliedCrop: fmPhotoAsset.getAppliedCrop(),
                               appliedCropArea: fmPhotoAsset.getAppliedCropArea())
-        cropView.foregroundView.eclipsePreviewEnabled = self.config.eclipsePreviewEnabled
+        cropView.foregroundView.eclipsePreviewEnabled = config.eclipsePreviewEnabled
         
-        self.view.addSubview(self.cropView)
-        self.view.sendSubviewToBack(self.cropView)
+        view.addSubview(cropView)
+        view.sendSubviewToBack(cropView)
         
         DispatchQueue.main.async {
             self.filterSubMenuView.insert(toView: self.subMenuContainer)
@@ -188,10 +194,10 @@ public class FMImageEditorViewController: UIViewController {
             
             // get full size original image without any crop or filter applied
             self.fmPhotoAsset.requestFullSizePhoto(cropState: .original, filterState: .original) { [weak self] image in
-                guard let strongSelf = self,
+                guard let self = self,
                     let image = image else { return }
-                strongSelf.originalImage = image
-                strongSelf.cropView.foregroundView.compareView.image = image
+                self.originalImage = image
+                self.cropView.foregroundView.compareView.image = image
             }
         }
         
@@ -220,10 +226,6 @@ public class FMImageEditorViewController: UIViewController {
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // hide top and bottom menu
-        bottomMenuBottomConstraint.constant = -bottomMenuContainer.frame.height
-        topMenuTopConstraint.constant = -topMenuContainter.frame.height
-        
         // show filter mode by default
         // hide the crop corners before it is shown
         // dissable pan and pinch has no effect at this time
@@ -234,7 +236,9 @@ public class FMImageEditorViewController: UIViewController {
         super.viewDidAppear(animated)
         
         // show top menu before animation
-        topMenuContainter.isHidden = false
+        headerView.isHidden = false
+        
+        bottomViewContainer.isHidden = false
         
         showAnimatedMenu()
         
@@ -259,16 +263,12 @@ public class FMImageEditorViewController: UIViewController {
     }
     
     override public func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         cropView.frame = view.frame
         
         if #available(iOS 11.0, *) {
-            transparentViewHeightConstraint.constant = view.safeAreaInsets.top + 44
-            
-            unsafeAreaBottomViewHeightConstraint.constant = view.safeAreaInsets.bottom
-            unsafeAreaBottomView.backgroundColor = .white
-            unsafeAreaBottomView.alpha = 0.9
-        } else {
-            unsafeAreaBottomViewHeightConstraint.constant = 0
+            bottomMenuContainerBottomConstraint.constant = -view.safeAreaInsets.bottom
+            menuContainerTopConstraint.constant = view.safeAreaInsets.top
         }
     }
     
@@ -308,7 +308,7 @@ public class FMImageEditorViewController: UIViewController {
             }
         }
         
-        self.hideAnimatedMenu() {}
+        hideAnimatedMenu() {}
     }
     
     @IBAction func onTapCancel(_ sender: Any) {
@@ -370,14 +370,14 @@ public class FMImageEditorViewController: UIViewController {
         cropSubMenuView.isHidden = false
         
         cropSubMenuView.alpha = 0
-        UIView.animate(withDuration: kEnteringAnimationDuration,
-                       animations: {
-                        self.cropSubMenuView.alpha = 1
-                        self.filterSubMenuView.alpha = 0
+        UIView.animate(
+            withDuration: kEnteringAnimationDuration,
+            animations: {
+                self.cropSubMenuView.alpha = 1
+                self.filterSubMenuView.alpha = 0
         },
-                       completion: { _ in
-//                        self.subMenuContainer.backgroundColor = .white
-                        self.filterSubMenuView.isHidden = true
+            completion: { _ in
+                self.filterSubMenuView.isHidden = true
         })
     }
     
@@ -388,77 +388,225 @@ public class FMImageEditorViewController: UIViewController {
         filterSubMenuView.isHidden = false
         
         filterSubMenuView.alpha = 0
-        UIView.animate(withDuration: kEnteringAnimationDuration,
-                       animations: {
-                        self.filterSubMenuView.alpha = 1
-                        self.cropSubMenuView.alpha = 0
+        UIView.animate(
+            withDuration: kEnteringAnimationDuration,
+            animations: {
+                self.filterSubMenuView.alpha = 1
+                self.cropSubMenuView.alpha = 0
+                
         },
-                       completion: { _ in
-//                        self.subMenuContainer.backgroundColor = .white
-                        self.cropSubMenuView.isHidden = true
+            completion: { _ in
+                self.cropSubMenuView.isHidden = true
         })
     }
     
     private func showAnimatedMenu() {
-        topMenuTopConstraint.constant = topMenuContainter.frame.height
-        bottomMenuBottomConstraint.constant = bottomMenuContainer.frame.height
-        topMenuContainter.alpha = 0
-        bottomMenuContainer.alpha = 0
-        UIView.animate(withDuration: kEnteringAnimationDuration,
-                       delay: 0,
-                       options: .curveEaseOut,
-                       animations: {
-                        self.topMenuContainter.alpha = 1
-                        self.bottomMenuContainer.alpha = 1
-                        self.view.layoutIfNeeded()
-        },
-                       completion: nil)
+        headerViewTopConstraint.constant = -headerView.frame.height
+        bottomViewContainerBottomConstraint.constant = bottomViewContainer.frame.height
         
-        self.topMenuTopConstraint.constant = 0
-        self.bottomMenuBottomConstraint.constant = 0
+        view.layoutIfNeeded()
+
+        headerViewTopConstraint.constant = 0
+        bottomViewContainerBottomConstraint.constant = 0
+
+        headerView.alpha = 0
+        bottomViewContainer.alpha = 0
+        UIView.animate(
+            withDuration: kEnteringAnimationDuration,
+            delay: 0,
+            options: .curveEaseOut,
+            animations: {
+                self.headerView.alpha = 1
+                self.bottomViewContainer.alpha = 1
+                self.view.layoutIfNeeded()
+        },
+            completion: nil)
     }
     
     private func hideAnimatedMenu(completion: (() -> Void)?) {
-        self.topMenuTopConstraint.constant = -self.topMenuContainter.frame.height
-        self.bottomMenuBottomConstraint.constant = -self.bottomMenuContainer.frame.height
-        UIView.animate(withDuration: kLeavingAnimationDuration,
-                       delay: 0,
-                       options: .curveEaseOut,
-                       animations: {
-                        self.topMenuContainter.alpha = 0
-                        self.bottomMenuContainer.alpha = 0
-                        self.subMenuContainer.alpha = 0
-                        self.view.layoutIfNeeded()
+        headerViewTopConstraint.constant = 0
+        bottomViewContainerBottomConstraint.constant = 0
+        
+        view.layoutIfNeeded()
+        
+        headerViewTopConstraint.constant = -headerView.frame.height
+        bottomViewContainerBottomConstraint.constant = bottomViewContainer.frame.height
+        
+        UIView.animate(
+            withDuration: kLeavingAnimationDuration,
+            delay: 0,
+            options: .curveEaseOut,
+            animations: {
+                self.headerView.alpha = 0
+                self.bottomViewContainer.alpha = 0
+                self.view.layoutIfNeeded()
         },
-                       completion: { _ in
-                        completion?()
+            completion: { _ in
+                completion?()
         })
     }
     
-    // MARK: - Logics
+    
+    /// Returns a frame that will be used as the bound for the cropped image in the crop mode.
     private func contentFrameCrop() -> CGRect {
-        let frameWidth: CGFloat = view.bounds.width - 2 * kContentFrameSpacing
-        var frameHeight: CGFloat = view.bounds.height
-        frameHeight -= transparentViewHeightConstraint.constant
-        frameHeight -= bottomMenuContainer.frame.height
-        frameHeight -= subMenuContainer.frame.height
-        frameHeight -= unsafeAreaBottomViewHeightConstraint.constant
-        frameHeight -= 2 * kContentFrameSpacing
+        let x: CGFloat = kContentFrameSpacing
+        let y: CGFloat = kContentFrameSpacing + headerView.frame.height
+        let width: CGFloat = view.bounds.width - 2 * kContentFrameSpacing
+        let height: CGFloat = view.bounds.height
+            - bottomViewContainer.frame.height
+            - headerView.frame.height
+            - 2 * kContentFrameSpacing
 
-        return CGRect(x: kContentFrameSpacing,
-                      y: kContentFrameSpacing + transparentViewHeightConstraint.constant,
-                      width: frameWidth,
-                      height: frameHeight)
+        return CGRect(x: x, y: y, width: width, height: height)
     }
     
+    /// Returns a frame that will be used as the bound for the image in the filter mode.
     private func contentFrameFilter() -> CGRect {
-        return CGRect(x: 0,
-                      y: transparentViewHeightConstraint.constant,
-                      width: view.bounds.width,
-                      height: view.bounds.height - transparentViewHeightConstraint.constant - bottomMenuContainer.frame.height - subMenuContainer.frame.height - unsafeAreaBottomViewHeightConstraint.constant)
+        let x: CGFloat = 0
+        let y: CGFloat = headerView.frame.height
+        let width: CGFloat = view.bounds.width
+        let height: CGFloat = view.bounds.height - bottomViewContainer.frame.height - headerView.frame.height
+        
+        return CGRect(x: x, y: y, width: width, height: height)
     }
     
     private func contentFrameFullScreen() -> CGRect {
         return view.bounds
+    }
+}
+
+private extension FMImageEditorViewController {
+    func setupView() {
+        let headerView = UIView()
+        self.headerView = headerView
+        headerView.backgroundColor = .white
+        
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(headerView)
+        headerViewTopConstraint = headerView.topAnchor.constraint(equalTo: view.topAnchor)
+        NSLayoutConstraint.activate([
+            headerViewTopConstraint,
+            headerView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            headerView.rightAnchor.constraint(equalTo: view.rightAnchor),
+        ])
+        
+        let headerSeparator = UIView()
+        headerSeparator.backgroundColor = kBorderColor
+        
+        headerSeparator.translatesAutoresizingMaskIntoConstraints = false
+        headerView.addSubview(headerSeparator)
+        NSLayoutConstraint.activate([
+            headerSeparator.leftAnchor.constraint(equalTo: headerView.leftAnchor),
+            headerSeparator.rightAnchor.constraint(equalTo: headerView.rightAnchor),
+            headerSeparator.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
+            headerSeparator.heightAnchor.constraint(equalToConstant: 1),
+        ])
+        
+        let menuContainer = UIView()
+        
+        menuContainer.translatesAutoresizingMaskIntoConstraints = false
+        headerView.addSubview(menuContainer)
+        menuContainerTopConstraint = menuContainer.topAnchor.constraint(equalTo: headerView.topAnchor)
+        NSLayoutConstraint.activate([
+            menuContainerTopConstraint,
+            menuContainer.leftAnchor.constraint(equalTo: headerView.leftAnchor),
+            menuContainer.rightAnchor.constraint(equalTo: headerView.rightAnchor),
+            menuContainer.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
+            menuContainer.heightAnchor.constraint(equalToConstant: 44)
+        ])
+        
+        let cancelButton = UIButton(type: .custom)
+        self.cancelButton = cancelButton
+        cancelButton.setTitleColor(kBlackColor, for: .normal)
+        cancelButton.addTarget(self, action: #selector(onTapCancel(_:)), for: .touchUpInside)
+        
+        cancelButton.translatesAutoresizingMaskIntoConstraints = false
+        menuContainer.addSubview(cancelButton)
+        NSLayoutConstraint.activate([
+            cancelButton.leftAnchor.constraint(equalTo: menuContainer.leftAnchor, constant: 16),
+            cancelButton.centerYAnchor.constraint(equalTo: menuContainer.centerYAnchor),
+        ])
+        
+        let doneButton = UIButton(type: .custom)
+        self.doneButton = doneButton
+        doneButton.setTitleColor(kBlackColor, for: .normal)
+        doneButton.addTarget(self, action: #selector(onTapDone(_:)), for: .touchUpInside)
+        
+        doneButton.translatesAutoresizingMaskIntoConstraints = false
+        menuContainer.addSubview(doneButton)
+        NSLayoutConstraint.activate([
+            doneButton.rightAnchor.constraint(equalTo: menuContainer.rightAnchor, constant: -16),
+            doneButton.centerYAnchor.constraint(equalTo: menuContainer.centerYAnchor),
+            doneButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 40),
+        ])
+        
+        let bottomViewContainer = UIView()
+        self.bottomViewContainer = bottomViewContainer
+        bottomViewContainer.backgroundColor = .white
+        
+        bottomViewContainer.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bottomViewContainer)
+        bottomViewContainerBottomConstraint = bottomViewContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        NSLayoutConstraint.activate([
+            bottomViewContainerBottomConstraint,
+            bottomViewContainer.rightAnchor.constraint(equalTo: view.rightAnchor),
+            bottomViewContainer.leftAnchor.constraint(equalTo: view.leftAnchor),
+        ])
+        
+        let bottomMenuContainer = UIStackView()
+        bottomMenuContainer.axis = .horizontal
+        bottomMenuContainer.distribution = .fillEqually
+        bottomMenuContainer.translatesAutoresizingMaskIntoConstraints = false
+        bottomViewContainer.addSubview(bottomMenuContainer)
+        bottomMenuContainerBottomConstraint = bottomMenuContainer.bottomAnchor.constraint(equalTo: bottomViewContainer.bottomAnchor)
+        NSLayoutConstraint.activate([
+            bottomMenuContainerBottomConstraint,
+            bottomMenuContainer.leftAnchor.constraint(equalTo: bottomViewContainer.leftAnchor),
+            bottomMenuContainer.rightAnchor.constraint(equalTo: bottomViewContainer.rightAnchor),
+            bottomMenuContainer.heightAnchor.constraint(equalToConstant: 40)
+        ])
+        
+        let filterMenuButton = UIButton(type: .custom)
+        self.filterMenuButton = filterMenuButton
+        filterMenuButton.addTarget(self, action: #selector(onTapOpenFilter(_:)), for: .touchUpInside)
+        filterMenuButton.titleEdgeInsets = .init(top: 0, left: 4, bottom: 0, right: -4)
+        
+        filterMenuButton.translatesAutoresizingMaskIntoConstraints = false
+        bottomMenuContainer.addArrangedSubview(filterMenuButton)
+        
+        
+        let cropMenuButton = UIButton(type: .custom)
+        self.cropMenuButton = cropMenuButton
+        cropMenuButton.addTarget(self, action: #selector(onTapOpenCrop(_:)), for: .touchUpInside)
+        cropMenuButton.titleEdgeInsets = .init(top: 0, left: 4, bottom: 0, right: -4)
+        
+        cropMenuButton.translatesAutoresizingMaskIntoConstraints = false
+        bottomMenuContainer.addArrangedSubview(cropMenuButton)
+        
+        let subMenuContainer = UIView()
+        self.subMenuContainer = subMenuContainer
+        subMenuContainer.backgroundColor = .white
+        
+        subMenuContainer.translatesAutoresizingMaskIntoConstraints = false
+        bottomViewContainer.addSubview(subMenuContainer)
+        NSLayoutConstraint.activate([
+            subMenuContainer.topAnchor.constraint(equalTo: bottomViewContainer.topAnchor),
+            subMenuContainer.leftAnchor.constraint(equalTo: bottomViewContainer.leftAnchor),
+            subMenuContainer.rightAnchor.constraint(equalTo: bottomViewContainer.rightAnchor),
+            subMenuContainer.bottomAnchor.constraint(equalTo: bottomMenuContainer.topAnchor),
+            subMenuContainer.heightAnchor.constraint(equalToConstant: 64)
+        ])
+        
+        let subMenuSeparator = UIView()
+        subMenuSeparator.backgroundColor = kBorderColor
+        
+        subMenuSeparator.translatesAutoresizingMaskIntoConstraints = false
+        subMenuContainer.addSubview(subMenuSeparator)
+        NSLayoutConstraint.activate([
+            subMenuSeparator.leftAnchor.constraint(equalTo: subMenuContainer.leftAnchor),
+            subMenuSeparator.rightAnchor.constraint(equalTo: subMenuContainer.rightAnchor),
+            subMenuSeparator.topAnchor.constraint(equalTo: subMenuContainer.topAnchor),
+            subMenuSeparator.heightAnchor.constraint(equalToConstant: 1),
+        ])
     }
 }

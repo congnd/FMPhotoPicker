@@ -53,10 +53,6 @@ public class FMPhotoPickerViewController: UIViewController {
         self.config = config
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
-        view = UIView()
-        view.backgroundColor = .white
-        initializeViews()
-        setupView()
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -68,6 +64,13 @@ public class FMPhotoPickerViewController: UIViewController {
         if self.dataSource == nil {
             self.requestAndFetchAssets()
         }
+    }
+    
+    public override func loadView() {
+        view = UIView()
+        view.backgroundColor = .white
+        initializeViews()
+        setupView()
     }
     
     // MARK: - Setup View

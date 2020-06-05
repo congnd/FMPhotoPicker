@@ -16,37 +16,52 @@ class FMLoadingView {
     static let shared = FMLoadingView()
     
     private init() {
-        self.transparentView = UIView()
-        self.transparentView.backgroundColor = UIColor(white: 0, alpha: 0.4)
+        transparentView = UIView()
+        transparentView.backgroundColor = UIColor(white: 0, alpha: 0.4)
+        transparentView.translatesAutoresizingMaskIntoConstraints = false
         
-        self.indicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
-        self.indicator.center = self.transparentView.center
-        self.indicator.color = .white
+        indicator = UIActivityIndicatorView()
+        indicator.color = .white
         
-        self.transparentView.addSubview(self.indicator)
+        transparentView.addSubview(indicator)
+        
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            indicator.topAnchor.constraint(equalTo: transparentView.topAnchor),
+            indicator.leftAnchor.constraint(equalTo: transparentView.leftAnchor),
+            indicator.bottomAnchor.constraint(equalTo: transparentView.bottomAnchor),
+            indicator.rightAnchor.constraint(equalTo: transparentView.rightAnchor),
+        ])
     }
     
     func show() {
         guard let keyWindow = UIApplication.shared.keyWindow else { return }
         
-        self.transparentView.frame = keyWindow.frame
-        keyWindow.addSubview(self.transparentView)
+        keyWindow.addSubview(transparentView)
         
-        self.transparentView.alpha = 0
-        self.indicator.startAnimating()
+        NSLayoutConstraint.activate([
+            transparentView.topAnchor.constraint(equalTo: keyWindow.topAnchor),
+            transparentView.leftAnchor.constraint(equalTo: keyWindow.leftAnchor),
+            transparentView.bottomAnchor.constraint(equalTo: keyWindow.bottomAnchor),
+            transparentView.rightAnchor.constraint(equalTo: keyWindow.rightAnchor),
+        ])
+        
+        transparentView.alpha = 0
+        indicator.startAnimating()
         UIView.animate(withDuration: kEnteringAnimationDuration, animations: {
             self.transparentView.alpha = 1
         })
     }
     
     func hide() {
-        UIView.animate(withDuration: kLeavingAnimationDuration,
-                       animations: {
-                        self.transparentView.alpha = 0
+        UIView.animate(
+            withDuration: kLeavingAnimationDuration,
+            animations: {
+                self.transparentView.alpha = 0
         },
-                       completion: { completed in
-                        self.transparentView.removeFromSuperview()
-                        self.indicator.stopAnimating()
+            completion: { completed in
+                self.transparentView.removeFromSuperview()
+                self.indicator.stopAnimating()
         })
     }
     
