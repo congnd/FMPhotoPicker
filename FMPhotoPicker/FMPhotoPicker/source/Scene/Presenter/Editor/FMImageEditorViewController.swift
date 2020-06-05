@@ -211,10 +211,10 @@ public class FMImageEditorViewController: UIViewController {
         
         // set buttons title
         cancelButton.setTitle(config.strings["editor_button_cancel"], for: .normal)
-        cancelButton.titleLabel!.font = UIFont.systemFont(ofSize: config.titleFontSize)
+        cancelButton.titleLabel!.font = UIFont.boldSystemFont(ofSize: config.titleFontSize)
         
         doneButton.setTitle(config.strings["editor_button_done"], for: .normal)
-        doneButton.titleLabel!.font = UIFont.systemFont(ofSize: config.titleFontSize)
+        doneButton.titleLabel!.font = UIFont.boldSystemFont(ofSize: config.titleFontSize)
         
         filterMenuButton.setTitle(config.strings["editor_menu_filter"], for: .normal)
         filterMenuButton.titleLabel!.font = UIFont.boldSystemFont(ofSize: config.titleFontSize)

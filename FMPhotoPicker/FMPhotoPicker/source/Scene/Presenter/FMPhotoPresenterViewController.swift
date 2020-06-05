@@ -146,10 +146,10 @@ class FMPhotoPresenterViewController: UIViewController {
         
         // set button title
         self.backButton.setTitle(config.strings["present_button_back"], for: .normal)
-        self.backButton.titleLabel!.font = UIFont.systemFont(ofSize: config.titleFontSize)
+        self.backButton.titleLabel!.font = UIFont.boldSystemFont(ofSize: config.titleFontSize)
         
         self.doneButton.setTitle(config.strings["picker_button_select_done"], for: .normal)
-        self.doneButton.titleLabel!.font = UIFont.systemFont(ofSize: config.titleFontSize)
+        self.doneButton.titleLabel!.font = UIFont.boldSystemFont(ofSize: config.titleFontSize)
     }
     
     override func viewDidAppear(_ animated: Bool) {

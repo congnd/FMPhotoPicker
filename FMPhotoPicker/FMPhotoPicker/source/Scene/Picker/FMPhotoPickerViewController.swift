@@ -84,9 +84,9 @@ public class FMPhotoPickerViewController: UIViewController {
         
         // set button title
         self.cancelButton.setTitle(config.strings["picker_button_cancel"], for: .normal)
-        self.cancelButton.titleLabel!.font = UIFont.systemFont(ofSize: config.titleFontSize)
+        self.cancelButton.titleLabel!.font = UIFont.boldSystemFont(ofSize: config.titleFontSize)
         self.doneButton.setTitle(config.strings["picker_button_select_done"], for: .normal)
-        self.doneButton.titleLabel!.font = UIFont.systemFont(ofSize: config.titleFontSize)
+        self.doneButton.titleLabel!.font = UIFont.boldSystemFont(ofSize: config.titleFontSize)
     }
     
     @objc private func onTapCancel(_ sender: Any) {
@@ -388,6 +388,7 @@ private extension FMPhotoPickerViewController {
         
         let cancelButton = UIButton(type: .system)
         self.cancelButton = cancelButton
+        cancelButton.setTitleColor(kBlackColor, for: .normal)
         cancelButton.addTarget(self, action: #selector(onTapCancel(_:)), for: .touchUpInside)
         
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
@@ -399,6 +400,7 @@ private extension FMPhotoPickerViewController {
         
         let doneButton = UIButton(type: .system)
         self.doneButton = doneButton
+        doneButton.setTitleColor(kBlackColor, for: .normal)
         doneButton.addTarget(self, action: #selector(onTapDone(_:)), for: .touchUpInside)
         
         doneButton.translatesAutoresizingMaskIntoConstraints = false
