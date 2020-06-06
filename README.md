@@ -28,10 +28,10 @@ FMPhotoPicker is a modern, simple and zero-dependency photo picker with an elega
 - iOS 9.0+
 
 ## Installation
-### SwiftPM
+### SwiftPM (Experimental)
 ```
 dependencies: [
-  .package(url: "https://github.com/congnd/FMPhotoPicker.git", .exact("0.9.1")),
+  .package(url: "https://github.com/congnd/FMPhotoPicker.git", .exact("1.0.0")),
 ]
 ```
 
