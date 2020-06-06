@@ -120,16 +120,18 @@ Type: `Int`
 Default is `10`
 
 - <a name="ref-available-filters"></a>`availableFilters`    
-Filters that are used in editor.  
+Filter options that are used in editor. **Set this parameter to `nil` to make the filter menu be unavailable in the editor**
 FMPhotoEditor provides some default filters that will be fit to you.  
-Type: `[FMFilterable]`  
+Type: `[FMFilterable]?`  
 Default: all filters are provided by FMPhotoPicker.
 
 - <a name="ref-available-crops"></a>`availableCrops`    
-Cropping that is used in editor.  
+Crop options that is used in editor. **Set this parameter to `nil` to make the cropping menu be unavailable in the editor**
 FMPhotoEditor provides some default crops that will be fit to you.  
-Type: `[FMCroppable]`  
+Type: `[FMCroppable]?` 
 Default: all crops provided by FMPhotoPicker.
+
+***You are not allowed to use the editor without giving it at least one crop option or one filter option***
 
 - <a name="ref-alert-controller"></a>`alertController`    
 An alert controller to show the confirmation view to an user with 2 options: Ok or Cancel.  

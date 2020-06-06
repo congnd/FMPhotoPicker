@@ -37,10 +37,12 @@ public class FMImageEditorViewController: UIViewController {
     
     private let isAnimatedPresent: Bool
     
-    lazy private var filterSubMenuView: FMFiltersMenuView = {
+    lazy private var filterSubMenuView: FMFiltersMenuView? = {
+        guard let availableFilters = config.availableFilters else { return nil }
+        
         let filterSubMenuView = FMFiltersMenuView(withImage: originalThumb.resize(toSizeInPixel: kFilterPreviewImageSize),
                                                   appliedFilter: fmPhotoAsset.getAppliedFilter(),
-                                                  availableFilters: config.availableFilters)
+                                                  availableFilters: availableFilters)
         filterSubMenuView.didSelectFilter = { [unowned self] filter in
             self.selectedFilter = filter
             FMLoadingView.shared.show()
@@ -55,8 +57,10 @@ public class FMImageEditorViewController: UIViewController {
         return filterSubMenuView
     }()
     
-    lazy private var cropSubMenuView: FMCropMenuView = {
-        let cropSubMenuView = FMCropMenuView(appliedCrop: selectedCrop, availableCrops: config.availableCrops, config: config)
+    lazy private var cropSubMenuView: FMCropMenuView? = {
+        guard let availableCrops = config.availableCrops else { return nil }
+        
+        let cropSubMenuView = FMCropMenuView(appliedCrop: selectedCrop, availableCrops: availableCrops, config: config)
         cropSubMenuView.didSelectCrop = { [unowned self] crop in
             self.selectedCrop = crop
             self.cropView.crop = crop
@@ -121,7 +125,14 @@ public class FMImageEditorViewController: UIViewController {
     public init(config: FMPhotoPickerConfig, sourceImage: UIImage) {
         self.config = config
         
-        let forceCropType = config.forceCropEnabled ? config.availableCrops.first! : nil
+        if config.availableCrops == nil, config.availableFilters == nil {
+            fatalError("Plase set at least one crop option or one filter option in order to use the editor")
+        }
+        
+        var forceCropType: FMCroppable? = nil
+        if config.forceCropEnabled, let firstCrop = config.availableCrops?.first {
+            forceCropType = firstCrop
+        }
         let fmPhotoAsset = FMPhotoAsset(sourceImage: sourceImage, forceCropType: forceCropType)
         self.fmPhotoAsset = fmPhotoAsset
         
@@ -163,8 +174,8 @@ public class FMImageEditorViewController: UIViewController {
         headerView.isHidden = true
         bottomViewContainer.isHidden = true
         
-        filterSubMenuView.isHidden = true
-        cropSubMenuView.isHidden = true
+        filterSubMenuView?.isHidden = true
+        cropSubMenuView?.isHidden = true
         
         cropView = FMCropView(image: filteredImage,
                               appliedCrop: fmPhotoAsset.getAppliedCrop(),
@@ -175,8 +186,8 @@ public class FMImageEditorViewController: UIViewController {
         view.sendSubviewToBack(cropView)
         
         DispatchQueue.main.async {
-            self.filterSubMenuView.insert(toView: self.subMenuContainer)
-            self.cropSubMenuView.insert(toView: self.subMenuContainer)
+            self.filterSubMenuView?.insert(toView: self.subMenuContainer)
+            self.cropSubMenuView?.insert(toView: self.subMenuContainer)
             
             // convert crop/filter icon to tint
             let filterTintIcon = self.filterMenuButton.imageView?.image?.withRenderingMode(.alwaysTemplate)
@@ -221,6 +232,9 @@ public class FMImageEditorViewController: UIViewController {
         
         cropMenuButton.setTitle(config.strings["editor_menu_crop"], for: .normal)
         cropMenuButton.titleLabel!.font = UIFont.boldSystemFont(ofSize: config.titleFontSize)
+        
+        filterMenuButton.isHidden = config.availableFilters == nil
+        cropMenuButton.isHidden = config.availableCrops == nil
     }
     
     override public func viewWillAppear(_ animated: Bool) {
@@ -242,24 +256,18 @@ public class FMImageEditorViewController: UIViewController {
         
         showAnimatedMenu()
         
-        // show filter menu by default
-        showAnimatedFilterMenu()
+        if config.availableFilters != nil {
+            openFiltersMenu()
+        }
         
-        // restore crop image location from previous edditting session
-        cropView.contentFrame = contentFrameFullScreen()
-        cropView.restoreFromPreviousEdittingSection()
-        
-        // move image to center of contentFrame
-        cropView.contentFrame = contentFrameFilter()
-        cropView.moveCropBoxToAspectFillContentFrame()
+        if config.availableCrops != nil {
+            openCropsMenu()
+        }
         
         // show view the crop view image is re-located
         if !isAnimatedPresent {
             view.isHidden = false
         }
-        
-        // dissable pan and pinch gestures
-        cropView.isCropping = false
     }
     
     override public func viewDidLayoutSubviews() {
@@ -330,6 +338,13 @@ public class FMImageEditorViewController: UIViewController {
         }
     }
     @IBAction func onTapOpenFilter(_ sender: Any) {
+        openFiltersMenu()
+    }
+    @IBAction func onTapOpenCrop(_ sender: Any) {
+        openCropsMenu()
+    }
+    
+    private func openFiltersMenu() {
         filterMenuButton.tintColor = kRedColor
         filterMenuButton.setTitleColor(kRedColor, for: .normal)
         cropMenuButton.tintColor = kBlackColor
@@ -344,9 +359,10 @@ public class FMImageEditorViewController: UIViewController {
         // enable foreground touches to control show/hide compareView
         cropView.foregroundView.isEnabledTouches = true
         
-        filterSubMenuView.image = cropView.getCroppedThumbImage()
+        filterSubMenuView?.image = cropView.getCroppedThumbImage()
     }
-    @IBAction func onTapOpenCrop(_ sender: Any) {
+    
+    private func openCropsMenu() {
         cropMenuButton.tintColor = kRedColor
         cropMenuButton.setTitleColor(kRedColor, for: .normal)
         filterMenuButton.tintColor = kBlackColor
@@ -364,39 +380,39 @@ public class FMImageEditorViewController: UIViewController {
     
     // MARK: - Animation
     private func showAnimatedCropMenu() {
-        guard cropSubMenuView.isHidden == true else { return }
+        guard cropSubMenuView?.isHidden == true else { return }
         
-        subMenuContainer.isHidden = false
-        cropSubMenuView.isHidden = false
+        subMenuContainer?.isHidden = false
+        cropSubMenuView?.isHidden = false
         
-        cropSubMenuView.alpha = 0
+        cropSubMenuView?.alpha = 0
         UIView.animate(
             withDuration: kEnteringAnimationDuration,
             animations: {
-                self.cropSubMenuView.alpha = 1
-                self.filterSubMenuView.alpha = 0
+                self.cropSubMenuView?.alpha = 1
+                self.filterSubMenuView?.alpha = 0
         },
             completion: { _ in
-                self.filterSubMenuView.isHidden = true
+                self.filterSubMenuView?.isHidden = true
         })
     }
     
     private func showAnimatedFilterMenu() {
-        guard filterSubMenuView.isHidden == true else { return }
+        guard filterSubMenuView?.isHidden == true else { return }
         
         subMenuContainer.isHidden = false
-        filterSubMenuView.isHidden = false
+        filterSubMenuView?.isHidden = false
         
-        filterSubMenuView.alpha = 0
+        filterSubMenuView?.alpha = 0
         UIView.animate(
             withDuration: kEnteringAnimationDuration,
             animations: {
-                self.filterSubMenuView.alpha = 1
-                self.cropSubMenuView.alpha = 0
+                self.filterSubMenuView?.alpha = 1
+                self.cropSubMenuView?.alpha = 0
                 
         },
             completion: { _ in
-                self.cropSubMenuView.isHidden = true
+                self.cropSubMenuView?.isHidden = true
         })
     }
     

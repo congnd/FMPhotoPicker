@@ -47,8 +47,8 @@ public struct FMPhotoPickerConfig {
     public var selectMode: FMSelectMode = .multiple
     public var maxImage: Int = 10
     public var maxVideo: Int = 10
-    public var availableFilters: [FMFilterable] = kDefaultAvailableFilters
-    public var availableCrops: [FMCroppable] = kDefaultAvailableCrops
+    public var availableFilters: [FMFilterable]? = kDefaultAvailableFilters
+    public var availableCrops: [FMCroppable]? = kDefaultAvailableCrops
     public var alertController: FMAlertable = FMAlert()
     
     public var forceCropEnabled = false
