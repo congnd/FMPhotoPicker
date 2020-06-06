@@ -190,10 +190,10 @@ public class FMImageEditorViewController: UIViewController {
             self.cropSubMenuView?.insert(toView: self.subMenuContainer)
             
             // convert crop/filter icon to tint
-            let filterTintIcon = self.filterMenuButton.imageView?.image?.withRenderingMode(.alwaysTemplate)
+            let filterTintIcon = UIImage(named: "icon_filter", in: Bundle(for: Self.self), compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
             self.filterMenuButton.setImage(filterTintIcon, for: .normal)
             
-            let cropTintIcon = self.cropMenuButton.imageView?.image?.withRenderingMode(.alwaysTemplate)
+            let cropTintIcon = UIImage(named: "icon_crop", in: Bundle(for: Self.self), compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
             self.cropMenuButton.setImage(cropTintIcon, for: .normal)
             
             // default color
