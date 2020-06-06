@@ -19,6 +19,7 @@ class FMPhotoPresenterViewController: UIViewController {
     private weak var numberOfSelectedPhoto: UILabel!
     private weak var doneButton: UIButton!
     private weak var backButton: UIButton!
+    private weak var bottomViewContainer: UIView!
     
     // MARK: - Public
     public var swipeInteractionController: FMPhotoInteractionAnimator?
@@ -234,6 +235,8 @@ class FMPhotoPresenterViewController: UIViewController {
         
         if fmAsset.mediaType == .video {
             bottomView.videoMode()
+            bottomViewContainer.isHidden = false
+            
             fmAsset.requestVideoFrames { cgImages in
                 if let asset = fmAsset.asset {
                     self.bottomView.resetPlaybackControl(cgImages: cgImages, duration: asset.duration)
@@ -241,6 +244,7 @@ class FMPhotoPresenterViewController: UIViewController {
             }
         } else {
             bottomView.imageMode()
+            bottomViewContainer.isHidden = config.availableFilters == nil && config.availableCrops == nil
         }
     }
     
@@ -478,6 +482,7 @@ private extension FMPhotoPresenterViewController {
         ])
         
         let bottomViewContainer = UIView()
+        self.bottomViewContainer = bottomViewContainer
         bottomViewContainer.backgroundColor = .white
         
         bottomViewContainer.translatesAutoresizingMaskIntoConstraints = false

@@ -125,10 +125,6 @@ public class FMImageEditorViewController: UIViewController {
     public init(config: FMPhotoPickerConfig, sourceImage: UIImage) {
         self.config = config
         
-        if config.availableCrops == nil, config.availableFilters == nil {
-            fatalError("Plase set at least one crop option or one filter option in order to use the editor")
-        }
-        
         var forceCropType: FMCroppable? = nil
         if config.forceCropEnabled, let firstCrop = config.availableCrops?.first {
             forceCropType = firstCrop
@@ -170,6 +166,10 @@ public class FMImageEditorViewController: UIViewController {
     // MARK - Life cycle
     override public func viewDidLoad() {
         super.viewDidLoad()
+        
+        if config.availableCrops == nil, config.availableFilters == nil {
+            fatalError("Plase set at least one crop option or one filter option in order to use the editor")
+        }
         
         headerView.isHidden = true
         bottomViewContainer.isHidden = true
