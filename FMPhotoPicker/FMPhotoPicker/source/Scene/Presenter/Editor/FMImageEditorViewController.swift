@@ -258,9 +258,7 @@ public class FMImageEditorViewController: UIViewController {
         
         if config.availableFilters != nil {
             openFiltersMenu()
-        }
-        
-        if config.availableCrops != nil {
+        } else if config.availableCrops != nil {
             openCropsMenu()
         }
         
