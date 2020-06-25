@@ -87,7 +87,7 @@ class FMPlaybackControlView: UIView {
         playButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         playButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         
-        playButton.setImage(UIImage(named: "icon_play_small", in: Bundle(for: self.classForCoder), compatibleWith: nil), for: .normal)
+        playButton.setImage(UIImage(named: "icon_play_small", in: .current, compatibleWith: nil), for: .normal)
         playButton.addTarget(self, action: #selector(onTapPlayButton), for: .touchUpInside)
         playButton.isHidden = true
         
@@ -141,10 +141,10 @@ class FMPlaybackControlView: UIView {
     private func updatePlayButton() {
         if isPlaying {
             playButton.isHidden = false
-            playButton.setImage(UIImage(named: "icon_pause_small", in: Bundle(for: self.classForCoder), compatibleWith: nil), for: .normal)
+            playButton.setImage(UIImage(named: "icon_pause_small", in: .current, compatibleWith: nil), for: .normal)
         } else {
             playButton.isHidden = false
-            playButton.setImage(UIImage(named: "icon_play_small", in: Bundle(for: self.classForCoder), compatibleWith: nil), for: .normal)
+            playButton.setImage(UIImage(named: "icon_play_small", in: .current, compatibleWith: nil), for: .normal)
         }
     }
     

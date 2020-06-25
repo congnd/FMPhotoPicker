@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		229A926024B0BDFE00AA33C3 /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 229A925F24B0BDFE00AA33C3 /* Bundle+Extension.swift */; };
 		CE0C5FB5201ABD460040A03A /* FMPhotoPresenterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0C5FB4201ABD460040A03A /* FMPhotoPresenterViewController.swift */; };
 		CE0C5FB9201AC4870040A03A /* FMZoomInAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0C5FB8201AC4870040A03A /* FMZoomInAnimationController.swift */; };
 		CE0C5FBD201AE09F0040A03A /* FMZoomOutAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0C5FBC201AE09F0040A03A /* FMZoomOutAnimationController.swift */; };
@@ -72,6 +73,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		229A925F24B0BDFE00AA33C3 /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extension.swift"; sourceTree = "<group>"; };
 		CE0C5FB4201ABD460040A03A /* FMPhotoPresenterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMPhotoPresenterViewController.swift; sourceTree = "<group>"; };
 		CE0C5FB8201AC4870040A03A /* FMZoomInAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMZoomInAnimationController.swift; sourceTree = "<group>"; };
 		CE0C5FBC201AE09F0040A03A /* FMZoomOutAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMZoomOutAnimationController.swift; sourceTree = "<group>"; };
@@ -244,6 +246,7 @@
 				CE91C3CE2057F4DC00B14997 /* UIImage+Extensions.swift */,
 				CE762F132060DE54002D6E31 /* FMAlertable.swift */,
 				CE213CB62075C07300026B17 /* Const.swift */,
+				229A925F24B0BDFE00AA33C3 /* Bundle+Extension.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -426,7 +429,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
 				LastUpgradeCheck = 1020;
-				ORGANIZATIONNAME = "Tribal Media House";
+				ORGANIZATIONNAME = "Cong Nguyen";
 				TargetAttributes = {
 					CEE50D0820196DF9005AE708 = {
 						CreatedOnToolsVersion = 9.2;
@@ -483,6 +486,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE1A5BCE204D3F88009EA821 /* FMCropForegroundView.swift in Sources */,
+				229A926024B0BDFE00AA33C3 /* Bundle+Extension.swift in Sources */,
 				CE0C5FB9201AC4870040A03A /* FMZoomInAnimationController.swift in Sources */,
 				CED2E99220455B2500AB8206 /* FMFiltersMenuView.swift in Sources */,
 				CEE50D2A20196E45005AE708 /* FMPhotoPickerImageCollectionViewLayout.swift in Sources */,

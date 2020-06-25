@@ -24,9 +24,9 @@ enum FMCropControl {
     func icon() -> UIImage? {
         switch self {
         case .resetAll, .resetFrameWithoutChangeRatio:
-            return UIImage(named: "icon_crop_reset", in: Bundle(for: FMPhotoPickerViewController.self), compatibleWith: nil)
+            return UIImage(named: "icon_crop_reset", in: .current, compatibleWith: nil)
         case .rotate:
-            return UIImage(named: "icon_crop_rotation", in: Bundle(for: FMPhotoPickerViewController.self), compatibleWith: nil)
+            return UIImage(named: "icon_crop_rotation", in: .current, compatibleWith: nil)
         }
     }
 }
