@@ -39,7 +39,7 @@ class FMVideoViewController: FMPhotoViewController {
         
         playIcon = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
         playIcon.center = self.view.center
-        playIcon.setImage(UIImage(named: "icon_play", in: Bundle(for: self.classForCoder), compatibleWith: nil), for: .normal)
+        playIcon.setImage(UIImage(named: "icon_play", in: .current, compatibleWith: nil), for: .normal)
         playIcon.addTarget(self, action: #selector(playButtonHandler), for: .touchUpInside)
         self.view.addSubview(playIcon)
         

@@ -149,7 +149,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
 				LastUpgradeCheck = 1020;
-				ORGANIZATIONNAME = "Tribal Media House";
+				ORGANIZATIONNAME = "Cong Nguyen";
 				TargetAttributes = {
 					CEE50D442019745C005AE708 = {
 						CreatedOnToolsVersion = 9.2;

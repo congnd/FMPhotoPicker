@@ -69,7 +69,7 @@ class FMPhotoPickerImageCollectionViewCell: UICollectionViewCell {
         
         let videoIcon = UIImageView()
         videoIcon.contentMode = .scaleAspectFill
-        videoIcon.image = UIImage(named: "video_icon", in: Bundle(for: Self.self), compatibleWith: nil)
+        videoIcon.image = UIImage(named: "video_icon", in: .current, compatibleWith: nil)
         
         videoInfoView.addSubview(videoIcon)
         videoIcon.translatesAutoresizingMaskIntoConstraints = false
@@ -135,7 +135,7 @@ class FMPhotoPickerImageCollectionViewCell: UICollectionViewCell {
         
         let editedMarkImageView = UIImageView()
         self.editedMarkImageView = editedMarkImageView
-        editedMarkImageView.image = UIImage(named: "icon_edited", in: Bundle(for: Self.self), compatibleWith: nil)
+        editedMarkImageView.image = UIImage(named: "icon_edited", in: .current, compatibleWith: nil)
         editedMarkImageViewTopConstraint = editedMarkImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 35)
         
         contentView.addSubview(editedMarkImageView)
@@ -196,16 +196,16 @@ class FMPhotoPickerImageCollectionViewCell: UICollectionViewCell {
             if self.selectMode == .multiple {
                 self.selectedIndex.isHidden = false
                 self.selectedIndex.text = "\(selectedIndex + 1)"
-                self.selectButton.setImage(UIImage(named: "check_on", in: Bundle(for: self.classForCoder), compatibleWith: nil), for: .normal)
+                self.selectButton.setImage(UIImage(named: "check_on", in: .current, compatibleWith: nil), for: .normal)
             } else {
                 self.selectedIndex.isHidden = true
-                self.selectButton.setImage(UIImage(named: "single_check_on", in: Bundle(for: self.classForCoder), compatibleWith: nil), for: .normal)
+                self.selectButton.setImage(UIImage(named: "single_check_on", in: .current, compatibleWith: nil), for: .normal)
             }
             self.cellFilterContainer.isHidden = false
         } else {
             self.selectedIndex.isHidden = true
             self.cellFilterContainer.isHidden = true
-            self.selectButton.setImage(UIImage(named: "check_off", in: Bundle(for: self.classForCoder), compatibleWith: nil), for: .normal)
+            self.selectButton.setImage(UIImage(named: "check_off", in: .current, compatibleWith: nil), for: .normal)
         }
     }
 }

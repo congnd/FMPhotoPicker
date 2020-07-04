@@ -56,17 +56,17 @@ public enum FMCrop: FMCroppable {
         var icon: UIImage?
         switch self {
         case .ratio4x3:
-            icon = UIImage(named: "icon_crop_4x3", in: Bundle(for: FMPhotoPickerViewController.self), compatibleWith: nil)
+            icon = UIImage(named: "icon_crop_4x3", in: .current, compatibleWith: nil)
         case .ratio16x9:
-            icon = UIImage(named: "icon_crop_16x9", in: Bundle(for: FMPhotoPickerViewController.self), compatibleWith: nil)
+            icon = UIImage(named: "icon_crop_16x9", in: .current, compatibleWith: nil)
         case .ratio9x16:
-            icon = UIImage(named: "icon_crop_9x16", in: Bundle(for: FMPhotoPickerViewController.self), compatibleWith: nil)
+            icon = UIImage(named: "icon_crop_9x16", in: .current, compatibleWith: nil)
         case .ratioCustom:
-            icon = UIImage(named: "icon_crop_custom", in: Bundle(for: FMPhotoPickerViewController.self), compatibleWith: nil)
+            icon = UIImage(named: "icon_crop_custom", in: .current, compatibleWith: nil)
         case .ratioOrigin:
-            icon = UIImage(named: "icon_crop_origin_ratio", in: Bundle(for: FMPhotoPickerViewController.self), compatibleWith: nil)
+            icon = UIImage(named: "icon_crop_origin_ratio", in: .current, compatibleWith: nil)
         case .ratioSquare:
-            icon = UIImage(named: "icon_crop_square", in: Bundle(for: FMPhotoPickerViewController.self), compatibleWith: nil)
+            icon = UIImage(named: "icon_crop_square", in: .current, compatibleWith: nil)
         }
         if icon != nil {
             return icon!

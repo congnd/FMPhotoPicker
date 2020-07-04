@@ -66,7 +66,7 @@ class FMPhotoPresenterViewController: UIViewController {
         self.dataSource = dataSource
         self.currentPhotoIndex = initialPhotoIndex
         
-        super.init(nibName: nil, bundle: Bundle(for: Self.self))
+        super.init(nibName: nil, bundle: .current)
         self.setupPageViewController(withInitialPhoto: self.dataSource.photo(atIndex: self.currentPhotoIndex))
     }
     
@@ -191,14 +191,14 @@ class FMPhotoPresenterViewController: UIViewController {
             if self.config.selectMode == .multiple {
                 self.selectedIndex.isHidden = false
                 self.selectedIndex.text = "\(selectedIndex + 1)"
-                self.selectedIcon.image = UIImage(named: "check_on", in: Bundle(for: self.classForCoder), compatibleWith: nil)
+                self.selectedIcon.image = UIImage(named: "check_on", in: .current, compatibleWith: nil)
             } else {
                 self.selectedIndex.isHidden = true
-                self.selectedIcon.image = UIImage(named: "single_check_on", in: Bundle(for: self.classForCoder), compatibleWith: nil)
+                self.selectedIcon.image = UIImage(named: "single_check_on", in: .current, compatibleWith: nil)
             }
         } else {
             self.selectedIndex.isHidden = true
-            self.selectedIcon.image = UIImage(named: "check_off", in: Bundle(for: self.classForCoder), compatibleWith: nil)
+            self.selectedIcon.image = UIImage(named: "check_off", in: .current, compatibleWith: nil)
         }
         
         // Update photo title
@@ -363,7 +363,7 @@ private extension FMPhotoPresenterViewController {
         let backButton = UIButton(type: .custom)
         self.backButton = backButton
         backButton.setTitleColor(kBlackColor, for: .normal)
-        backButton.setImage(UIImage(named: "icon_back", in: Bundle(for: Self.self), compatibleWith: nil), for: .normal)
+        backButton.setImage(UIImage(named: "icon_back", in: .current, compatibleWith: nil), for: .normal)
         backButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -4)
         backButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: -4)
         backButton.addTarget(self, action: #selector(onTapClose(_:)), for: .touchUpInside)
