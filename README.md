@@ -28,10 +28,10 @@ FMPhotoPicker is a modern, simple and zero-dependency photo picker with an elega
 - iOS 9.0+
 
 ## Installation
-### SwiftPM (Experimental)
+### SwiftPM
 ```
 dependencies: [
-  .package(url: "https://github.com/congnd/FMPhotoPicker.git", .exact("1.0.1")),
+  .package(url: "https://github.com/congnd/FMPhotoPicker.git", .exact("1.1.0")),
 ]
 ```
 
@@ -44,10 +44,10 @@ and run `carthage update FMPhotoPicker`
 
 ### CocoaPods
 FMPhotoPicker is now available in [CocoaPods](https://cocoapods.org/pods/FMPhotoPicker)  
-You want to add pod 'FMPhotoPicker', '~> 1.0.1' similar to the following to your Podfile:
+You want to add pod 'FMPhotoPicker', '~> 1.1.0' similar to the following to your Podfile:
 ```
 target 'MyApp' do
-  pod 'FMPhotoPicker', '~> 1.0.1'
+  pod 'FMPhotoPicker', '~> 1.1.0'
 end
 ```
 Then run a `pod install` inside your terminal.
