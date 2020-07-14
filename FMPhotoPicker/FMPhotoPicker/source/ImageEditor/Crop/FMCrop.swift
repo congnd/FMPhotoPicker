@@ -20,6 +20,7 @@ public struct FMCropRatio {
 
 public enum FMCrop: FMCroppable {
     case ratio4x3
+    case ratio3x4
     case ratio16x9
     case ratio9x16
     case ratioCustom
@@ -30,6 +31,8 @@ public enum FMCrop: FMCroppable {
         switch self {
         case .ratio4x3:
             return FMCropRatio(width: 4, height: 3)
+        case .ratio3x4:
+            return FMCropRatio(width: 3, height: 4)
         case .ratio16x9:
             return FMCropRatio(width: 16, height: 9)
         case .ratio9x16:
@@ -44,6 +47,7 @@ public enum FMCrop: FMCroppable {
     public func name(strings: [String: String]) -> String? {
         switch self {
         case .ratio4x3: return strings["editor_crop_ratio4x3"]
+        case .ratio3x4: return strings["editor_crop_ratio3x4"]
         case .ratio16x9: return strings["editor_crop_ratio16x9"]
         case .ratio9x16: return strings["editor_crop_ratio9x16"]
         case .ratioCustom: return strings["editor_crop_ratioCustom"]
@@ -57,6 +61,8 @@ public enum FMCrop: FMCroppable {
         switch self {
         case .ratio4x3:
             icon = UIImage(named: "icon_crop_4x3", in: .current, compatibleWith: nil)
+        case .ratio3x4:
+            icon = UIImage(named: "icon_crop_3x4", in: .current, compatibleWith: nil)
         case .ratio16x9:
             icon = UIImage(named: "icon_crop_16x9", in: .current, compatibleWith: nil)
         case .ratio9x16:
@@ -77,6 +83,7 @@ public enum FMCrop: FMCroppable {
     public func identifier() -> String {
         switch self {
         case .ratio4x3: return "ratio4x3"
+        case .ratio3x4: return "ratio3x4"
         case .ratio16x9: return "ratio16x9"
         case .ratio9x16: return "ratio9x16"
         case .ratioCustom: return "ratioCustom"

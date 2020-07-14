@@ -74,6 +74,7 @@ public struct FMPhotoPickerConfig {
         "editor_menu_crop_button_rotate":           "Rotate",
         
         "editor_crop_ratio4x3":                     "4:3",
+        "editor_crop_ratio3x4":                     "3:4",
         "editor_crop_ratio16x9":                    "16:9",
         "editor_crop_ratio9x16":                    "9x16",
         "editor_crop_ratioCustom":                  "Custom",
