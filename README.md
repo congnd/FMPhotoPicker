@@ -3,6 +3,7 @@
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Pod Compatible](https://img.shields.io/cocoapods/v/FMPhotoPicker.svg)](https://cocoapods.org/pods/FMPhotoPicker)
+[![Build](https://github.com/congnd/FMPhotoPicker/workflows/Build/badge.svg)](https://github.com/congnd/FMPhotoPicker/actions)
 
 FMPhotoPicker is a modern, simple and zero-dependency photo picker with an elegant and customizable image editor
 
