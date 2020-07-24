@@ -1,0 +1,25 @@
+name: Build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+
+    steps:
+    - name: setup-xcode
+      uses: maxim-lobanov/setup-xcode@1.0
+      with:
+        xcode-version: 12.0
+        
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Build
+      working-directory: ./
+      run: xcodebuild -project ./FMPhotoPicker/FMPhotoPicker.xcodeproj -scheme 'FMPhotoPicker' -configuration 'Release' -sdk 'iphoneos' clean build
