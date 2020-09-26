@@ -94,6 +94,7 @@ func fmImageEditorViewController(_ editor: FMImageEditorViewController, didFinis
 - [`maxVideo`](#ref-max-video)
 - [`availableFilters`](#ref-available-filters)
 - [`availableCrops`](#ref-available-crops)
+- [`useCropFirst`](#ref-use-crop-first)
 - [`alertController`](#ref-alert-controller)
 - [`forceCropEnabled`](#ref-force-crop-enabled)
 - [`eclipsePreviewEnabled`](#ref-eclipse-preview-enabled)
@@ -131,6 +132,11 @@ Crop options that is used in editor. **Set this parameter to `nil` to make the c
 FMPhotoEditor provides some default crops that will be fit to you.  
 Type: `[FMCroppable]?` 
 Default: all crops provided by FMPhotoPicker.
+
+- <a name="ref-use-crop-first"></a>`useCropFirst`    
+An option that indicates whether the crop menu should be selected by default in the `FMImageEditorViewController`.  
+Type: `Bool`  
+Default: `false`
 
 ***You are not allowed to use the editor without giving it at least one crop option or one filter option***
 
