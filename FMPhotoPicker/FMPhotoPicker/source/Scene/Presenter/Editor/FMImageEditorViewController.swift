@@ -256,10 +256,18 @@ public class FMImageEditorViewController: UIViewController {
         
         showAnimatedMenu()
         
-        if config.availableFilters != nil {
-            openFiltersMenu()
-        } else if config.availableCrops != nil {
-            openCropsMenu()
+        if config.useCropFirst {
+            if config.availableCrops != nil {
+                openCropsMenu()
+            } else if config.availableFilters != nil {
+                openFiltersMenu()
+            }
+        } else {
+            if config.availableFilters != nil {
+                openFiltersMenu()
+            } else if config.availableCrops != nil {
+                openCropsMenu()
+            }
         }
         
         // show view the crop view image is re-located
@@ -586,7 +594,6 @@ private extension FMImageEditorViewController {
         filterMenuButton.titleEdgeInsets = .init(top: 0, left: 4, bottom: 0, right: -4)
         
         filterMenuButton.translatesAutoresizingMaskIntoConstraints = false
-        bottomMenuContainer.addArrangedSubview(filterMenuButton)
         
         
         let cropMenuButton = UIButton(type: .custom)
@@ -595,7 +602,14 @@ private extension FMImageEditorViewController {
         cropMenuButton.titleEdgeInsets = .init(top: 0, left: 4, bottom: 0, right: -4)
         
         cropMenuButton.translatesAutoresizingMaskIntoConstraints = false
-        bottomMenuContainer.addArrangedSubview(cropMenuButton)
+        
+        if config.useCropFirst {
+            bottomMenuContainer.addArrangedSubview(cropMenuButton)
+            bottomMenuContainer.addArrangedSubview(filterMenuButton)
+        } else {
+            bottomMenuContainer.addArrangedSubview(filterMenuButton)
+            bottomMenuContainer.addArrangedSubview(cropMenuButton)            
+        }
         
         let subMenuContainer = UIView()
         self.subMenuContainer = subMenuContainer
