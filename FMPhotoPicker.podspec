@@ -1,4 +1,4 @@
-@version = "1.1.1"
+@version = "1.2.0"
 
 Pod::Spec.new do |s|
   s.name          = "FMPhotoPicker"
