@@ -12,6 +12,12 @@ import Photos
 // MARK: - Delegate protocol
 public protocol FMPhotoPickerViewControllerDelegate: class {
     func fmPhotoPickerController(_ picker: FMPhotoPickerViewController, didFinishPickingPhotoWith photos: [UIImage])
+    func fmPhotoPickerController(_ picker: FMPhotoPickerViewController, didFinishPickingPhotoWith assets: [PHAsset])
+}
+
+public extension FMPhotoPickerViewControllerDelegate {
+    func fmPhotoPickerController(_ picker: FMPhotoPickerViewController, didFinishPickingPhotoWith photos: [UIImage]) {}
+    func fmPhotoPickerController(_ picker: FMPhotoPickerViewController, didFinishPickingPhotoWith assets: [PHAsset]) {}
 }
 
 public class FMPhotoPickerViewController: UIViewController {
@@ -154,6 +160,12 @@ public class FMPhotoPickerViewController: UIViewController {
     }
     
     private func processDetermination() {
+        if config.shouldReturnAsset {
+            let assets = dataSource.getSelectedPhotos().compactMap { $0.asset }
+            delegate?.fmPhotoPickerController(self, didFinishPickingPhotoWith: assets)
+            return
+        }
+
         FMLoadingView.shared.show()
         
         var dict = [Int:UIImage]()
