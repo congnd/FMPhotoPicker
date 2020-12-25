@@ -208,8 +208,10 @@ public protocol FMAlertable {
 }
 ```
 
-## Developer
-[@congnd](https://github.com/congnd)
+## Contact
+Follow and contact me on [Twitter](https://twitter.com/congndcom). 
+If you find an issue, just [open a ticket](https://github.com/congnd/FMPhotoPicker/issues/new). 
+Pull requests are warmly welcome as well.
 
 ## License
 FMPhotoPicker is released under the MIT license. See LICENSE for details.
