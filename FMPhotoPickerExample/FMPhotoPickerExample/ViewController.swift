@@ -82,7 +82,8 @@ class ViewController: UIViewController, FMPhotoPickerViewControllerDelegate, FMI
         if self.allowVideo.isOn { mediaTypes.append(.video) }
         
         var config = FMPhotoPickerConfig()
-        
+
+        config.tintColor = #colorLiteral(red: 0.8549019694, green: 0.250980407, blue: 0.4784313738, alpha: 1)
         config.selectMode = selectMode
         config.mediaTypes = mediaTypes
         config.maxImage = self.maxImage

@@ -94,7 +94,7 @@ class FMPhotoPickerImageCollectionViewCell: UICollectionViewCell {
         
         let cellFilterContainer = UIView()
         self.cellFilterContainer = cellFilterContainer
-        cellFilterContainer.layer.borderColor = kRedColor.cgColor
+        cellFilterContainer.layer.borderColor = kTintColor.cgColor
         cellFilterContainer.layer.borderWidth = 2
         cellFilterContainer.isHidden = true
         

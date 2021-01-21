@@ -76,17 +76,17 @@ class FMCropCropBoxCornersView: UIView {
         borderView.layer.borderWidth = borderWidth
         borderView.layer.borderColor = UIColor.white.cgColor
         
-        topLeftView.backgroundColor = kRedColor
-        topRightView.backgroundColor = kRedColor
+        topLeftView.backgroundColor = kTintColor
+        topRightView.backgroundColor = kTintColor
         
-        rightTopView.backgroundColor = kRedColor
-        rightBottomView.backgroundColor = kRedColor
+        rightTopView.backgroundColor = kTintColor
+        rightBottomView.backgroundColor = kTintColor
         
-        bottomRightView.backgroundColor = kRedColor
-        bottomLeftView.backgroundColor = kRedColor
+        bottomRightView.backgroundColor = kTintColor
+        bottomLeftView.backgroundColor = kTintColor
         
-        leftBottomView.backgroundColor = kRedColor
-        leftTopView.backgroundColor = kRedColor
+        leftBottomView.backgroundColor = kTintColor
+        leftTopView.backgroundColor = kTintColor
         
         addSubview(borderView)
         

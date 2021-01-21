@@ -430,7 +430,7 @@ private extension FMPhotoPickerViewController {
         self.numberOfSelectedPhotoContainer = numberOfSelectedPhotoContainer
         numberOfSelectedPhotoContainer.layer.cornerRadius = 14
         numberOfSelectedPhotoContainer.layer.masksToBounds = true
-        numberOfSelectedPhotoContainer.backgroundColor = kRedColor
+        numberOfSelectedPhotoContainer.backgroundColor = kTintColor
         
         numberOfSelectedPhotoContainer.translatesAutoresizingMaskIntoConstraints = false
         menuContainer.addSubview(numberOfSelectedPhotoContainer)

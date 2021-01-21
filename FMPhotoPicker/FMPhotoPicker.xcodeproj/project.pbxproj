@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		229A926024B0BDFE00AA33C3 /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 229A925F24B0BDFE00AA33C3 /* Bundle+Extension.swift */; };
+		CCBF66A025B9072A00D77F94 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBF669F25B9072A00D77F94 /* Style.swift */; };
 		CE0C5FB5201ABD460040A03A /* FMPhotoPresenterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0C5FB4201ABD460040A03A /* FMPhotoPresenterViewController.swift */; };
 		CE0C5FB9201AC4870040A03A /* FMZoomInAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0C5FB8201AC4870040A03A /* FMZoomInAnimationController.swift */; };
 		CE0C5FBD201AE09F0040A03A /* FMZoomOutAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0C5FBC201AE09F0040A03A /* FMZoomOutAnimationController.swift */; };
@@ -74,6 +75,7 @@
 
 /* Begin PBXFileReference section */
 		229A925F24B0BDFE00AA33C3 /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extension.swift"; sourceTree = "<group>"; };
+		CCBF669F25B9072A00D77F94 /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		CE0C5FB4201ABD460040A03A /* FMPhotoPresenterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMPhotoPresenterViewController.swift; sourceTree = "<group>"; };
 		CE0C5FB8201AC4870040A03A /* FMZoomInAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMZoomInAnimationController.swift; sourceTree = "<group>"; };
 		CE0C5FBC201AE09F0040A03A /* FMZoomOutAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMZoomOutAnimationController.swift; sourceTree = "<group>"; };
@@ -247,6 +249,7 @@
 				CE762F132060DE54002D6E31 /* FMAlertable.swift */,
 				CE213CB62075C07300026B17 /* Const.swift */,
 				229A925F24B0BDFE00AA33C3 /* Bundle+Extension.swift */,
+				CCBF669F25B9072A00D77F94 /* Style.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -516,6 +519,7 @@
 				CEDF9C4A203D5E510048D182 /* FMVideoViewController.swift in Sources */,
 				CE762F142060DE54002D6E31 /* FMAlertable.swift in Sources */,
 				CE42F59C20521239006D2DC5 /* FMCropCell.swift in Sources */,
+				CCBF66A025B9072A00D77F94 /* Style.swift in Sources */,
 				CED2E9A5204CE8B800AB8206 /* FMCropMenuView.swift in Sources */,
 				CE238A09201EB68500CEBCB5 /* FMPhotoViewController.swift in Sources */,
 				CEDF9C45203ADC200048D182 /* FMPlaybackProgressTrackLayer.swift in Sources */,
