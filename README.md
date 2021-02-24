@@ -3,6 +3,7 @@
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Pod Compatible](https://img.shields.io/cocoapods/v/FMPhotoPicker.svg)](https://cocoapods.org/pods/FMPhotoPicker)
+[![Build](https://github.com/congnd/FMPhotoPicker/workflows/Build/badge.svg)](https://github.com/congnd/FMPhotoPicker/actions)
 
 FMPhotoPicker is a modern, simple and zero-dependency photo picker with an elegant and customizable image editor
 
@@ -28,10 +29,10 @@ FMPhotoPicker is a modern, simple and zero-dependency photo picker with an elega
 - iOS 9.0+
 
 ## Installation
-### SwiftPM (Experimental)
+### SwiftPM
 ```
 dependencies: [
-  .package(url: "https://github.com/congnd/FMPhotoPicker.git", .exact("1.0.1")),
+  .package(url: "https://github.com/congnd/FMPhotoPicker.git", .exact("1.3.0")),
 ]
 ```
 
@@ -44,10 +45,10 @@ and run `carthage update FMPhotoPicker`
 
 ### CocoaPods
 FMPhotoPicker is now available in [CocoaPods](https://cocoapods.org/pods/FMPhotoPicker)  
-You want to add pod 'FMPhotoPicker', '~> 1.0.1' similar to the following to your Podfile:
+You want to add pod 'FMPhotoPicker', '~> 1.3.0' similar to the following to your Podfile:
 ```
 target 'MyApp' do
-  pod 'FMPhotoPicker', '~> 1.0.1'
+  pod 'FMPhotoPicker', '~> 1.3.0'
 end
 ```
 Then run a `pod install` inside your terminal.
@@ -75,10 +76,13 @@ self.present(editor, animated: true)
 ```
 
 ## Delegation methods
-- Implement FMPhotoPickerViewControllerDelegate protocol to handle selected images  
+- Implement FMPhotoPickerViewControllerDelegate protocol to handle selected photos.  
 ```swift
 func fmPhotoPickerController(_ picker: FMPhotoPickerViewController, didFinishPickingPhotoWith photos: [UIImage])
+func fmPhotoPickerController(_ picker: FMPhotoPickerViewController, didFinishPickingPhotoWith assets: [PHAsset])
 ```
+
+***If you prefer to receive selected photos in type of `PHAsset` instead of `UIImage` then don't forget to set the `shouldReturnAsset` to `true` and implement the corresponding delegation method.***
 
 - Implement FMImageEditorViewControllerDelegate protocol to handle ouput image
 ```swift
@@ -93,7 +97,9 @@ func fmImageEditorViewController(_ editor: FMImageEditorViewController, didFinis
 - [`maxVideo`](#ref-max-video)
 - [`availableFilters`](#ref-available-filters)
 - [`availableCrops`](#ref-available-crops)
+- [`useCropFirst`](#ref-use-crop-first)
 - [`alertController`](#ref-alert-controller)
+- [`shouldReturnAsset`](#ref-should-return-asset)
 - [`forceCropEnabled`](#ref-force-crop-enabled)
 - [`eclipsePreviewEnabled`](#ref-eclipse-preview-enabled)
 - [`strings`](#ref-strings)
@@ -133,10 +139,21 @@ Default: all crops provided by FMPhotoPicker.
 
 ***You are not allowed to use the editor without giving it at least one crop option or one filter option***
 
+- <a name="ref-use-crop-first"></a>`useCropFirst`    
+An option that indicates whether the crop menu should be selected by default in the `FMImageEditorViewController`.  
+Type: `Bool`  
+Default: `false`
+
 - <a name="ref-alert-controller"></a>`alertController`    
 An alert controller to show the confirmation view to an user with 2 options: Ok or Cancel.  
 Type: `FMAlertable`   
 Default: `FMAlert`
+
+- <a name="ref-should-return-asset"></a>`shouldReturnAsset`    
+Whether you want FMPhotoPicker returns PHAsset instead of UIImage.
+***FMPhotoPicker chooses a proper delegation method to be invoked when user finishes picking based on this configuration***
+Type: `Bool`
+Default: `false`
 
 - <a name="ref-forc-crop-enabled"></a>`forceCropEnabled`    
 A bool value that indicates whether force mode is enabled.  
@@ -191,8 +208,10 @@ public protocol FMAlertable {
 }
 ```
 
-## Developer
-[@congnd](https://github.com/congnd)
+## Contact
+Follow and contact me on [Twitter](https://twitter.com/congndcom). 
+If you find an issue, just [open a ticket](https://github.com/congnd/FMPhotoPicker/issues/new). 
+Pull requests are warmly welcome as well.
 
 ## License
 FMPhotoPicker is released under the MIT license. See LICENSE for details.
