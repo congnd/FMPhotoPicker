@@ -160,6 +160,15 @@ public class FMImageEditorViewController: UIViewController {
     public override func loadView() {
         view = UIView()
         view.backgroundColor = .white
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                self.view.backgroundColor = .black
+            } else {
+                self.view.backgroundColor = .white
+            }
+        } else {
+            self.view.backgroundColor = .white
+        }
         setupView()
     }
     
@@ -181,6 +190,7 @@ public class FMImageEditorViewController: UIViewController {
                               appliedCrop: fmPhotoAsset.getAppliedCrop(),
                               appliedCropArea: fmPhotoAsset.getAppliedCropArea())
         cropView.foregroundView.eclipsePreviewEnabled = config.eclipsePreviewEnabled
+        cropView.backgroundColor = .red
         
         view.addSubview(cropView)
         view.sendSubviewToBack(cropView)
@@ -501,7 +511,16 @@ private extension FMImageEditorViewController {
     func setupView() {
         let headerView = UIView()
         self.headerView = headerView
-        headerView.backgroundColor = .white
+        
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                headerView.backgroundColor = .black
+            } else {
+                headerView.backgroundColor = .white
+            }
+        } else {
+            headerView.backgroundColor = .white
+        }
         
         headerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(headerView)
@@ -564,7 +583,16 @@ private extension FMImageEditorViewController {
         
         let bottomViewContainer = UIView()
         self.bottomViewContainer = bottomViewContainer
-        bottomViewContainer.backgroundColor = .white
+        
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                bottomViewContainer.backgroundColor = .black
+            } else {
+                bottomViewContainer.backgroundColor = .white
+            }
+        } else {
+            bottomViewContainer.backgroundColor = .white
+        }
         
         bottomViewContainer.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(bottomViewContainer)
@@ -608,12 +636,21 @@ private extension FMImageEditorViewController {
             bottomMenuContainer.addArrangedSubview(filterMenuButton)
         } else {
             bottomMenuContainer.addArrangedSubview(filterMenuButton)
-            bottomMenuContainer.addArrangedSubview(cropMenuButton)            
+            bottomMenuContainer.addArrangedSubview(cropMenuButton)
         }
         
         let subMenuContainer = UIView()
         self.subMenuContainer = subMenuContainer
-        subMenuContainer.backgroundColor = .white
+        
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                subMenuContainer.backgroundColor = .black
+            } else {
+                subMenuContainer.backgroundColor = .white
+            }
+        } else {
+            subMenuContainer.backgroundColor = .white
+        }
         
         subMenuContainer.translatesAutoresizingMaskIntoConstraints = false
         bottomViewContainer.addSubview(subMenuContainer)

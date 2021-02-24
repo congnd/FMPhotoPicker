@@ -86,7 +86,17 @@ class FMCropView: UIView {
         cropBoxView = FMCropCropBoxView(cropRatio: nil)
         
         foregroundView = FMCropForegroundView(image: image)
-        translucencyView = FMCropTranslucencyView(effect: UIBlurEffect(style: .light))
+        
+        
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                translucencyView = FMCropTranslucencyView(effect: UIBlurEffect(style: .dark))
+            } else {
+                translucencyView = FMCropTranslucencyView(effect: UIBlurEffect(style: .light))
+            }
+        } else {
+            translucencyView = FMCropTranslucencyView(effect: UIBlurEffect(style: .light))
+        }
         
         cornersView = FMCropCropBoxCornersView()
         
@@ -125,6 +135,9 @@ class FMCropView: UIView {
         
         translucencyView.insert(toView: self)
         translucencyView.isUserInteractionEnabled = false
+        
+        
+        foregroundView.backgroundColor = .blue
         
         addSubview(whiteBackgroundView)
         addSubview(foregroundView)
@@ -205,7 +218,7 @@ class FMCropView: UIView {
         }
         
         //The scale we need to scale up the crop box to fit full screen
-        let cropBoxScale = min(contentFrame.width / cropFrame.width, contentFrame.height / cropFrame.height) 
+        let cropBoxScale = min(contentFrame.width / cropFrame.width, contentFrame.height / cropFrame.height)
         
         // calculate new cropFrame that is translated to center of contentBound
         cropFrame.size.width = cropFrame.size.width * cropBoxScale

@@ -74,7 +74,16 @@ public class FMPhotoPickerViewController: UIViewController {
     
     public override func loadView() {
         view = UIView()
-        view.backgroundColor = .white
+//        view.backgroundColor = .white
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                self.view.backgroundColor = .black
+            } else {
+                self.view.backgroundColor = .white
+            }
+        } else {
+            self.view.backgroundColor = .white
+        }
         initializeViews()
         setupView()
     }
@@ -360,6 +369,15 @@ private extension FMPhotoPickerViewController {
     func initializeViews() {
         let headerView = UIView()
         headerView.backgroundColor = .white
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                headerView.backgroundColor = .black
+            } else {
+                headerView.backgroundColor = .white
+            }
+        } else {
+            headerView.backgroundColor = .white
+        }
         
         headerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(headerView)
