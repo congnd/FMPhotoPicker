@@ -86,7 +86,16 @@ class FMPhotoPresenterViewController: UIViewController {
     
     override func loadView() {
         view = UIView()
-        view.backgroundColor = .white
+//        view.backgroundColor = .white
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                self.view.backgroundColor = .black
+            } else {
+                self.view.backgroundColor = .white
+            }
+        } else {
+            self.view.backgroundColor = .white
+        }
         setupView()
     }
     
@@ -318,7 +327,15 @@ private extension FMPhotoPresenterViewController {
 //        private weak var unsafeAreaBottomView: UIView!
         
         let headerView = UIView()
-        headerView.backgroundColor = .white
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                headerView.backgroundColor = .black
+            } else {
+                headerView.backgroundColor = .white
+            }
+        } else {
+            headerView.backgroundColor = .white
+        }
         
         headerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(headerView)
@@ -484,6 +501,16 @@ private extension FMPhotoPresenterViewController {
         let bottomViewContainer = UIView()
         self.bottomViewContainer = bottomViewContainer
         bottomViewContainer.backgroundColor = .white
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                bottomViewContainer.backgroundColor = .black
+            } else {
+                bottomViewContainer.backgroundColor = .white
+            }
+        } else {
+            bottomViewContainer.backgroundColor = .white
+        }
+        
         
         bottomViewContainer.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(bottomViewContainer)

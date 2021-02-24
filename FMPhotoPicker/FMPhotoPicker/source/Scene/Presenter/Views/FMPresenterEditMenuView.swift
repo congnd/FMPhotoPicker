@@ -26,7 +26,16 @@ class FMPresenterEditMenuView: UIView {
         editButton.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         // editButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 80).isActive = true
         editButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 40).isActive = true
-        editButton.setTitleColor(.black, for: .normal)
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                editButton.setTitleColor(.white, for: .normal)
+            } else {
+                editButton.setTitleColor(.black, for: .normal)
+            }
+        } else {
+            editButton.setTitleColor(.black, for: .normal)
+        }
+        
         editButton.setTitle(config.strings["present_button_edit_image"], for: .normal)
         editButton.titleLabel?.font = UIFont.systemFont(ofSize: config.titleFontSize, weight: .bold)
         
