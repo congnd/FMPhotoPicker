@@ -89,6 +89,7 @@ class ViewController: UIViewController, FMPhotoPickerViewControllerDelegate, FMI
         config.maxVideo = self.maxVideo
         config.forceCropEnabled = forceCropEnabled.isOn
         config.eclipsePreviewEnabled = eclipsePreviewEnabled.isOn
+        config.themeColor = .purple
         
         // in force crop mode, only the first crop option is available
         config.availableCrops = [
