@@ -8,6 +8,7 @@
 
 import Foundation
 import Photos
+import UIKit
 
 public enum FMSelectMode {
     case multiple
@@ -51,6 +52,11 @@ public struct FMPhotoPickerConfig {
     public var availableCrops: [FMCroppable]? = kDefaultAvailableCrops
     public var useCropFirst: Bool = false
     public var alertController: FMAlertable = FMAlert()
+    public var themeColor: UIColor = kRedColor {
+        didSet {
+            kThemeColor = themeColor
+        }
+    }
 
     /// Whether you want FMPhotoPicker returns PHAsset instead of UIImage.
     public var shouldReturnAsset: Bool = false
@@ -91,6 +97,6 @@ public struct FMPhotoPickerConfig {
     ]
     
     public init() {
-        
+
     }
 }

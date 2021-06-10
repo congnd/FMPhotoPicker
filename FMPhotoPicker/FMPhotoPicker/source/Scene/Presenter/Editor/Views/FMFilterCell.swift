@@ -30,7 +30,7 @@ class FMFilterCell: UICollectionViewCell {
         selectCircleView.frame = imageView.frame.insetBy(dx: -3, dy: -3)
         selectCircleView.layer.cornerRadius = selectCircleView.frame.width / 2
         selectCircleView.layer.borderWidth = 2
-        selectCircleView.layer.borderColor = kRedColor.cgColor
+        selectCircleView.layer.borderColor = kThemeColor.cgColor
         
         // hide selectCircleView by default
         selectCircleView.isHidden = true
@@ -54,7 +54,7 @@ class FMFilterCell: UICollectionViewCell {
     
     public func setSelected() {
         selectCircleView.isHidden = false
-        name.textColor = kRedColor
+        name.textColor = kThemeColor
     }
     
     public func setDeselected() {

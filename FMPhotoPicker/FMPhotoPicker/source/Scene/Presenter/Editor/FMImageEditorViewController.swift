@@ -351,8 +351,8 @@ public class FMImageEditorViewController: UIViewController {
     }
     
     private func openFiltersMenu() {
-        filterMenuButton.tintColor = kRedColor
-        filterMenuButton.setTitleColor(kRedColor, for: .normal)
+        filterMenuButton.tintColor = kThemeColor
+        filterMenuButton.setTitleColor(kThemeColor, for: .normal)
         cropMenuButton.tintColor = kBlackColor
         cropMenuButton.setTitleColor(kBlackColor, for: .normal)
         
@@ -369,8 +369,8 @@ public class FMImageEditorViewController: UIViewController {
     }
     
     private func openCropsMenu() {
-        cropMenuButton.tintColor = kRedColor
-        cropMenuButton.setTitleColor(kRedColor, for: .normal)
+        cropMenuButton.tintColor = kThemeColor
+        cropMenuButton.setTitleColor(kThemeColor, for: .normal)
         filterMenuButton.tintColor = kBlackColor
         filterMenuButton.setTitleColor(kBlackColor, for: .normal)
         
