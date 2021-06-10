@@ -79,6 +79,11 @@ public class FMPhotoPickerViewController: UIViewController {
         setupView()
     }
     
+    // MARK: - Public
+    public func setThemeColor(color: UIColor) {
+        themeColor = color
+    }
+    
     // MARK: - Setup View
     private func setupView() {
         self.imageCollectionView.register(FMPhotoPickerImageCollectionViewCell.self, forCellWithReuseIdentifier: FMPhotoPickerImageCollectionViewCell.reuseId)
