@@ -369,8 +369,8 @@ public class FMImageEditorViewController: UIViewController {
     }
     
     private func openCropsMenu() {
-        cropMenuButton.tintColor = themeColor
-        cropMenuButton.setTitleColor(themeColor, for: .normal)
+        cropMenuButton.tintColor = kThemeColor
+        cropMenuButton.setTitleColor(kThemeColor, for: .normal)
         filterMenuButton.tintColor = kBlackColor
         filterMenuButton.setTitleColor(kBlackColor, for: .normal)
         
