@@ -172,6 +172,42 @@ A dictionary that allows you to customize language for your app.
 For details, see `FMPhotoPickerConfig.swift`   
 Type: `Dictionary`
 
+## SwiftUI
+
+You can pick an image or images using SwiftUI by presenting a sheet with `FMSwiftUIImagePicker`
+
+If you want to select multiple images, then simply pass a binding to an array of `UIImage`
+
+```swift
+struct ContentView: View {
+    @State var image:UIImage?
+    @State var showPicker:Bool = false
+
+    var body: some View {
+        VStack {
+            if let image {
+                Image(uiImage:image)
+                    .resizable()
+                    .frame(width:100,height:100)
+            }
+
+            Button("Pick a Photo") {
+                showPicker = true
+            }
+
+        }
+        .padding()
+		//Note - use fullScreenCover rather than sheet
+		//to avoid display issues on iPads
+        .fullScreenCover(isPresented: $showPicker) {
+            FMSwiftUIImagePicker(config: FMPhotoPickerConfig(),
+                                 selectedImage: self.$image)
+        }
+    }
+}
+```
+
+
 ## Customization
 ### Custom filter
 You can freely create your own filter by implementing the `FMFilterable` protocol.
