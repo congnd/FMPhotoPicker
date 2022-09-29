@@ -197,7 +197,9 @@ struct ContentView: View {
 
         }
         .padding()
-        .sheet(isPresented: $showPicker) {
+		//Note - use fullScreenCover rather than sheet
+		//to avoid display issues on iPads
+        .fullScreenCover(isPresented: $showPicker) {
             FMSwiftUIImagePicker(config: FMPhotoPickerConfig(),
                                  selectedImage: self.$image)
         }
