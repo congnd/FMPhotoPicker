@@ -10,7 +10,7 @@ import UIKit
 import Photos
 
 // MARK: - Delegate protocol
-public protocol FMPhotoPickerViewControllerDelegate: class {
+public protocol FMPhotoPickerViewControllerDelegate: AnyObject {
     func fmPhotoPickerController(_ picker: FMPhotoPickerViewController, didFinishPickingPhotoWith photos: [UIImage])
     func fmPhotoPickerController(_ picker: FMPhotoPickerViewController, didFinishPickingPhotoWith assets: [PHAsset])
 }
